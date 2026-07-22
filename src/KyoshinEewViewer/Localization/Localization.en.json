@@ -219,7 +219,7 @@
 	"WorkflowDisabledSuffix": "(Disabled)",
 	"WorkflowCreate": "Create a new workflow",
 	"WorkflowEmpty": "There are no workflows yet.",
-	"WorkflowExperimentalWarning": "The workflow feature is advanced and still experimental.\\nPlease read the guide at the top left carefully before using it.",
+	"WorkflowExperimentalWarning": "The workflow feature is advanced and still experimental.\nPlease read the guide at the top left carefully before using it.",
 	"WorkflowDelete": "Delete",
 	"WorkflowTrigger": "Trigger",
 	"WorkflowSelectTrigger": "Select a trigger",

@@ -219,7 +219,7 @@
 	"WorkflowDisabledSuffix": "(無効)",
 	"WorkflowCreate": "新しいワークフローを作成",
 	"WorkflowEmpty": "ワークフローがまだありません。",
-	"WorkflowExperimentalWarning": "ワークフロー機能は高度かつ、試験中の機能です。\\n左上の解説をよくお読みになった上でご利用ください。",
+	"WorkflowExperimentalWarning": "ワークフロー機能は高度かつ、試験中の機能です。\n左上の解説をよくお読みになった上でご利用ください。",
 	"WorkflowDelete": "削除する",
 	"WorkflowTrigger": "トリガー",
 	"WorkflowSelectTrigger": "トリガーを選択",
