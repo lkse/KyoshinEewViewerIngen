@@ -5,6 +5,8 @@ using DynamicData.Binding;
 using FluentAvalonia.UI.Controls;
 using KyoshinEewViewer.Core;
 using KyoshinEewViewer.Core.Models;
+using KyoshinEewViewer.Localization;
+using Splat;
 using System;
 using System.IO;
 using System.Reactive.Linq;
@@ -17,6 +19,8 @@ public partial class IntensityThemeEditWindow : Window
 {
 	private IDisposable? _themeSubscription;
 
+	private static LocalizationService? Loc => Locator.Current.GetService<LocalizationService>();
+
 	public IntensityThemeEditWindow()
 	{
 		InitializeComponent();
@@ -27,10 +31,12 @@ public partial class IntensityThemeEditWindow : Window
 				return;
 			var result = await new FAContentDialog
 			{
-				Title = "復元する",
-				Content = IntensityTheme.Meta.Type == ThemeType.ExternalFile ? "ファイルからテーマを読み込み直しますか？" : "編集中のテーマの変更を破棄しますか？",
-				PrimaryButtonText = "はい",
-				SecondaryButtonText = "いいえ",
+				Title = Loc?.Get(LocalizationKey.ThemeRestoreTitle) ?? "復元する",
+				Content = IntensityTheme.Meta.Type == ThemeType.ExternalFile
+					? Loc?.Get(LocalizationKey.ThemeReloadFromFile) ?? "ファイルからテーマを読み込み直しますか？"
+					: Loc?.Get(LocalizationKey.ThemeDiscardEditingConfirm) ?? "編集中のテーマの変更を破棄しますか？",
+				PrimaryButtonText = Loc?.Get(LocalizationKey.CommonYes) ?? "はい",
+				SecondaryButtonText = Loc?.Get(LocalizationKey.CommonNo) ?? "いいえ",
 			}.ShowAsync(this);
 
 			if (result == FAContentDialogResult.Primary)
@@ -49,10 +55,12 @@ public partial class IntensityThemeEditWindow : Window
 			{
 				var result = await new FAContentDialog
 				{
-					Title = "組み込みテーマの保存",
-					Content = $"組み込みテーマは変更できないため、外部テーマとして保存します。\n{theme.Name}.json として保存します。ファイル名に使用できない文字が含まれていないか確認してください。",
-					PrimaryButtonText = "はい",
-					SecondaryButtonText = "いいえ",
+					Title = Loc?.Get(LocalizationKey.ThemeSaveBuiltInTitle) ?? "組み込みテーマの保存",
+					Content = string.Format(
+						Loc?.Get(LocalizationKey.ThemeSaveBuiltInContent) ?? "組み込みテーマは変更できないため、外部テーマとして保存します。\n{0}.json として保存します。ファイル名に使用できない文字が含まれていないか確認してください。",
+						theme.Name),
+					PrimaryButtonText = Loc?.Get(LocalizationKey.CommonYes) ?? "はい",
+					SecondaryButtonText = Loc?.Get(LocalizationKey.CommonNo) ?? "いいえ",
 				}.ShowAsync(this);
 
 				if (result != FAContentDialogResult.Primary)
@@ -71,8 +79,8 @@ public partial class IntensityThemeEditWindow : Window
 				{
 					await new FAContentDialog
 					{
-						Title = "保存に失敗",
-						Content = $"テーマの保存に失敗しました: {ex.Message}",
+						Title = Loc?.Get(LocalizationKey.ThemeSaveFailedTitle) ?? "保存に失敗",
+						Content = string.Format(Loc?.Get(LocalizationKey.ThemeSaveFailedContent) ?? "テーマの保存に失敗しました: {0}", ex.Message),
 						PrimaryButtonText = "OK",
 					}.ShowAsync(this);
 				}
@@ -83,10 +91,10 @@ public partial class IntensityThemeEditWindow : Window
 			{
 				var result = await new FAContentDialog
 				{
-					Title = "外部テーマの保存",
-					Content = $"{IntensityTheme.Meta.Identifier} にテーマを上書き保存しますか？",
-					PrimaryButtonText = "はい",
-					SecondaryButtonText = "いいえ",
+					Title = Loc?.Get(LocalizationKey.ThemeSaveExternalTitle) ?? "外部テーマの保存",
+					Content = string.Format(Loc?.Get(LocalizationKey.ThemeSaveExternalContent) ?? "{0} にテーマを上書き保存しますか？", IntensityTheme.Meta.Identifier),
+					PrimaryButtonText = Loc?.Get(LocalizationKey.CommonYes) ?? "はい",
+					SecondaryButtonText = Loc?.Get(LocalizationKey.CommonNo) ?? "いいえ",
 				}.ShowAsync(this);
 				if (result != FAContentDialogResult.Primary)
 					return;
@@ -105,8 +113,8 @@ public partial class IntensityThemeEditWindow : Window
 				{
 					await new FAContentDialog
 					{
-						Title = "保存に失敗",
-						Content = $"テーマの保存に失敗しました: {ex.Message}",
+						Title = Loc?.Get(LocalizationKey.ThemeSaveFailedTitle) ?? "保存に失敗",
+						Content = string.Format(Loc?.Get(LocalizationKey.ThemeSaveFailedContent) ?? "テーマの保存に失敗しました: {0}", ex.Message),
 						PrimaryButtonText = "OK",
 					}.ShowAsync(this);
 				}
@@ -130,7 +138,7 @@ public partial class IntensityThemeEditWindow : Window
 			if (value == null)
 				return;
 			AssignTheme(value);
-			themeDetailText.Text = value.Meta.DisplayName;
+			themeDetailText.Text = LocalizedThemeName.Get(value.Meta);
 		}
 	}
 
@@ -182,10 +190,10 @@ public partial class IntensityThemeEditWindow : Window
 		e.Cancel = true;
 		var result = await new FAContentDialog
 		{
-			Title = "テーマの変更を破棄",
-			Content = "ウィンドウを閉じて編集中のテーマの変更を破棄しますか？",
-			PrimaryButtonText = "はい",
-			SecondaryButtonText = "いいえ",
+			Title = Loc?.Get(LocalizationKey.ThemeDiscardCloseTitle) ?? "テーマの変更を破棄",
+			Content = Loc?.Get(LocalizationKey.ThemeDiscardCloseContent) ?? "ウィンドウを閉じて編集中のテーマの変更を破棄しますか？",
+			PrimaryButtonText = Loc?.Get(LocalizationKey.CommonYes) ?? "はい",
+			SecondaryButtonText = Loc?.Get(LocalizationKey.CommonNo) ?? "いいえ",
 		}.ShowAsync(this);
 		if (result == FAContentDialogResult.Primary)
 		{

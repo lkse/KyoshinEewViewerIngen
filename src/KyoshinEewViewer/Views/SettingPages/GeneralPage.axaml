@@ -7,6 +7,7 @@
 			 xmlns:controls="clr-namespace:KyoshinEewViewer.CustomControl;assembly=KyoshinEewViewer.CustomControl"
 			 xmlns:loc="using:KyoshinEewViewer.Localization"
 			 xmlns:vm="using:KyoshinEewViewer.ViewModels"
+			 xmlns:converter="using:KyoshinEewViewer.Converters"
 			 xmlns:ui="using:FluentAvalonia.UI.Controls"
              mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="1800"
              x:DataType="vm:SettingWindowViewModel"
@@ -58,7 +59,7 @@
                                 <DataTemplate>
                                     <StackPanel VerticalAlignment="Center">
                                         <TextBlock Text="{Binding Theme.Name}" />
-                                        <TextBlock Text="{Binding Meta.DisplayName}" FontSize="12" Foreground="{DynamicResource SubForegroundColor}" />
+                                        <TextBlock Text="{Binding Meta, Converter={x:Static converter:ThemeMetaDisplayNameConverter.Default}}" FontSize="12" Foreground="{DynamicResource SubForegroundColor}" />
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
@@ -81,7 +82,7 @@
                                 <DataTemplate>
                                     <StackPanel VerticalAlignment="Center">
                                         <TextBlock Text="{Binding Theme.Name}" />
-                                        <TextBlock Text="{Binding Meta.DisplayName}" FontSize="12" Foreground="{DynamicResource SubForegroundColor}" />
+                                        <TextBlock Text="{Binding Meta, Converter={x:Static converter:ThemeMetaDisplayNameConverter.Default}}" FontSize="12" Foreground="{DynamicResource SubForegroundColor}" />
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
