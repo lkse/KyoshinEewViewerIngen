@@ -3,12 +3,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		     xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:loc="using:KyoshinEewViewer.Localization"
              xmlns:actions="clr-namespace:KyoshinEewViewer.Services.Workflows.BuiltinActions;assembly=KyoshinEewViewer"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:DataType="actions:LogOutputAction" x:CompileBindings="True"
              x:Class="KyoshinEewViewer.Services.Workflows.BuiltinActions.LogOutputActionControl">
     <StackPanel>
-        <TextBlock Text="テンプレート" />
+        <TextBlock Text="{loc:Localize WorkflowActionTemplate}" />
         <Grid ColumnDefinitions="*,Auto">
             <TextBox Grid.Column="0" 
                      Text="{Binding TemplateText}" 
@@ -20,13 +21,13 @@
                      Background="{DynamicResource LayerFillColorDefaultBrush}"
                      FontFamily="Cascadia Code,Consolas,Menlo,Monospace"
                      FontSize="12" />
-            <Button Grid.Column="1" 
-                    Content="編集" 
+            <Button Grid.Column="1"
+                    Content="{loc:Localize GeneralEdit}"
                     Click="EditTemplateButton_Click"
                     Margin="8,0,0,0"
                     VerticalAlignment="Top" />
         </Grid>
-        <TextBlock Text="最新の実行結果" />
+        <TextBlock Text="{loc:Localize WorkflowActionLatestOutput}" />
         <TextBlock Text="{Binding LatestOutput}" Margin="5,0" />
     </StackPanel>
 </UserControl>

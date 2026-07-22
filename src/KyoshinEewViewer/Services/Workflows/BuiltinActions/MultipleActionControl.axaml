@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		     xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:loc="using:KyoshinEewViewer.Localization"
              xmlns:services="clr-namespace:KyoshinEewViewer.Services;assembly=KyoshinEewViewer"
              xmlns:workflows="clr-namespace:KyoshinEewViewer.Services.Workflows;assembly=KyoshinEewViewer"
              xmlns:actions="clr-namespace:KyoshinEewViewer.Services.Workflows.BuiltinActions;assembly=KyoshinEewViewer"
@@ -10,8 +11,8 @@
              x:DataType="actions:MultipleAction" x:CompileBindings="True"
              x:Class="KyoshinEewViewer.Services.Workflows.BuiltinActions.MultipleActionControl">
     <StackPanel>
-        <CheckBox Content="同時実行を行う" IsChecked="{Binding IsParallel}"
-                    ToolTip.Tip="各アクションを並列に実行しようとします。待機や中断などは行われません。"/>
+        <CheckBox Content="{loc:Localize WorkflowActionMultipleParallel}" IsChecked="{Binding IsParallel}"
+                    ToolTip.Tip="{loc:Localize WorkflowActionMultipleParallelDescription}"/>
         <ItemsControl ItemsSource="{Binding ChildActions}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate x:DataType="actions:ChildAction">
@@ -29,20 +30,20 @@
                                         </MenuFlyout.ItemContainerTheme>
                                     </MenuFlyout>
                                 </Button.Flyout>
-                                <TextBlock Text="{Binding SelectedActionInfo.DisplayName, FallbackValue='アクションを選択'}" />
+                                <TextBlock Text="{Binding SelectedActionInfo.DisplayName, FallbackValue={loc:Localize WorkflowActionSelectAction}}" />
                             </Button>
                             <StackPanel Orientation="Vertical" Margin="5,0,0,0" Grid.Column="1">
                                 <Button Command="{Binding $parent[UserControl].((actions:MultipleAction)DataContext).MoveActionUp}" CommandParameter="{Binding}"
-                                        ToolTip.Tip="上に移動" Height="20" Padding="6,0">
+                                        ToolTip.Tip="{loc:Localize WorkflowActionMoveUp}" Height="20" Padding="6,0">
                                     <ui:FASymbolIcon Symbol="ChevronUp" FontSize="12" />
                                 </Button>
                                 <Button Command="{Binding $parent[UserControl].((actions:MultipleAction)DataContext).MoveActionDown}" CommandParameter="{Binding}"
-                                        ToolTip.Tip="下に移動" Height="20" Padding="6,0">
+                                        ToolTip.Tip="{loc:Localize WorkflowActionMoveDown}" Height="20" Padding="6,0">
                                     <ui:FASymbolIcon Symbol="ChevronDown" FontSize="12" />
                                 </Button>
                             </StackPanel>
                             <Button Command="{Binding $parent[UserControl].((actions:MultipleAction)DataContext).RemoveAction}" CommandParameter="{Binding}"
-                                    Margin="5,0,0,0" VerticalAlignment="Stretch" ToolTip.Tip="アクションを削除" Grid.Column="2">
+                                    Margin="5,0,0,0" VerticalAlignment="Stretch" ToolTip.Tip="{loc:Localize WorkflowActionRemove}" Grid.Column="2">
                                 <ui:FASymbolIcon Symbol="Delete" />
                             </Button>
                         </Grid>
@@ -51,7 +52,7 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <Button Command="{Binding AddAction}" ToolTip.Tip="アクションを追加" HorizontalAlignment="Stretch">
+        <Button Command="{Binding AddAction}" ToolTip.Tip="{loc:Localize WorkflowActionAdd}" HorizontalAlignment="Stretch">
             <ui:FASymbolIcon Symbol="Add" />
         </Button>
     </StackPanel>
