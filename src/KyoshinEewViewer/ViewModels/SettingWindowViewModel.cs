@@ -31,32 +31,32 @@ namespace KyoshinEewViewer.ViewModels;
 
 public class SettingWindowViewModel : ViewModelBase
 {
-	public static Dictionary<KyoshinEventLevel, string> KyoshinEventLevelNames { get; } = new()
+	public Dictionary<KyoshinEventLevel, string> KyoshinEventLevelNames => new()
 	{
-		{ KyoshinEventLevel.Weaker, "微弱(非推奨)" },
-		{ KyoshinEventLevel.Weak, "弱い(震度1未満)" },
-		{ KyoshinEventLevel.Medium, "普通(震度1程度以上)" },
-		{ KyoshinEventLevel.Strong, "強い(震度3程度以上)" },
-		{ KyoshinEventLevel.Stronger, "非常に強い(震度5弱程度以上)" },
-		{ KyoshinEventLevel.Disabled, "利用しない" },
+		{ KyoshinEventLevel.Weaker, LocalizationService.Get(LocalizationKey.KyoshinEventLevelWeaker) },
+		{ KyoshinEventLevel.Weak, LocalizationService.Get(LocalizationKey.KyoshinEventLevelWeak) },
+		{ KyoshinEventLevel.Medium, LocalizationService.Get(LocalizationKey.KyoshinEventLevelMedium) },
+		{ KyoshinEventLevel.Strong, LocalizationService.Get(LocalizationKey.KyoshinEventLevelStrong) },
+		{ KyoshinEventLevel.Stronger, LocalizationService.Get(LocalizationKey.KyoshinEventLevelStronger) },
+		{ KyoshinEventLevel.Disabled, LocalizationService.Get(LocalizationKey.KyoshinEventLevelDisabled) },
 	};
-	public static Dictionary<KyoshinEewViewerConfiguration.KyoshinMonitorConfig.Mode, string> KyoshinMonitorModeNames { get; } = new()
+	public Dictionary<KyoshinEewViewerConfiguration.KyoshinMonitorConfig.Mode, string> KyoshinMonitorModeNames => new()
 	{
-		{ KyoshinEewViewerConfiguration.KyoshinMonitorConfig.Mode.None, "受信しない" },
-		{ KyoshinEewViewerConfiguration.KyoshinMonitorConfig.Mode.Kmoni, "強震モニタ" },
-		{ KyoshinEewViewerConfiguration.KyoshinMonitorConfig.Mode.Lmoni, "長周期地震動モニタ" },
+		{ KyoshinEewViewerConfiguration.KyoshinMonitorConfig.Mode.None, LocalizationService.Get(LocalizationKey.KyoshinMonitorModeNone) },
+		{ KyoshinEewViewerConfiguration.KyoshinMonitorConfig.Mode.Kmoni, LocalizationService.Get(LocalizationKey.KyoshinMonitorModeKmoni) },
+		{ KyoshinEewViewerConfiguration.KyoshinMonitorConfig.Mode.Lmoni, LocalizationService.Get(LocalizationKey.KyoshinMonitorModeLmoni) },
 	};
-	public static Dictionary<ShakeDetectionDisplayMode, string> ShakeDetectionDisplayModeNames { get; } = new()
+	public Dictionary<ShakeDetectionDisplayMode, string> ShakeDetectionDisplayModeNames => new()
 	{
-		{ ShakeDetectionDisplayMode.None, "表示しない" },
-		{ ShakeDetectionDisplayMode.Grid, "グリッド" },
-		{ ShakeDetectionDisplayMode.ConvexHull, "凸包(非推奨)" },
+		{ ShakeDetectionDisplayMode.None, LocalizationService.Get(LocalizationKey.ShakeDetectionDisplayModeNone) },
+		{ ShakeDetectionDisplayMode.Grid, LocalizationService.Get(LocalizationKey.ShakeDetectionDisplayModeGrid) },
+		{ ShakeDetectionDisplayMode.ConvexHull, LocalizationService.Get(LocalizationKey.ShakeDetectionDisplayModeConvexHull) },
 	};
-	public static Dictionary<ShakeDetectionAnimationMode, string> ShakeDetectionAnimationModeNames { get; } = new()
+	public Dictionary<ShakeDetectionAnimationMode, string> ShakeDetectionAnimationModeNames => new()
 	{
-		{ ShakeDetectionAnimationMode.None, "アニメーションなし" },
-		{ ShakeDetectionAnimationMode.Blink, "点滅" },
-		{ ShakeDetectionAnimationMode.Pulse, "明滅" },
+		{ ShakeDetectionAnimationMode.None, LocalizationService.Get(LocalizationKey.ShakeDetectionAnimationModeNone) },
+		{ ShakeDetectionAnimationMode.Blink, LocalizationService.Get(LocalizationKey.ShakeDetectionAnimationModeBlink) },
+		{ ShakeDetectionAnimationMode.Pulse, LocalizationService.Get(LocalizationKey.ShakeDetectionAnimationModePulse) },
 	};
 
 	public KyoshinEewViewerConfiguration Config { get; }
@@ -103,6 +103,13 @@ public class SettingWindowViewModel : ViewModelBase
 
 		Config = config;
 		LocalizationService = localizationService;
+		LocalizationService.LanguageChanged += (_, _) =>
+		{
+			this.RaisePropertyChanged(nameof(KyoshinEventLevelNames));
+			this.RaisePropertyChanged(nameof(KyoshinMonitorModeNames));
+			this.RaisePropertyChanged(nameof(ShakeDetectionDisplayModeNames));
+			this.RaisePropertyChanged(nameof(ShakeDetectionAnimationModeNames));
+		};
 		SeriesController = seriesController ?? throw new ArgumentNullException(nameof(seriesController));
 		UpdateCheckService = updateCheckService;
 		SoundPlayerService = soundPlayerService;

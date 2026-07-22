@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:loc="using:KyoshinEewViewer.Localization"
 			 xmlns:vm="using:KyoshinEewViewer.ViewModels"
 			 xmlns:ui="using:FluentAvalonia.UI.Controls"
              mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="600"
@@ -9,12 +10,12 @@
              x:Class="KyoshinEewViewer.Series.Tsunami.SettingPages.TsunamiPage">
     <ScrollViewer>
         <StackPanel>
-            <ui:FASettingsExpander Header="津波情報更新時に自動でタブを切り替える" Description="解除･期限切れ時には切り替わりません。">
+            <ui:FASettingsExpander Header="{loc:Localize TsunamiSwitchAtUpdate}" Description="{loc:Localize TsunamiSwitchAtUpdateDescription}">
                 <ui:FASettingsExpander.IconSource>
                     <ui:FAFontIconSource Glyph="&#xf0f3;" FontFamily="{StaticResource IconFont}" />
                 </ui:FASettingsExpander.IconSource>
                 <ui:FASettingsExpander.Footer>
-                    <ToggleSwitch IsChecked="{Binding Config.Tsunami.SwitchAtUpdate}" OnContent="する" OffContent="しない" />
+                    <ToggleSwitch IsChecked="{Binding Config.Tsunami.SwitchAtUpdate}" OnContent="{loc:Localize CommonEnable}" OffContent="{loc:Localize CommonDisable}" />
                 </ui:FASettingsExpander.Footer>
             </ui:FASettingsExpander>
         </StackPanel>

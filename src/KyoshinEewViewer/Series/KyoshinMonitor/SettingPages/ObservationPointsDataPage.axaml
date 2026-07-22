@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:loc="using:KyoshinEewViewer.Localization"
 			 xmlns:vm="using:KyoshinEewViewer.Series.KyoshinMonitor.SettingPages"
 			 xmlns:ui="using:FluentAvalonia.UI.Controls"
              mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="600"
@@ -21,17 +22,17 @@
 	</UserControl.Styles>
 	<ScrollViewer>
 		<StackPanel>
-			<ui:FASettingsExpander Header="観測点情報の自動更新" Description="起動時に新しい観測点情報を自動的にダウンロードします。">
+			<ui:FASettingsExpander Header="{loc:Localize ObservationPointsAutoUpdate}" Description="{loc:Localize ObservationPointsAutoUpdateDescription}">
 				<ui:FASettingsExpander.IconSource>
 					<ui:FAFontIconSource Glyph="&#xf021;" FontFamily="{StaticResource IconFont}" />
 				</ui:FASettingsExpander.IconSource>
 				<ui:FASettingsExpander.Footer>
-					<ToggleSwitch IsChecked="{Binding Config.KyoshinMonitor.AutoUpdateObservationPoints}" OnContent="有効" OffContent="無効" />
+					<ToggleSwitch IsChecked="{Binding Config.KyoshinMonitor.AutoUpdateObservationPoints}" OnContent="{loc:Localize CommonEnabled}" OffContent="{loc:Localize CommonDisabled}" />
 				</ui:FASettingsExpander.Footer>
 			</ui:FASettingsExpander>
 
-			<TextBlock Text="現在のデータ情報" FontWeight="Bold" Margin="10,20,10,5" />
-			<ui:FASettingsExpander Header="データバージョン" Description="使用中の観測点データのバージョンです。">
+			<TextBlock Text="{loc:Localize ObservationPointsCurrentData}" FontWeight="Bold" Margin="10,20,10,5" />
+			<ui:FASettingsExpander Header="{loc:Localize ObservationPointsDataVersion}" Description="{loc:Localize ObservationPointsDataVersionDescription}">
 				<ui:FASettingsExpander.IconSource>
 					<ui:FAFontIconSource Glyph="&#xf05a;" FontFamily="{StaticResource IconFont}" />
 				</ui:FASettingsExpander.IconSource>
@@ -40,13 +41,13 @@
 				</ui:FASettingsExpander.Footer>
 			</ui:FASettingsExpander>
 
-			<ui:FASettingsExpander Header="作成日時" Footer="{Binding PackedAt}">
+			<ui:FASettingsExpander Header="{loc:Localize ObservationPointsPackedAt}" Footer="{Binding PackedAt}">
 				<ui:FASettingsExpander.IconSource>
 					<ui:FAFontIconSource Glyph="&#xf073;" FontFamily="{StaticResource IconFont}" />
 				</ui:FASettingsExpander.IconSource>
 			</ui:FASettingsExpander>
 
-			<ui:FASettingsExpander Header="データソース">
+			<ui:FASettingsExpander Header="{loc:Localize ObservationPointsDataSource}">
 				<ui:FASettingsExpander.IconSource>
 					<ui:FAFontIconSource Glyph="&#xf1c0;" FontFamily="{StaticResource IconFont}" />
 				</ui:FASettingsExpander.IconSource>
@@ -55,24 +56,24 @@
 				</ui:FASettingsExpander.Footer>
 			</ui:FASettingsExpander>
 
-			<ui:FASettingsExpander Header="観測点数" Footer="{Binding ObservationPointsCount, StringFormat={}{0}点}">
+			<ui:FASettingsExpander Header="{loc:Localize ObservationPointsCount}" Footer="{loc:LocalizeFormat ObservationPointsCountFormat, Value={Binding ObservationPointsCount}}">
 				<ui:FASettingsExpander.IconSource>
 					<ui:FAFontIconSource Glyph="&#xf279;" FontFamily="{StaticResource IconFont}" />
 				</ui:FASettingsExpander.IconSource>
 			</ui:FASettingsExpander>
 
-			<TextBlock Text="更新" FontWeight="Bold" Margin="10,20,10,5" />
-			<ui:FASettingsExpander Header="手動更新" Description="観測点情報を手動で更新します。">
+			<TextBlock Text="{loc:Localize ObservationPointsUpdate}" FontWeight="Bold" Margin="10,20,10,5" />
+			<ui:FASettingsExpander Header="{loc:Localize ObservationPointsManualUpdate}" Description="{loc:Localize ObservationPointsManualUpdateDescription}">
 				<ui:FASettingsExpander.IconSource>
 					<ui:FAFontIconSource Glyph="&#xf2f1;" FontFamily="{StaticResource IconFont}" />
 				</ui:FASettingsExpander.IconSource>
 				<ui:FASettingsExpander.Footer>
-					<Button Content="更新" Command="{Binding ManualUpdateCommand}" IsEnabled="{Binding !IsUpdating}" />
+					<Button Content="{loc:Localize ObservationPointsUpdate}" Command="{Binding ManualUpdateCommand}" IsEnabled="{Binding !IsUpdating}" />
 				</ui:FASettingsExpander.Footer>
 
 				<StackPanel Spacing="5" Margin="0,5">
 					<TextBlock Text="{Binding UpdateStatus}" FontSize="12" Foreground="{DynamicResource SystemAccentColor}" />
-					<TextBlock Text="更新を適用するにはアプリケーションの再起動が必要です。" FontSize="11" Opacity="0.7" TextWrapping="Wrap" />
+					<TextBlock Text="{loc:Localize ObservationPointsRestartRequired}" FontSize="11" Opacity="0.7" TextWrapping="Wrap" />
 				</StackPanel>
 			</ui:FASettingsExpander>
 		</StackPanel>

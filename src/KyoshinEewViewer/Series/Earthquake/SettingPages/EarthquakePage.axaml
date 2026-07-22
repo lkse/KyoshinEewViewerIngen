@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:loc="using:KyoshinEewViewer.Localization"
 			 xmlns:vm="using:KyoshinEewViewer.ViewModels"
 			 xmlns:ui="using:FluentAvalonia.UI.Controls"
              mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="600"
@@ -21,12 +22,12 @@
     </UserControl.Styles>
     <ScrollViewer>
         <StackPanel>
-            <ui:FASettingsExpander Header="地震情報更新時に自動でタブを切り替える">
+            <ui:FASettingsExpander Header="{loc:Localize EarthquakeSwitchAtUpdate}">
                 <ui:FASettingsExpander.IconSource>
                     <ui:FAFontIconSource Glyph="&#xf0f3;" FontFamily="{StaticResource IconFont}" />
                 </ui:FASettingsExpander.IconSource>
                 <ui:FASettingsExpander.Footer>
-                    <ToggleSwitch IsChecked="{Binding Config.Earthquake.SwitchAtUpdate}" OnContent="する" OffContent="しない" />
+                    <ToggleSwitch IsChecked="{Binding Config.Earthquake.SwitchAtUpdate}" OnContent="{loc:Localize CommonEnable}" OffContent="{loc:Localize CommonDisable}" />
                 </ui:FASettingsExpander.Footer>
             </ui:FASettingsExpander>
 
@@ -39,23 +40,23 @@
                 </ui:FASettingsExpander.Footer>
             </ui:FASettingsExpander>
 
-            <TextBlock Text="震度速報" FontWeight="Bold" Margin="10,20,10,5" />
-            <ui:FASettingsExpander Header="地域を塗りつぶす" Description="震度速報の発表地域を塗りつぶします。">
+            <TextBlock Text="{loc:Localize EarthquakeIntensityReport}" FontWeight="Bold" Margin="10,20,10,5" />
+            <ui:FASettingsExpander Header="{loc:Localize EarthquakeFillArea}" Description="{loc:Localize EarthquakeFillSokuhouDescription}">
                 <ui:FASettingsExpander.IconSource>
                     <ui:FAFontIconSource Glyph="&#xf576;" FontFamily="{StaticResource IconFont}" />
                 </ui:FASettingsExpander.IconSource>
                 <ui:FASettingsExpander.Footer>
-                    <ToggleSwitch IsChecked="{Binding Config.Earthquake.FillSokuhou}" OnContent="する" OffContent="しない" />
+                    <ToggleSwitch IsChecked="{Binding Config.Earthquake.FillSokuhou}" OnContent="{loc:Localize CommonEnable}" OffContent="{loc:Localize CommonDisable}" />
                 </ui:FASettingsExpander.Footer>
             </ui:FASettingsExpander>
 
-            <TextBlock Text="震源･震度情報" FontWeight="Bold" Margin="10,20,10,5" />
-            <ui:FASettingsExpander Header="地域を塗りつぶす" Description="震源･震度情報の発表地域を塗りつぶします。&#xA;大きな地震の場合重くなるため、性能の低いPCでは非推奨です。">
+            <TextBlock Text="{loc:Localize EarthquakeHypocenterAndIntensity}" FontWeight="Bold" Margin="10,20,10,5" />
+            <ui:FASettingsExpander Header="{loc:Localize EarthquakeFillArea}" Description="{loc:Localize EarthquakeFillDetailDescription}">
                 <ui:FASettingsExpander.IconSource>
                     <ui:FAFontIconSource Glyph="&#xf576;" FontFamily="{StaticResource IconFont}" />
                 </ui:FASettingsExpander.IconSource>
                 <ui:FASettingsExpander.Footer>
-                    <ToggleSwitch IsChecked="{Binding Config.Earthquake.FillDetail}" OnContent="する" OffContent="しない" />
+                    <ToggleSwitch IsChecked="{Binding Config.Earthquake.FillDetail}" OnContent="{loc:Localize CommonEnable}" OffContent="{loc:Localize CommonDisable}" />
                 </ui:FASettingsExpander.Footer>
             </ui:FASettingsExpander>
         </StackPanel>

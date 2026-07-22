@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:loc="using:KyoshinEewViewer.Localization"
 			 xmlns:vm="using:KyoshinEewViewer.ViewModels"
 			 xmlns:ui="using:FluentAvalonia.UI.Controls"
              mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="600"
@@ -21,15 +22,15 @@
     </UserControl.Styles>
     <ScrollViewer>
         <StackPanel>
-            <ui:FASettingsExpander Header="自動更新を行う" Description="毎分自動で更新を行います。">
+            <ui:FASettingsExpander Header="{loc:Localize RadarAutoUpdate}" Description="{loc:Localize RadarAutoUpdateDescription}">
                 <ui:FASettingsExpander.IconSource>
                     <ui:FAFontIconSource Glyph="&#xf2f1;" FontFamily="{StaticResource IconFont}" />
                 </ui:FASettingsExpander.IconSource>
                 <ui:FASettingsExpander.Footer>
-                    <ToggleSwitch IsChecked="{Binding Config.Radar.AutoUpdate}" OnContent="する" OffContent="しない" />
+                    <ToggleSwitch IsChecked="{Binding Config.Radar.AutoUpdate}" OnContent="{loc:Localize CommonEnable}" OffContent="{loc:Localize CommonDisable}" />
                 </ui:FASettingsExpander.Footer>
             </ui:FASettingsExpander>
-            <ui:FASettingsExpander Header="情報のソース" Description="気象庁HP" Margin="10,50,10,0" />
+            <ui:FASettingsExpander Header="{loc:Localize RadarSource}" Description="{loc:Localize RadarSourceDescription}" Margin="10,50,10,0" />
         </StackPanel>
     </ScrollViewer>
 </UserControl>
