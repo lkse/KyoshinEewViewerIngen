@@ -8,6 +8,7 @@
 			 xmlns:models="clr-namespace:KyoshinEewViewer.Series.Earthquake.Models;assembly=KyoshinEewViewer"
              xmlns:kmoni="clr-namespace:KyoshinMonitorLib;assembly=KyoshinMonitorLib"
 			 xmlns:ui="using:FluentAvalonia.UI.Controls"
+			 xmlns:loc="using:KyoshinEewViewer.Localization"
 			 mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="600"
 			 x:Class="KyoshinEewViewer.Series.Earthquake.EarthquakeView"
 			 x:DataType="local:EarthquakeSeries"
@@ -31,7 +32,7 @@
                 </Border>
                 <Border IsVisible="{Binding CurrentEvent, Converter={x:Static ObjectConverters.IsNull}}"
 						Background="{DynamicResource DockTitleBackgroundColor}" CornerRadius="4">
-                    <TextBlock Text="リストから選択してください" FontWeight="Regular" FontSize="16" HorizontalAlignment="Center" />
+                    <TextBlock Text="{loc:Localize EarthquakeSelectFromList}" FontWeight="Regular" FontSize="16" HorizontalAlignment="Center" />
                 </Border>
                 <StackPanel Background="{DynamicResource DockBackgroundColor}"
 					IsVisible="{Binding CurrentEvent, Converter={x:Static ObjectConverters.IsNotNull}}">
@@ -39,7 +40,7 @@
                            IsVisible="{Binding !CurrentEvent.IsUnknownIntensity}">
                         <StackPanel Orientation="Horizontal" Margin="0,0" HorizontalAlignment="Center">
                             <TextBlock Foreground="{Binding CurrentEvent.Intensity, Converter={StaticResource IntensityToColor}}"
-										Text="最大震度" VerticalAlignment="Bottom" FontSize="22" />
+										Text="{loc:Localize DCReportMaxIntensity}" VerticalAlignment="Bottom" FontSize="22" />
                             <controls:IntensityIcon Intensity="{Binding CurrentEvent.Intensity}"
 													WideMode="True" Width="85" HorizontalAlignment="Center" />
                         </StackPanel>
@@ -53,15 +54,15 @@
                                     <ScaleTransform ScaleX=".75" />
                                 </LayoutTransformControl.LayoutTransform>
                                 <TextBlock Foreground="{Binding CurrentEvent.LpgmIntensity, Converter={StaticResource LpgmIntensityToColor}}"
-                                            Text="長周期地震動階級" VerticalAlignment="Bottom" FontSize="22" />
+                                            Text="{loc:Localize EarthquakeLpgmClass}" VerticalAlignment="Bottom" FontSize="22" />
                             </LayoutTransformControl>
                             <controls:LpgmIntensityIcon Intensity="{Binding CurrentEvent.LpgmIntensity}"
 													WideMode="True" Height="32" HorizontalAlignment="Center" />
                         </StackPanel>
                     </Panel>
                     <StackPanel Margin="10,5">
-                            <TextBlock Text="発生時刻" FontSize="14" Margin="0,0,0,-16" IsVisible="{Binding !CurrentEvent.IsSokuhou}" />
-                            <TextBlock Text="検知時刻" FontSize="14" Margin="0,0,0,-16" IsVisible="{Binding CurrentEvent.IsSokuhou}" />
+                            <TextBlock Text="{loc:Localize EarthquakeOriginTime}" FontSize="14" Margin="0,0,0,-16" IsVisible="{Binding !CurrentEvent.IsSokuhou}" />
+                            <TextBlock Text="{loc:Localize EarthquakeDetectionTime}" FontSize="14" Margin="0,0,0,-16" IsVisible="{Binding CurrentEvent.IsSokuhou}" />
                             <StackPanel Orientation="Horizontal" Margin="0,3,0,0" HorizontalAlignment="Right">
                                 <TextBlock
 									Text="{Binding CurrentEvent.Time, StringFormat={}{0:yyyy年MM月dd日}}"
@@ -69,11 +70,11 @@
                                 <TextBlock
 									Text="{Binding CurrentEvent.Time, StringFormat={}{0:HH時mm分}}"
 									x:Name="TimeText" Margin="0,0,0,-3" FontSize="23" VerticalAlignment="Bottom" />
-                                <TextBlock Text="頃" FontSize="14" VerticalAlignment="Bottom" />
+                                <TextBlock Text="{loc:Localize EarthquakeApproxTime}" FontSize="14" VerticalAlignment="Bottom" />
                             </StackPanel>
 
                             <StackPanel IsVisible="{Binding CurrentEvent.IsHypocenterAvailable}">
-                                <TextBlock Text="震央" FontSize="14" Margin="0,0,0,-16">
+                                <TextBlock Text="{loc:Localize EarthquakeEpicenter}" FontSize="14" Margin="0,0,0,-16">
                                     <TextBlock.IsVisible>
                                         <MultiBinding Converter="{x:Static BoolConverters.And}">
                                             <Binding Path="CurrentEvent.Place" Converter="{x:Static StringConverters.IsNotNullOrEmpty}" />
@@ -81,7 +82,7 @@
                                         </MultiBinding>
                                     </TextBlock.IsVisible>
                                 </TextBlock>
-                                <TextBlock Text="地域" FontSize="14" IsVisible="{Binding CurrentEvent.IsVolcano}" Margin="0,0,0,-16"/>
+                                <TextBlock Text="{loc:Localize EarthquakeRegion}" FontSize="14" IsVisible="{Binding CurrentEvent.IsVolcano}" Margin="0,0,0,-16"/>
                                 <Viewbox Stretch="Fill" StretchDirection="DownOnly" Height="35" MaxWidth="175" HorizontalAlignment="Right"
 											IsVisible="{Binding CurrentEvent.Place, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
                                     <TextBlock x:Name="HypocenterName" Text="{Binding CurrentEvent.Place}"
@@ -102,7 +103,7 @@
                                         </MultiBinding>
                                     </Panel.IsVisible>
                                     
-                                    <TextBlock Text="規模" FontSize="14" VerticalAlignment="Top" />
+                                    <TextBlock Text="{loc:Localize EarthquakeMagnitude}" FontSize="14" VerticalAlignment="Top" />
                                     <StackPanel
 										IsVisible="{Binding CurrentEvent.MagnitudeAlternativeText, Converter={x:Static StringConverters.IsNullOrEmpty}}"
 										Orientation="Horizontal" HorizontalAlignment="Right">
@@ -120,7 +121,7 @@
                                 </Panel>
 
                                 <Panel x:Name="DepthBlock" IsVisible="{Binding !CurrentEvent.IsNoDepthData}">
-                                    <TextBlock Text="震源の深さ" FontSize="14" VerticalAlignment="Top" />
+                                    <TextBlock Text="{loc:Localize EarthquakeHypocenterDepth}" FontSize="14" VerticalAlignment="Top" />
                                     <StackPanel IsVisible="{Binding !CurrentEvent.IsVeryShallow}"
 												Orientation="Horizontal" x:Name="DepthDeep" HorizontalAlignment="Right">
                                         <TextBlock x:Name="DepthValue" Margin="0,0,0,-1"
@@ -129,7 +130,7 @@
                                         <TextBlock Text="km" FontSize="18" VerticalAlignment="Bottom" />
                                     </StackPanel>
                                     <TextBlock x:Name="DepthShallow"
-												IsVisible="{Binding CurrentEvent.IsVeryShallow}" Text="ごく浅い"
+												IsVisible="{Binding CurrentEvent.IsVeryShallow}" Text="{loc:Localize EarthquakeVeryShallow}"
 												FontSize="21" Margin="0,1,0,0" HorizontalAlignment="Right" />
                                 </Panel>
                             </StackPanel>
@@ -148,7 +149,7 @@
             <Grid Grid.Row="1" Margin="5,0,5,5" RowDefinitions="auto,*" IsVisible="{Binding ObservationIntensityGroups, Converter={x:Static ObjectConverters.IsNotNull}}">
                 <Border Grid.Row="0" Background="{DynamicResource DockTitleBackgroundColor}" CornerRadius="4,4,0,0">
                     <StackPanel Orientation="Horizontal" Margin="5,0">
-                        <TextBlock Text="各地の震度" FontWeight="Bold" FontSize="16" VerticalAlignment="Center" />
+                        <TextBlock Text="{loc:Localize EarthquakeIntensityByArea}" FontWeight="Bold" FontSize="16" VerticalAlignment="Center" />
                     </StackPanel>
                 </Border>
                 <Border Grid.Row="1" Background="{DynamicResource DockBackgroundColor}" CornerRadius="0,0,4,4" ClipToBounds="True">
@@ -176,7 +177,7 @@
                     </Border.Styles>
                     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                         <Panel>
-                            <TextBlock IsVisible="{Binding !ObservationIntensityGroups.Length}" Text="震度1以上を観測した地点はありません" TextWrapping="Wrap" Margin="5"/>
+                            <TextBlock IsVisible="{Binding !ObservationIntensityGroups.Length}" Text="{loc:Localize EarthquakeNoObservedPoints}" TextWrapping="Wrap" Margin="5"/>
                             <ItemsControl ItemsSource="{Binding ObservationIntensityGroups}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate DataType="models:ObservationIntensityGroup">
@@ -214,12 +215,12 @@
         <!-- 訓練電文表示 -->
         <StackPanel Grid.Column="1" IsVisible="{Binding CurrentEvent, Converter={x:Static ObjectConverters.IsNotNull}}" Opacity=".5">
             <TextBlock IsVisible="{Binding CurrentEvent.IsTraining}" Foreground="{DynamicResource SubForegroundColor}" FontSize="52" Text="D  R  I  L  L" FontWeight="Bold" Margin="0,0,0,-50" />
-            <TextBlock IsVisible="{Binding CurrentEvent.IsTraining}" Foreground="{DynamicResource SubForegroundColor}" FontSize="125" Text="訓練" FontWeight="Bold" />
+            <TextBlock IsVisible="{Binding CurrentEvent.IsTraining}" Foreground="{DynamicResource SubForegroundColor}" FontSize="125" Text="{loc:Localize EarthquakeTraining}" FontWeight="Bold" />
         </StackPanel>
         <!-- 試験電文表示 -->
         <StackPanel Grid.Column="1" IsVisible="{Binding CurrentEvent, Converter={x:Static ObjectConverters.IsNotNull}}" Opacity=".5">
             <TextBlock IsVisible="{Binding CurrentEvent.IsTest}" Foreground="{DynamicResource SubForegroundColor}" FontSize="52" Text="  T  E  S  T" FontWeight="Bold" Margin="0,0,0,-50" />
-            <TextBlock IsVisible="{Binding CurrentEvent.IsTest}" Foreground="{DynamicResource SubForegroundColor}" FontSize="125" Text="試験" FontWeight="Bold" />
+            <TextBlock IsVisible="{Binding CurrentEvent.IsTest}" Foreground="{DynamicResource SubForegroundColor}" FontSize="125" Text="{loc:Localize EarthquakeTest}" FontWeight="Bold" />
         </StackPanel>
 
         <!-- 凡例表示 -->
@@ -263,9 +264,8 @@
                 <StackPanel Margin="10">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <TextBlock Text="&#xf05e;" Classes="icon" FontSize="24" VerticalAlignment="Center" Margin="5,3,5,0" />
-                        <TextBlock Text="この情報は取り消されました。" FontWeight="Bold" FontSize="24" />
+                        <TextBlock Text="{loc:Localize EarthquakeInfoCancelled}" FontWeight="Bold" FontSize="24" />
                     </StackPanel>
-                    <TextBlock Text="This information is cancelled." FontSize="16" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,10,0,0" />
                 </StackPanel>
             </Border>
         </Panel>
@@ -290,7 +290,7 @@
             <StackPanel Margin="10">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <TextBlock Text="&#xf1e2;" Classes="icon" FontSize="24" VerticalAlignment="Center" Margin="5,3,5,0" />
-                    <TextBlock Text="読み込みに失敗しました。" FontWeight="Bold" FontSize="24" />
+                    <TextBlock Text="{loc:Localize EarthquakeLoadFailed}" FontWeight="Bold" FontSize="24" />
                 </StackPanel>
                 <TextBlock Text="{Binding TelegramProcessError}" FontSize="16" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,10,0,0" />
             </StackPanel>
@@ -300,8 +300,8 @@
         <Grid Grid.Column="2" IsVisible="{Binding IsHistoryShown}" Margin="5" RowDefinitions="auto,*" Width="240" HorizontalAlignment="Right" VerticalAlignment="Stretch">
             <Border Background="{DynamicResource DockTitleBackgroundColor}" CornerRadius="4,4,0,0">
                 <StackPanel Orientation="Horizontal" Margin="5,0">
-                    <TextBlock Text="過去の地震" FontWeight="Bold" FontSize="16" VerticalAlignment="Center" />
-                    <TextBlock Text="{Binding SourceString, StringFormat={}取得元: {0}}" Margin="5,2,0,2"
+                    <TextBlock Text="{loc:Localize EarthquakePastEarthquakes}" FontWeight="Bold" FontSize="16" VerticalAlignment="Center" />
+                    <TextBlock Text="{loc:LocalizeFormat EarthquakeSourceLabel, Value={Binding SourceString}}" Margin="5,2,0,2"
                                Foreground="{DynamicResource SubForegroundColor}" FontSize="10"
                                VerticalAlignment="Bottom" />
                 </StackPanel>
@@ -352,18 +352,18 @@
                                                 <StackPanel Orientation="Horizontal">
                                                     <TextBlock Text="{Binding Place}" FontSize="18"
                                                                Margin="0,0,0,-3" />
-                                                    <TextBlock IsVisible="{Binding !IsOnlypoint}" Text="など"
+                                                    <TextBlock IsVisible="{Binding !IsOnlypoint}" Text="{loc:Localize EarthquakeEtc}"
                                                                FontSize="13" Margin="0,0,0,-1"
                                                                VerticalAlignment="Bottom" />
                                                 </StackPanel>
                                             </Viewbox>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,0" Height="20" VerticalAlignment="Top">
-                                                <TextBlock IsVisible="{Binding IsSokuhou}" Text="速報" FontSize="10"
+                                                <TextBlock IsVisible="{Binding IsSokuhou}" Text="{loc:Localize EarthquakePrompt}" FontSize="10"
                                                             Foreground="{DynamicResource WarningForegroundColor}"
                                                             Background="{DynamicResource WarningBackgroundColor}"
                                                             VerticalAlignment="Center" Margin="2,0" Padding="2,0" />
                                                 <TextBlock IsVisible="{Binding IsHypocenterOnly}"
-                                                            Text="震源" FontSize="10"
+                                                            Text="{loc:Localize EarthquakeHypocenter}" FontSize="10"
                                                             Foreground="{DynamicResource WarningForegroundColor}"
                                                             Background="{DynamicResource WarningBackgroundColor}"
                                                             VerticalAlignment="Center" Margin="2,0" Padding="2,0" />
@@ -371,8 +371,8 @@
                                                     Text="{Binding Time, StringFormat={}{0:MM/dd HH:mm}}"
                                                     Foreground="{DynamicResource SubForegroundColor}"
                                                     FontSize="14" />
-                                                <TextBlock IsVisible="{Binding !IsDetectionTime}" Text="発生" FontSize="10" VerticalAlignment="Bottom" Foreground="{DynamicResource SubForegroundColor}" />
-                                                <TextBlock IsVisible="{Binding IsDetectionTime}" Text="検知" FontSize="10" VerticalAlignment="Bottom" Foreground="{DynamicResource SubForegroundColor}" />
+                                                <TextBlock IsVisible="{Binding !IsDetectionTime}" Text="{loc:Localize DCReportOccurred}" FontSize="10" VerticalAlignment="Bottom" Foreground="{DynamicResource SubForegroundColor}" />
+                                                <TextBlock IsVisible="{Binding IsDetectionTime}" Text="{loc:Localize EarthquakeDetected}" FontSize="10" VerticalAlignment="Bottom" Foreground="{DynamicResource SubForegroundColor}" />
                                             </StackPanel>
                                             <Panel IsVisible="{Binding !IsNoDepthData}" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,5,4,0">
                                                 <StackPanel IsVisible="{Binding !IsVeryShallow}"
@@ -383,7 +383,7 @@
                                                     <TextBlock Text="km" FontSize="10" VerticalAlignment="Bottom" Foreground="{DynamicResource SubForegroundColor}" />
                                                 </StackPanel>
                                                 <TextBlock
-												    IsVisible="{Binding IsVeryShallow}" Text="ごく浅い"
+												    IsVisible="{Binding IsVeryShallow}" Text="{loc:Localize EarthquakeVeryShallow}"
 												    FontSize="10" Margin="0,1,0,0" HorizontalAlignment="Right" Foreground="{DynamicResource SubForegroundColor}" />
                                             </Panel>
                                             <Panel IsVisible="{Binding IsHypocenterAvailable}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,4,0">
@@ -394,11 +394,11 @@
                                             </Panel>
                                         </Panel>
                                     </Border>
-                                    <TextBlock IsVisible="{Binding IsTraining}" Text="訓練" Foreground="{DynamicResource WarningForegroundColor}" Background="{DynamicResource WarningBackgroundColor}"  FontSize="24" FontWeight="Bold" Margin="0,-5" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                                    <TextBlock IsVisible="{Binding IsTest}" Text="試験" Foreground="{DynamicResource WarningForegroundColor}" Background="{DynamicResource WarningBackgroundColor}"  FontSize="24" FontWeight="Bold" Margin="0,-5" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                    <TextBlock IsVisible="{Binding IsTraining}" Text="{loc:Localize EarthquakeTraining}" Foreground="{DynamicResource WarningForegroundColor}" Background="{DynamicResource WarningBackgroundColor}"  FontSize="24" FontWeight="Bold" Margin="0,-5" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                    <TextBlock IsVisible="{Binding IsTest}" Text="{loc:Localize EarthquakeTest}" Foreground="{DynamicResource WarningForegroundColor}" Background="{DynamicResource WarningBackgroundColor}"  FontSize="24" FontWeight="Bold" Margin="0,-5" VerticalAlignment="Center" HorizontalAlignment="Center" />
                                 </Grid>
                                 <Grid Background="#55000000" IsVisible="{Binding IsCancelled}">
-                                    <TextBlock Text="取り消されました" FontSize="18" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                    <TextBlock Text="{loc:Localize EarthquakeCancelled}" FontSize="18" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" />
                                 </Grid>
                                 <Grid Classes="overlay" Background="#88000000" IsVisible="{Binding IsSelecting}">
                                     <!--<Grid.ContextFlyout>
@@ -410,7 +410,7 @@
                                             </ui:FAMenuFlyout.ItemTemplate>
                                         </ui:FAMenuFlyout>
                                     </Grid.ContextFlyout>-->
-                                    <TextBlock Text="表示中" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                    <TextBlock Text="{loc:Localize EarthquakeDisplaying}" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" />
                                 </Grid>
                             </Panel>
                         </DataTemplate>
@@ -423,15 +423,15 @@
                     CornerRadius="4">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <TextBlock Text="&#xf252; " Classes="icon" HorizontalAlignment="Center" />
-                    <TextBlock Text="取得中" HorizontalAlignment="Center" />
+                    <TextBlock Text="{loc:Localize EarthquakeFetching}" HorizontalAlignment="Center" />
                 </StackPanel>
             </Border>
 
             <Border Grid.Row="0" Grid.RowSpan="2" IsVisible="{Binding IsFault}" Grid.ColumnSpan="2" Background="#AA000000" CornerRadius="4">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <TextBlock Text="&#xf7a9; " Classes="icon" HorizontalAlignment="Center" FontSize="20" Margin="5" />
-                    <TextBlock Text="情報の取得に問題が発生しました" TextWrapping="Wrap" HorizontalAlignment="Center" FontSize="13" />
-                    <Button Margin="5" Content="再試行" Command="{Binding Restart}" HorizontalAlignment="Center" />
+                    <TextBlock Text="{loc:Localize CommonFetchFailed}" TextWrapping="Wrap" HorizontalAlignment="Center" FontSize="13" />
+                    <Button Margin="5" Content="{loc:Localize CommonRetry}" Command="{Binding Restart}" HorizontalAlignment="Center" />
                 </StackPanel>
             </Border>
         </Grid>
@@ -449,7 +449,7 @@
                 <TextBlock Text="&#xf07c;" Classes="icon" />
             </Button>
             <ToggleButton IsChecked="{Binding IsHistoryShown}"
-                          ToolTip.Tip="過去の地震リストを表示する" ToolTip.ShowDelay="0">
+                          ToolTip.Tip="{loc:Localize EarthquakeShowPastList}" ToolTip.ShowDelay="0">
                 <TextBlock Text="&#xf1da;" Classes="icon" />
             </ToggleButton>
         </StackPanel>
