@@ -711,5 +711,11 @@
 	"DCReportMapControls": "Map controls",
 	"DCReportMapNotImplemented": "Map display not implemented",
 	"DCReportAreaCountFormat": "{0} areas",
-	"DCReportTyphoonNumberFormat": "Typhoon No. {0}"
+	"DCReportTyphoonNumberFormat": "Typhoon No. {0}",
+	"RadarRainCloudFormat": "Rain clouds {0:HH:mm}",
+	"RadarUpdate": "Update",
+	"RadarLoading": "Loading…",
+	"EarthquakeTimetableTitle": "Earthquake information history (timetable style)",
+	"EarthquakeVeryShallow": "Very shallow",
+	"ShakeDetectedWholeArea": "(All areas)"
 }

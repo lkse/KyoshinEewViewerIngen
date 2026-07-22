@@ -715,4 +715,10 @@ public enum LocalizationKey
 	DCReportMapNotImplemented,
 	DCReportAreaCountFormat,
 	DCReportTyphoonNumberFormat,
+	RadarRainCloudFormat,
+	RadarUpdate,
+	RadarLoading,
+	EarthquakeTimetableTitle,
+	EarthquakeVeryShallow,
+	ShakeDetectedWholeArea,
 }

@@ -711,5 +711,11 @@
 	"DCReportMapControls": "地図操作",
 	"DCReportMapNotImplemented": "地図表示未実装",
 	"DCReportAreaCountFormat": "{0}地域",
-	"DCReportTyphoonNumberFormat": "台風{0}号"
+	"DCReportTyphoonNumberFormat": "台風{0}号",
+	"RadarRainCloudFormat": "雨雲の動き{0:HH:mm}",
+	"RadarUpdate": "更新",
+	"RadarLoading": "読み込み中…",
+	"EarthquakeTimetableTitle": "時刻表風地震情報履歴",
+	"EarthquakeVeryShallow": "ごく浅い",
+	"ShakeDetectedWholeArea": "(全域)"
 }

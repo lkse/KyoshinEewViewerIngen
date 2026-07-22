@@ -8,6 +8,7 @@
 		xmlns:models="clr-namespace:KyoshinEewViewer.Series.Earthquake.Models;assembly=KyoshinEewViewer"
         xmlns:kmoni="clr-namespace:KyoshinMonitorLib;assembly=KyoshinMonitorLib"
 		xmlns:ui="using:FluentAvalonia.UI.Controls"
+		xmlns:loc="using:KyoshinEewViewer.Localization"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
         WindowStartupLocation="CenterScreen"
         Background="{DynamicResource TitleBackgroundColor}"
@@ -15,7 +16,7 @@
         Width="800" Height="600" MinWidth="800" MinHeight="600"
         x:Class="KyoshinEewViewer.Series.Earthquake.EarthquakeTimetableWindow"
         x:DataType="local:EarthquakeTimetable"
-        Title="時刻表風地震情報履歴">
+        Title="{loc:Localize EarthquakeTimetableTitle}">
     <Window.Resources>
         <conv:IntensityToColorConverter x:Key="IntensityToColor" />
         <conv:LpgmIntensityToColorConverter x:Key="LpgmIntensityToColor" />
@@ -99,7 +100,7 @@
                                                         </StackPanel>
                                                         <StackPanel IsVisible="{Binding IsVeryShallow}"
                                                                     Orientation="Horizontal" Margin="0,-2.5,3,0" HorizontalAlignment="Right">
-                                                            <TextBlock Text="ごく浅い" FontSize="10" Margin="0,4,0,0" />
+                                                            <TextBlock Text="{loc:Localize EarthquakeVeryShallow}" FontSize="10" Margin="0,4,0,0" />
                                                         </StackPanel>
                                                     </Panel>
                                                 </Panel>
