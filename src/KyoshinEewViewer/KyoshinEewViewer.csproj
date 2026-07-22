@@ -42,6 +42,12 @@
 		<AvaloniaResource Include="Assets\**" />
 		<EmbeddedResource Include="Localization\Localization.*.json" />
 	</ItemGroup>
+
+	<!-- ローカライズ監査モード(dotnet build -p:LocalizationAudit=true)でのみ
+	     ハードコードされた日本語リテラル検出(KEVI006)を警告として有効化する -->
+	<ItemGroup Condition="'$(LocalizationAudit)' == 'true'">
+		<GlobalAnalyzerConfigFiles Include="localization-audit.globalconfig" />
+	</ItemGroup>
     <ItemGroup>
         <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="KeyType" />
         <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="KeyFormat" />

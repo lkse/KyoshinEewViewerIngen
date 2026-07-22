@@ -1,0 +1,6 @@
+is_global = true
+
+# ローカライズ監査モード用のグローバル構成。
+# KyoshinEewViewer.csproj で LocalizationAudit=true のときのみ読み込まれ、
+# 既定では無効な KEVI006(ハードコードされた日本語リテラル検出)を警告として有効化する。
+dotnet_diagnostic.KEVI006.severity = warning

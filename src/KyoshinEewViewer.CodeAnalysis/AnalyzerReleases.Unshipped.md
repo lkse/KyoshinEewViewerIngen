@@ -10,3 +10,4 @@ KEVI002 | Localization | Error | 対応言語のカタログに不足してい�
 KEVI003 | Localization | Error | 未定義のローカライズキーとその参照を検出する
 KEVI004 | Localization | Warning | カタログ内で重複しているローカライズキーを検出する
 KEVI005 | Localization | Error | 言語間で一致しないプレースホルダーを検出する
+KEVI006 | Localization | Disabled | AXAML 表示系属性のハードコードされた日本語リテラルを検出する (既定で無効)
