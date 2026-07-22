@@ -1,6 +1,8 @@
 using Avalonia.Controls;
+using KyoshinEewViewer.Localization;
 using KyoshinEewViewer.Series.ObservationPointEditor.Controls;
 using KyoshinMonitorLib.UrlGenerator;
+using Splat;
 using System;
 
 namespace KyoshinEewViewer.Series.ObservationPointEditor.View;
@@ -11,6 +13,40 @@ public partial class ObservationPointEditorView : UserControl
 	{
 		InitializeComponent();
 		InitializeControls();
+		InitializeColumnHeaders();
+	}
+
+	// DataGrid の列は視覚ツリー外のため loc:Localize(DynamicResource)が解決されない。
+	// そのためヘッダーはコードビハインドでローカライズし、言語切り替えに追従させる。
+	private static readonly LocalizationKey[] ColumnHeaderKeys =
+	[
+		LocalizationKey.ObsEditorColType,
+		LocalizationKey.ObsEditorColCode,
+		LocalizationKey.ObsEditorColName,
+		LocalizationKey.ObsEditorColRegion,
+		LocalizationKey.ObsEditorColSubRegion,
+		LocalizationKey.ObsEditorColLatitude,
+		LocalizationKey.ObsEditorColLongitude,
+		LocalizationKey.ObsEditorColX,
+		LocalizationKey.ObsEditorColY,
+		LocalizationKey.ObsEditorColSuspended,
+	];
+
+	private void InitializeColumnHeaders()
+	{
+		var localization = Locator.Current.GetService<LocalizationService>();
+		if (localization == null)
+			return;
+
+		void Apply()
+		{
+			var columns = ObservationPointDataGrid.Columns;
+			for (var i = 0; i < ColumnHeaderKeys.Length && i < columns.Count; i++)
+				columns[i].Header = localization.Get(ColumnHeaderKeys[i]);
+		}
+
+		Apply();
+		localization.LanguageChanged += (_, _) => Apply();
 	}
 
 	private void InitializeControls()

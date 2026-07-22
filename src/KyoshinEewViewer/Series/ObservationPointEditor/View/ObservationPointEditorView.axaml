@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:KyoshinEewViewer.Series.ObservationPointEditor;assembly=KyoshinEewViewer"
              xmlns:editorControls="clr-namespace:KyoshinEewViewer.Series.ObservationPointEditor.Controls;assembly=KyoshinEewViewer"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:loc="using:KyoshinEewViewer.Localization"
              xmlns:root="clr-namespace:KyoshinEewViewer;assembly=KyoshinEewViewer"
              mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
              x:Class="KyoshinEewViewer.Series.ObservationPointEditor.View.ObservationPointEditorView"
@@ -23,19 +24,19 @@
             </Interaction.Behaviors>
             <TabControl Margin="0" TabStripPlacement="Top">
                 <!-- ファイルタブ -->
-                <TabItem Header="ファイル">
+                <TabItem Header="{loc:Localize ObsEditorFileTab}">
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <StackPanel Margin="10" Spacing="10">
                             <StackPanel Spacing="5">
-                                <Button Content="ファイルを開く..." Command="{Binding OpenFile}"
+                                <Button Content="{loc:Localize ObsEditorOpenFile}" Command="{Binding OpenFile}"
                                         HorizontalAlignment="Stretch"/>
-                                <Button Content="ファイルに保存..." Command="{Binding SaveFile}"
+                                <Button Content="{loc:Localize ObsEditorSaveFile}" Command="{Binding SaveFile}"
                                         HorizontalAlignment="Stretch"/>
                                 <Separator Margin="0,10"/>
-                                <Button Content="NIEDデータをインポート" Command="{Binding ImportFromNied}"
+                                <Button Content="{loc:Localize ObsEditorImportNied}" Command="{Binding ImportFromNied}"
                                         HorizontalAlignment="Stretch"
-                                        ToolTip.Tip="ディレクトリを選択してNIED観測点データ（sitepub_kik_sj.csv、sitepub_knet_sj.csv）をインポートします"/>
-                                <Button Content="KMOPファイルに保存する" Command="{Binding SaveKmopFile}"
+                                        ToolTip.Tip="{loc:Localize ObsEditorImportNiedTooltip}"/>
+                                <Button Content="{loc:Localize ObsEditorSaveKmop}" Command="{Binding SaveKmopFile}"
                                         HorizontalAlignment="Stretch"/>
                             </StackPanel>
                         </StackPanel>
@@ -43,30 +44,30 @@
                 </TabItem>
 
                 <!-- 編集タブ -->
-                <TabItem Header="編集">
+                <TabItem Header="{loc:Localize ObsEditorEditTab}">
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <StackPanel Margin="10" Spacing="10">
                             <StackPanel Spacing="5">
-                                <Button Content="新規観測点追加" Command="{Binding AddObservationPoint}"
+                                <Button Content="{loc:Localize ObsEditorAddPoint}" Command="{Binding AddObservationPoint}"
                                         HorizontalAlignment="Stretch"/>
-                                <Button Content="選択項目削除" Command="{Binding RemoveObservationPoint}"
+                                <Button Content="{loc:Localize ObsEditorRemovePoint}" Command="{Binding RemoveObservationPoint}"
                                         HorizontalAlignment="Stretch"
                                         IsEnabled="{Binding Model.SelectedObservationPoint, Converter={x:Static ObjectConverters.IsNotNull}}"/>
                                 <Separator Margin="0,5"/>
-                                <Button Content="重複観測点を統合" Command="{Binding ConsolidateDuplicateObservationPoints}"
+                                <Button Content="{loc:Localize ObsEditorConsolidate}" Command="{Binding ConsolidateDuplicateObservationPoints}"
                                         HorizontalAlignment="Stretch"
-                                        ToolTip.Tip="観測点コードが同じ重複観測点を統合します。強震モニタ座標があるデータを優先します。"/>
-                                <Button Content="未割当ピクセルの検出" Command="{Binding DetectUnassignedPixels}"
+                                        ToolTip.Tip="{loc:Localize ObsEditorConsolidateTooltip}"/>
+                                <Button Content="{loc:Localize ObsEditorDetectUnassigned}" Command="{Binding DetectUnassignedPixels}"
                                         HorizontalAlignment="Stretch"
-                                        ToolTip.Tip="強震モニタ画像から観測点に割り当てられていないピクセルを検出します"/>
-                                <Button Content="透明ピクセル観測点の検出" Command="{Binding DetectTransparentPixelObservationPoints}"
+                                        ToolTip.Tip="{loc:Localize ObsEditorDetectUnassignedTooltip}"/>
+                                <Button Content="{loc:Localize ObsEditorDetectTransparent}" Command="{Binding DetectTransparentPixelObservationPoints}"
                                         HorizontalAlignment="Stretch"
-                                        ToolTip.Tip="値は取得できるが、3x3範囲内に透明ピクセルが含まれる観測点を検出します"/>
+                                        ToolTip.Tip="{loc:Localize ObsEditorDetectTransparentTooltip}"/>
                                 <UniformGrid Columns="2" HorizontalAlignment="Stretch">
-                                    <Button Content="元に戻す" Command="{Binding UndoLastChange}"
+                                    <Button Content="{loc:Localize ObsEditorUndo}" Command="{Binding UndoLastChange}"
                                             Margin="0,0,2,0"
                                             IsEnabled="{Binding Model.CanUndo}"/>
-                                    <Button Content="やり直し" Command="{Binding RedoLastChange}"
+                                    <Button Content="{loc:Localize ObsEditorRedo}" Command="{Binding RedoLastChange}"
                                             Margin="2,0,0,0"
                                             IsEnabled="{Binding Model.CanRedo}"/>
                                 </UniformGrid>
@@ -74,10 +75,10 @@
 
                             <!-- 統計情報 -->
                             <StackPanel Spacing="3" Margin="0,10,0,0">
-                                <TextBlock Text="統計情報" FontWeight="SemiBold"/>
-                                <TextBlock Text="{Binding Model.TotalCount, StringFormat={}総件数: {0}件}"
+                                <TextBlock Text="{loc:Localize ObsEditorStatistics}" FontWeight="SemiBold"/>
+                                <TextBlock Text="{loc:LocalizeFormat ObsEditorTotalCountFormat, Value={Binding Model.TotalCount}}"
                                            FontSize="12" Foreground="{DynamicResource SubForegroundColor}"/>
-                                <TextBlock Text="{Binding Model.FilteredCount, StringFormat={}表示中: {0}件}"
+                                <TextBlock Text="{loc:LocalizeFormat ObsEditorShownCountFormat, Value={Binding Model.FilteredCount}}"
                                            FontSize="12" Foreground="{DynamicResource SubForegroundColor}"/>
                             </StackPanel>
                         </StackPanel>
@@ -113,7 +114,7 @@
                 <!-- 上部コントロールパネル -->
                 <DockPanel VerticalAlignment="Top" Background="{DynamicResource DockTitleBackgroundColor}">
                     <!-- 画像更新ボタン -->
-                    <Button x:Name="RefreshImageButton" Content="画像更新" DockPanel.Dock="Right" 
+                    <Button x:Name="RefreshImageButton" Content="{loc:Localize ObsEditorRefreshImage}" DockPanel.Dock="Right"
                             Padding="8,4" Margin="5" Click="RefreshImageButton_Click"/>
                     
                     <!-- 画像種類選択 -->
@@ -123,16 +124,16 @@
 
                     <!-- 表示オプション -->
                     <StackPanel VerticalAlignment="Center" Orientation="Horizontal" Spacing="10" Margin="5">
-                        <CheckBox x:Name="ShowMonitorImageCheckBox" Content="強震画像" 
+                        <CheckBox x:Name="ShowMonitorImageCheckBox" Content="{loc:Localize ObsEditorShowMonitorImage}"
                                   IsChecked="{Binding MapViewModel.ShowMonitorImage}"/>
-                        <CheckBox x:Name="ShowObservationPointCheckBox" Content="観測点" 
+                        <CheckBox x:Name="ShowObservationPointCheckBox" Content="{loc:Localize ObsEditorShowPoints}"
                                   IsChecked="{Binding MapViewModel.ShowObservationPoints}"/>
                     </StackPanel>
                 </DockPanel>
                 
                 <!-- 下部スケールコントロール -->
                 <DockPanel VerticalAlignment="Bottom" Background="{DynamicResource DockTitleBackgroundColor}">
-                    <TextBlock Text="倍率:" Margin="5" VerticalAlignment="Center" DockPanel.Dock="Left"/>
+                    <TextBlock Text="{loc:Localize ObsEditorScale}" Margin="5" VerticalAlignment="Center" DockPanel.Dock="Left"/>
                     <TextBlock Text="{Binding MapViewModel.ScaleText}" 
                                Margin="5" VerticalAlignment="Center" TextAlignment="Right" Width="40" DockPanel.Dock="Right"/>
                     <Slider x:Name="ScaleSlider" 
@@ -169,9 +170,9 @@
                     <Panel>
                         <!-- タイトル行 -->
                         <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Left">
-                            <TextBlock Text="観測点リスト" FontWeight="Bold" FontSize="16"
+                            <TextBlock Text="{loc:Localize ObsEditorPointList}" FontWeight="Bold" FontSize="16"
                                        VerticalAlignment="Center"/>
-                            <TextBlock Text="{Binding Model.FilteredCount, StringFormat={}({0}件表示中)}"
+                            <TextBlock Text="{loc:LocalizeFormat ObsEditorShownCountParenFormat, Value={Binding Model.FilteredCount}}"
                                        FontSize="12" Foreground="{DynamicResource SubForegroundColor}"
                                        VerticalAlignment="Center"/>
                         </StackPanel>
@@ -180,18 +181,18 @@
                         <StackPanel Orientation="Horizontal" Spacing="15" HorizontalAlignment="Right">
                             <!-- 検索ボックス -->
                             <StackPanel Orientation="Horizontal" Spacing="5">
-                                <TextBlock Text="検索:" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                                <TextBlock Text="{loc:Localize ObsEditorSearch}" VerticalAlignment="Center" FontWeight="SemiBold"/>
                                 <TextBox Text="{Binding Model.SearchText}"
-                                         PlaceholderText="観測点コード・名前・地域で検索"
+                                         Watermark="{loc:Localize ObsEditorSearchWatermark}"
                                          Width="200"/>
                             </StackPanel>
                             
                             <!-- フィルタチェックボックス -->
                             <StackPanel Orientation="Horizontal" Spacing="10">
-                                <TextBlock Text="表示:" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                                <TextBlock Text="{loc:Localize ObsEditorShow}" VerticalAlignment="Center" FontWeight="SemiBold"/>
                                 <CheckBox Content="KiK-net" IsChecked="{Binding Model.ShowKiKNet}"/>
                                 <CheckBox Content="K-NET" IsChecked="{Binding Model.ShowKNet}"/>
-                                <CheckBox Content="運用停止中" IsChecked="{Binding Model.ShowSuspended}"/>
+                                <CheckBox Content="{loc:Localize ObsEditorShowSuspended}" IsChecked="{Binding Model.ShowSuspended}"/>
                             </StackPanel>
                         </StackPanel>
                     </Panel>
@@ -207,16 +208,17 @@
                           Margin="5"
                           SelectionChanged="ObservationPointDataGrid_SelectionChanged">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="種別" Binding="{Binding Type}" Width="80"/>
-                        <DataGridTextColumn Header="コード" Binding="{Binding Code}" Width="100"/>
-                        <DataGridTextColumn Header="名前" Binding="{Binding Name}" Width="200"/>
-                        <DataGridTextColumn Header="地域" Binding="{Binding Region}" Width="150"/>
-                        <DataGridTextColumn Header="地域2" Binding="{Binding SubRegion}" Width="150"/>
-                        <DataGridTextColumn Header="緯度" Binding="{Binding Location.Latitude, StringFormat=0.0000}" Width="80"/>
-                        <DataGridTextColumn Header="経度" Binding="{Binding Location.Longitude, StringFormat=0.0000}" Width="80"/>
-                        <DataGridTextColumn Header="X座標" Binding="{Binding Point.Center.X}" Width="60"/>
-                        <DataGridTextColumn Header="Y座標" Binding="{Binding Point.Center.Y}" Width="60"/>
-                        <DataGridCheckBoxColumn Header="運用停止" Binding="{Binding IsSuspended}" Width="80"/>
+                        <!-- ヘッダーはコードビハインドでローカライズ(列は視覚ツリー外のため) -->
+                        <DataGridTextColumn Binding="{Binding Type}" Width="80"/>
+                        <DataGridTextColumn Binding="{Binding Code}" Width="100"/>
+                        <DataGridTextColumn Binding="{Binding Name}" Width="200"/>
+                        <DataGridTextColumn Binding="{Binding Region}" Width="150"/>
+                        <DataGridTextColumn Binding="{Binding SubRegion}" Width="150"/>
+                        <DataGridTextColumn Binding="{Binding Location.Latitude, StringFormat=0.0000}" Width="80"/>
+                        <DataGridTextColumn Binding="{Binding Location.Longitude, StringFormat=0.0000}" Width="80"/>
+                        <DataGridTextColumn Binding="{Binding Point.Center.X}" Width="60"/>
+                        <DataGridTextColumn Binding="{Binding Point.Center.Y}" Width="60"/>
+                        <DataGridCheckBoxColumn Binding="{Binding IsSuspended}" Width="80"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
