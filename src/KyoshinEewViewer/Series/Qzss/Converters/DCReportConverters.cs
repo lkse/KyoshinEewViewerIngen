@@ -77,7 +77,7 @@ public class DCReportConverters : IValueConverter
 			"ReferenceTimeType" => value is ReferenceTimeType referenceTimeType ? GetReferenceTimeTypeText(referenceTimeType, "情報") : "情報",
 			"Epicenter" => value switch {
 				0 => "情報なし",
-				int v => CsvDictionary.AreaEpicenter.TryGetValue(v, out var area) ? area : $"その他({v})",
+				int v => CsvDictionary.AreaEpicenter.TryGetValue(v, out var area) ? area.Name : $"その他({v})",
 				_ => "不明",
 			},
 			"Volcano" => value switch

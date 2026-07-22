@@ -18,13 +18,55 @@ public partial class CsvDictionaryGenerator : IIncrementalGenerator
 		{
 			var line = reader.ReadLine();
 			if (line == null) break;
-			var fields = line.Split(',');
+			var fields = SplitCsvLine(line);
 			sb.AppendLine($"            {{ {string.Format(keyFormat, fields)}, {string.Format(valueFormat, fields)} }},");
 		}
 
 		sb.AppendLine("        };");
 
 		return sb.ToString();
+	}
+
+	/// <summary>
+	/// CSV 1行をフィールドに分割する。RFC4180 に準じ、"..." で囲まれたフィールドは
+	/// 内部にカンマを含めることができ、"" は 1 つの " を表す。
+	/// 引用符を含まないフィールドは従来の Split(',') と同じ挙動になる。
+	/// </summary>
+	private static string[] SplitCsvLine(string line)
+	{
+		var fields = new System.Collections.Generic.List<string>();
+		var sb = new StringBuilder();
+		var inQuotes = false;
+		for (var i = 0; i < line.Length; i++)
+		{
+			var c = line[i];
+			if (inQuotes)
+			{
+				if (c == '"')
+				{
+					if (i + 1 < line.Length && line[i + 1] == '"')
+					{
+						sb.Append('"');
+						i++;
+					}
+					else
+						inQuotes = false;
+				}
+				else
+					sb.Append(c);
+			}
+			else if (c == '"')
+				inQuotes = true;
+			else if (c == ',')
+			{
+				fields.Add(sb.ToString());
+				sb.Clear();
+			}
+			else
+				sb.Append(c);
+		}
+		fields.Add(sb.ToString());
+		return fields.ToArray();
 	}
 
 	private static StringBuilder SourceFilesFromEntries(ImmutableArray<(string ClassName, string CsvText, string KeyType, string KeyFormat, string ValueType, string ValueFormat)> entries)

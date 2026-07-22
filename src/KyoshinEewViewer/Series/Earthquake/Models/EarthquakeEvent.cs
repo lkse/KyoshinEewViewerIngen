@@ -128,6 +128,8 @@ public class EarthquakeEvent : ReactiveObject
 						Time = i.DetectionTime;
 						IsDetectionTime = true;
 						Place = i.Place;
+						// 震度速報の代表地域名は震央地名コードを持たないため英語化対象外
+						PlaceCode = null;
 						IsOnlypoint = i.IsOnlypoint;
 						Depth = -1;
 					}
@@ -142,6 +144,7 @@ public class EarthquakeEvent : ReactiveObject
 				Time = h.OccurrenceTime;
 				IsDetectionTime = false;
 				Place = h.Place;
+				PlaceCode = h.PlaceCode;
 				Location = h.Location;
 
 				LocationError = h.LocationError;
@@ -249,8 +252,26 @@ public class EarthquakeEvent : ReactiveObject
 		{
 			if (_comment is null)
 				return null;
-			if (LocalizationService.Instance?.SelectedLanguage.Code == "en" && CommentTranslations.TryGetValue(_comment, out var en))
-				return en;
+			if (LocalizationService.Instance?.SelectedLanguage.Code == "en")
+			{
+				// 単一の付加文として完全一致すればそのまま採用する
+				if (CommentTranslations.TryGetValue(_comment, out var en))
+					return en;
+				// 固定付加文は複数行が連結されて届くことがあるため、行単位でも英訳を試みる
+				var lines = _comment.Split('\n');
+				if (lines.Length > 1)
+				{
+					var translated = false;
+					for (var i = 0; i < lines.Length; i++)
+						if (CommentTranslations.TryGetValue(lines[i].Trim(), out var enLine))
+						{
+							lines[i] = enLine;
+							translated = true;
+						}
+					if (translated)
+						return string.Join('\n', lines);
+				}
+			}
 			return _comment;
 		}
 	}
@@ -411,7 +432,41 @@ public class EarthquakeEvent : ReactiveObject
 	public string? Place
 	{
 		get => _place;
-		set => this.RaiseAndSetIfChanged(ref _place, value);
+		set
+		{
+			this.RaiseAndSetIfChanged(ref _place, value);
+			this.RaisePropertyChanged(nameof(LocalizedPlace));
+		}
+	}
+
+	private int? _placeCode;
+	/// <summary>
+	/// 震央地名コード(震央地名辞書のキー)。英語表示の解決に用いる。
+	/// </summary>
+	public int? PlaceCode
+	{
+		get => _placeCode;
+		set
+		{
+			this.RaiseAndSetIfChanged(ref _placeCode, value);
+			this.RaisePropertyChanged(nameof(LocalizedPlace));
+		}
+	}
+
+	/// <summary>
+	/// 言語に応じた震央地名。英語時は震央地名辞書(コード)から公式英訳を引く。
+	/// </summary>
+	public string? LocalizedPlace
+	{
+		get
+		{
+			if (LocalizationService.Instance?.SelectedLanguage.Code == "en"
+				&& _placeCode is int code
+				&& CsvDictionary.AreaEpicenter.TryGetValue(code, out var t)
+				&& !string.IsNullOrEmpty(t.English))
+				return t.English;
+			return _place;
+		}
 	}
 
 	private Location? _location;
@@ -553,6 +608,7 @@ public class EarthquakeEvent : ReactiveObject
 		this.RaisePropertyChanged(nameof(FormattedTime));
 		this.RaisePropertyChanged(nameof(FormattedUpdatedTime));
 		this.RaisePropertyChanged(nameof(LocalizedComment));
+		this.RaisePropertyChanged(nameof(LocalizedPlace));
 		this.RaisePropertyChanged(nameof(ShowApproxSuffix));
 	}
 
@@ -571,26 +627,61 @@ public class EarthquakeEvent : ReactiveObject
 
 	private static readonly Dictionary<string, string> CommentTranslations = new()
 	{
+		// 津波の有無・影響
 		{"この地震による津波の心配はありません。", "This earthquake poses no tsunami risk."},
-		{"この地震により、日本の沿岸では若干の海面変動があるかもしれませんが、被害の心配はありません。", "Although there may be slight sea-level changes in coastal regions of Japan, this earthquake has caused no damage."},
+		{"この地震による日本への津波の影響はありません。", "This earthquake poses no tsunami risk to Japan."},
+		{"この地震により、日本の沿岸では若干の海面変動があるかもしれませんが、被害の心配はありません。", "Although there may be slight sea-level changes in coastal regions/ this earthquake has caused no damage to Japan."},
+		{"日本への津波の有無については現在調査中です。", "The possibility of tsunami generation toward Japan in currently under evaluation."},
+
+		// 津波警報・注意報の発表状況
+		{"津波警報等（大津波警報・津波警報あるいは津波注意報）を発表中です。", "Tsunami warnings or advisories are currently in effect."},
+		{"大津波警報が発表されています。", "A major tsunami warning is in effect."},
+		{"津波警報が発表されています。", "A tsunami warning is in effect."},
+		{"津波注意報が発表されています。", "A tsunami advisory is in effect."},
+
+		// 海面変動
+		{"今後もしばらく海面変動が続くと思われます。", "Sea-level changes may be observed."},
+		{"今後もしばらく海面変動が続くと思われますので、海水浴や磯釣り等を行う際は注意してください。", "Pay attention when fishing, swimming or engaging in other marine activities, as there may still be slight sea-level changes."},
+		{"今後もしばらく海面変動が続くと思われますので、磯釣り等を行う際は注意してください。", "Pay attention when fishing or engaging in other marine activities, as there may still be slight sea-level changes."},
+
+		// 沖合観測に伴う切り替え
+		{"沖合で高い津波を観測したため大津波警報・津波警報に切り替えました。", "Upgrade to Major Tsunami Warnings/Tsunami Warnings implemented in response to high tsunami waves observed offshore"},
+		{"沖合で高い津波を観測したため大津波警報・津波警報を切り替えました。", "Major Tsunami Warnings/Tsunami Warnings updated, in response to high tsunami waves offshore"},
+		{"沖合で高い津波を観測したため大津波警報に切り替えました。", "Upgrade to Major Tsunami Warnings implemented in response to high tsunami waves observed offshore"},
+		{"沖合で高い津波を観測したため大津波警報を切り替えました。", "Major Tsunami Warnings updated, in response to high tsunami waves offshore"},
+		{"沖合で高い津波を観測したため津波警報に切り替えました。", "Upgrade to Tsunami Warnings implemented high tsunami waves observed offshore"},
+		{"沖合で高い津波を観測したため津波警報を切り替えました。", "Tsunami Warnings updated, in response to high tsunami waves offshore"},
+		{"沖合で高い津波を観測したため予想される津波の高さを切り替えました。", "Estimated tsunami heights updated in response to high tsunami waves offshore"},
+
+		// 遠地・広域津波の可能性
+		{"太平洋の広域に津波発生の可能性があります。", "There is a possiblity of a destructive ocean-wide tsunami in the Pacific Ocean."},
+		{"太平洋で津波発生の可能性があります。", "There is a possiblity of a destructive regional tsunami in the Pacific Ocean."},
+		{"北西太平洋で津波発生の可能性があります。", "There is a possiblity of a destructive regional tsunami  in the Northwest Pacific Ocean."},
+		{"インド洋の広域に津波発生の可能性があります。", "There is a possiblity of a destructive ocean-wide tsunami in the Indian Ocean."},
+		{"インド洋で津波発生の可能性があります。", "There is a possiblity of a destructive regional tsunami in the Indian Ocean."},
+		{"震源の近傍で津波発生の可能性があります。", "There is a possibility of a destructive local tsunami near the epicenter."},
+		{"震源の近傍で小さな津波発生の可能性がありますが、被害をもたらす津波の心配はありません。", "Minor local tsunami may occur near the epicenter, but no tsunami damage is expected."},
+		{"一般的に、この規模の地震が海域の浅い領域で発生すると、津波が発生することがあります。", "A shallow earthquake with the same magnitude in a sea area may generate a tsunami."},
+
+		// 緊急地震速報
 		{"この地震について、緊急地震速報を発表しています。", "Earthquake Early Warning is in effect for this earthquake."},
 		{"この地震について、緊急地震速報を発表しています。この地震の最大震度は２でした。", "Earthquake Early Warning is in effect for this earthquake. Its maximum seismic intensity was 2."},
 		{"この地震について、緊急地震速報を発表しています。この地震の最大震度は１でした。", "Earthquake Early Warning is in effect for this earthquake. Its maximum seismic intensity was 1."},
 		{"この地震について、緊急地震速報を発表しています。この地震で震度１以上は観測されていません。", "Earthquake Early Warning is in effect for this earthquake. There was no observation of seismic intensity 1 or above."},
 		{"この地震で緊急地震速報を発表しましたが、強い揺れは観測されませんでした。", "Earthquake Early Warning was issued for this earthquake, however no strong tremors were observed."},
-		{"震源要素を訂正します。", "Information related to the hypocenter has been corrected."},
-		{"この地震により観測された最大震度は●です", "This earthquake resulted in the maximum seismic intensity recorded."},
+		{"地震です　落ち着いて　身を守ってください", "An earthquake has just occurred. Stay calm and secure your personal safety."},
+
+		// 震度・震源
 		{"震度３以上が観測された地域はありません。", "There are no areas that recorded a seismic intensity of 3 or stronger."},
 		{"震度３以上が観測された市町村はありません。", "There are no municipalities that record a seismic intensity of 3 or stronger."},
-		{"この地震により観測された最大長周期地震動階級は○です", "This earthquake resulted in the maximum Long-Period Ground Motion class recorded."},
-		{"津波警報等（大津波警報・津波警報あるいは津波注意報）を発表中です。", "Tsunami warnings or advisories are currently in effect."},
-		{"津波注意報が発表されています。", "A tsunami advisory is in effect."},
-		{"津波警報が発表されています。", "A tsunami warning is in effect."},
-		{"大津波警報が発表されています。", "A major tsunami warning is in effect."},
-		{"今後の情報に注意してください。", "Check the information which will be issued from now on."},
+		{"震源要素を訂正します。", "Information related to the hypocenter has been corrected."},
+		{"＊印は気象庁以外の震度観測点についての情報です。", "* mark: Local Governments' or NIED's station"},
+
+		// その他
 		{"強い揺れに警戒してください。", "Watch out for strong tremors."},
-		{"地震です　落ち着いて　身を守ってください", "An earthquake has just occurred. Stay calm and secure your personal safety."},
-		{"この地震で緊急地震速報を発表しましたが、強い揺れは観測されませんでした。", "Earthquake Early Warning was issued for this earthquake, however no strong tremors were observed."},
+		{"今後の情報に注意してください。", "Check the information which will be issued from now on."},
+		{"ただちに避難してください。", "Evacuate immediately"},
+		{"南海トラフ地震臨時情報を発表しています。", "Nankai Trough Earthquake Extra Information is in effect."},
 	};
 
 	[Obsolete("GetNotificationMessage()は非推奨です。代わりにScribanテンプレートを使用してください。")]

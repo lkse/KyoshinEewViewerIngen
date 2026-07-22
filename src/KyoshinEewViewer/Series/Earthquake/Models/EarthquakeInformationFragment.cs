@@ -21,6 +21,12 @@ public abstract partial class EarthquakeInformationFragment : ReactiveObject
 	/// 「震源位置（度分）」が存在する場合はそちらを優先し、無ければ通常の「震源位置」を採用する。
 	/// 誤差は座標表現の精度から推定する。
 	/// </summary>
+	/// <summary>
+	/// 震央地名コード(震央地名辞書のキー)を取得する。数値でない場合(遠地の詳細コード等)は null。
+	/// </summary>
+	private static int? ParseEpicenterCode(HypocenterArea area)
+		=> int.TryParse(area.Code, out var code) ? code : null;
+
 	private static (Location? Location, Location? LocationError, int Depth, int? DepthError) ParseHypocenterCoordinates(HypocenterArea area)
 	{
 		Location? location = null;
@@ -94,6 +100,7 @@ public abstract partial class EarthquakeInformationFragment : ReactiveObject
 						OccurrenceTime = earthquake.OriginTime?.DateTime
 							?? throw new EarthquakeInformationFragmentProcessException("OccurrenceTime がみつかりません"),
 						Place = earthquake.Hypocenter.Area.Name,
+						PlaceCode = ParseEpicenterCode(earthquake.Hypocenter.Area),
 						Magnitude = earthquake.Magnitude.TryGetFloatValue(out var m) ? m
 							: throw new EarthquakeInformationFragmentProcessException("Magnitude がfloatにパースできません"),
 						MagnitudeAlternativeText = float.IsNaN(m) ? earthquake.Magnitude.Description : null,
@@ -173,6 +180,7 @@ public abstract partial class EarthquakeInformationFragment : ReactiveObject
 						OccurrenceTime = earthquake.OriginTime?.DateTime
 							?? throw new EarthquakeInformationFragmentProcessException("OccurrenceTime がみつかりません"),
 						Place = earthquake.Hypocenter.Area.Name,
+						PlaceCode = ParseEpicenterCode(earthquake.Hypocenter.Area),
 						Magnitude = earthquake.Magnitude.TryGetFloatValue(out var m) ? m
 							: throw new EarthquakeInformationFragmentProcessException("Magnitude がfloatにパースできません"),
 						MagnitudeAlternativeText = float.IsNaN(m) ? earthquake.Magnitude.Description : null,
@@ -209,6 +217,7 @@ public abstract partial class EarthquakeInformationFragment : ReactiveObject
 						OccurrenceTime = earthquake.OriginTime?.DateTime
 							?? throw new EarthquakeInformationFragmentProcessException("OccurrenceTime がみつかりません"),
 						Place = earthquake.Hypocenter.Area.Name,
+						PlaceCode = ParseEpicenterCode(earthquake.Hypocenter.Area),
 						Magnitude = earthquake.Magnitude.TryGetFloatValue(out var m) ? m
 							: throw new EarthquakeInformationFragmentProcessException("Magnitude がfloatにパースできません"),
 						MagnitudeAlternativeText = float.IsNaN(m) ? earthquake.Magnitude.Description : null,
@@ -263,6 +272,7 @@ public abstract partial class EarthquakeInformationFragment : ReactiveObject
 				OccurrenceTime = earthquake.OriginTime?.DateTime
 							?? throw new EarthquakeInformationFragmentProcessException("OccurrenceTime がみつかりません"),
 				Place = earthquake.Hypocenter.Area.Name,
+				PlaceCode = ParseEpicenterCode(earthquake.Hypocenter.Area),
 				Location = location
 							?? throw new EarthquakeInformationFragmentProcessException("Location がみつかりません"),
 				LocationError = locationError,
@@ -339,6 +349,11 @@ public class HypocenterInformationFragment : EarthquakeInformationFragment
 	/// 震央
 	/// </summary>
 	public required string Place { get; init; }
+
+	/// <summary>
+	/// 震央地名コード(震央地名辞書のキー)。数値でない場合は null。
+	/// </summary>
+	public int? PlaceCode { get; init; }
 
 	/// <summary>
 	/// 震央座標

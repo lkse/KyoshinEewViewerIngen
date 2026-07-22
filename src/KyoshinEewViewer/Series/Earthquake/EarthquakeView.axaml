@@ -88,7 +88,7 @@
                                 <TextBlock Text="{loc:Localize EarthquakeRegion}" FontSize="14" IsVisible="{Binding CurrentEvent.IsVolcano}" Margin="0,0,0,-16"/>
                                 <Viewbox Stretch="Fill" StretchDirection="DownOnly" Height="35" MaxWidth="175" HorizontalAlignment="Right"
 											IsVisible="{Binding CurrentEvent.Place, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-                                    <TextBlock x:Name="HypocenterName" Text="{Binding CurrentEvent.Place}"
+                                    <TextBlock x:Name="HypocenterName" Text="{Binding CurrentEvent.LocalizedPlace}"
 												FontSize="24" FontWeight="Bold" />
                                 </Viewbox>
                                 
@@ -353,7 +353,7 @@
                                             <Viewbox Stretch="Fill" StretchDirection="DownOnly" Height="24" HorizontalAlignment="Left"
                                                         VerticalAlignment="Bottom" Margin="2,0,45,0">
                                                 <StackPanel Orientation="Horizontal">
-                                                    <TextBlock Text="{Binding Place}" FontSize="18"
+                                                    <TextBlock Text="{Binding LocalizedPlace}" FontSize="18"
                                                                Margin="0,0,0,-3" />
                                                     <TextBlock IsVisible="{Binding !IsOnlypoint}" Text="{loc:Localize EarthquakeEtc}"
                                                                FontSize="13" Margin="0,0,0,-1"

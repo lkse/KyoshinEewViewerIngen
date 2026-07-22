@@ -267,7 +267,7 @@ public class SignalNowFileWatcher
 					DisplaySource = "SignalNowProfessional",
 					SerialNo = serialNo,
 					Codes = areas.ToArray(),
-					Names = EewAreaGroups.Compressor.Compress(areas.Select(a => CsvDictionary.AreaEpicenter.TryGetValue(a, out var p) ? p : $"不明({a})").ToArray()),
+					Names = EewAreaGroups.Compressor.Compress(areas.Select(a => CsvDictionary.AreaEpicenter.TryGetValue(a, out var p) ? p.Name : $"不明({a})").ToArray()),
 				} : null,
 				IsWarning = areas.Count > 0,
 			};
