@@ -33,20 +33,27 @@ public class FeedbackSettingPage : ReactiveObject, ISettingPage
 	private KyoshinEewViewerConfiguration Config { get; }
 	private ISubWindowsService? SubWindowService { get; }
 	private ILogger Logger { get; }
+	private Localization.LocalizationService? LocalizationService { get; }
 
-	public string[] Categories { get; } = [FeedbackCategoryBug, "機能要望", "質問", "その他"];
+	public FeedbackCategory[] Categories { get; } =
+	[
+		new(FeedbackCategoryBug, Localization.LocalizationKey.FeedbackCategoryBug),
+		new("機能要望", Localization.LocalizationKey.FeedbackCategoryFeatureRequest),
+		new("質問", Localization.LocalizationKey.FeedbackCategoryQuestion),
+		new("その他", Localization.LocalizationKey.FeedbackCategoryOther),
+	];
 
 	public bool IsAvailable { get; } = SentrySdk.IsEnabled;
 
-	private string _category = FeedbackCategoryBug;
-	public string Category
+	private FeedbackCategory _category;
+	public FeedbackCategory Category
 	{
 		get => _category;
 		set
 		{
 			this.RaiseAndSetIfChanged(ref _category, value);
 			// 種別切替時は種別に応じた既定値に戻す（バグ報告のみ既定ON）
-			IncludeLogs = value == FeedbackCategoryBug;
+			IncludeLogs = value.Value == FeedbackCategoryBug;
 		}
 	}
 
@@ -115,8 +122,19 @@ public class FeedbackSettingPage : ReactiveObject, ISettingPage
 		Config = config;
 		SubWindowService = subWindowService;
 		Logger = logManager.GetLogger<FeedbackSettingPage>();
+		LocalizationService = Locator.Current.GetService<Localization.LocalizationService>();
 
-		_includeLogs = _category == FeedbackCategoryBug;
+		_category = Categories[0];
+		_includeLogs = _category.Value == FeedbackCategoryBug;
+
+		if (LocalizationService != null)
+			LocalizationService.LanguageChanged += (_, _) =>
+			{
+				// 言語切替時に種別の表示名と合計サイズ表示を更新する
+				foreach (var category in Categories)
+					category.RaiseDisplayNameChanged();
+				UpdateAttachmentsTotalSizeText();
+			};
 
 		var canSend = this.WhenAnyValue(
 			x => x.Subject,
@@ -137,7 +155,9 @@ public class FeedbackSettingPage : ReactiveObject, ISettingPage
 	private void UpdateAttachmentsTotalSizeText()
 	{
 		var total = Attachments.Sum(a => a.Size);
-		AttachmentsTotalSizeText = $"合計 {FormatSize(total)} / {FormatSize(AttachmentMaxTotalSize)}";
+		AttachmentsTotalSizeText = string.Format(
+			LocalizationService?.Get(Localization.LocalizationKey.FeedbackTotalSize) ?? "合計 {0} / {1}",
+			FormatSize(total), FormatSize(AttachmentMaxTotalSize));
 	}
 
 	private static string FormatSize(long size) => size switch
@@ -153,7 +173,7 @@ public class FeedbackSettingPage : ReactiveObject, ISettingPage
 			return;
 		var files = await KyoshinEewViewerApp.TopLevelControl.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
 		{
-			Title = "添付するファイルを選択",
+			Title = LocalizationService?.Get(Localization.LocalizationKey.FeedbackSelectFile) ?? "添付するファイルを選択",
 			FileTypeFilter = [FilePickerFileTypes.All],
 			AllowMultiple = true,
 		});
@@ -194,7 +214,9 @@ public class FeedbackSettingPage : ReactiveObject, ISettingPage
 			var sb = new StringBuilder();
 			if (rejectedOversize.Count > 0)
 			{
-				sb.AppendLine($"合計サイズが上限（{AttachmentMaxTotalSize / (1024 * 1024)}MB）を超えるため添付できなかったファイル:");
+				sb.AppendLine(string.Format(
+					LocalizationService?.Get(Localization.LocalizationKey.FeedbackOversizeHeader) ?? "合計サイズが上限（{0}MB）を超えるため添付できなかったファイル:",
+					AttachmentMaxTotalSize / (1024 * 1024)));
 				foreach (var name in rejectedOversize)
 					sb.AppendLine($"・{name}");
 			}
@@ -202,14 +224,14 @@ public class FeedbackSettingPage : ReactiveObject, ISettingPage
 			{
 				if (sb.Length > 0)
 					sb.AppendLine();
-				sb.AppendLine("読み取りに失敗したファイル:");
+				sb.AppendLine(LocalizationService?.Get(Localization.LocalizationKey.FeedbackReadFailedHeader) ?? "読み取りに失敗したファイル:");
 				foreach (var name in failed)
 					sb.AppendLine($"・{name}");
 			}
 
 			await new FAContentDialog
 			{
-				Title = "添付できないファイルがあります",
+				Title = LocalizationService?.Get(Localization.LocalizationKey.FeedbackCannotAttachTitle) ?? "添付できないファイルがあります",
 				Content = sb.ToString().TrimEnd(),
 				CloseButtonText = "OK",
 			}.ShowAsync(SubWindowService?.SettingWindow);
@@ -223,18 +245,18 @@ public class FeedbackSettingPage : ReactiveObject, ISettingPage
 	{
 		if (!SentrySdk.IsEnabled)
 		{
-			ResultMessage = "フィードバック機能を利用できません。";
+			ResultMessage = LocalizationService?.Get(Localization.LocalizationKey.FeedbackUnavailableResult) ?? "フィードバック機能を利用できません。";
 			return;
 		}
 
 		IsSending = true;
-		ResultMessage = "送信中...";
+		ResultMessage = LocalizationService?.Get(Localization.LocalizationKey.FeedbackSending) ?? "送信中...";
 		try
 		{
 			var subject = Subject.Trim();
 			var body = Body.Trim();
 			var email = string.IsNullOrWhiteSpace(Email) ? null : Email.Trim();
-			var category = Category;
+			var category = Category.Value;
 			var includeLogs = IncludeLogs;
 			var attachments = Attachments.ToArray();
 
@@ -313,15 +335,17 @@ public class FeedbackSettingPage : ReactiveObject, ISettingPage
 
 			await new FAContentDialog
 			{
-				Title = "フィードバック送信完了",
-				Content = "フィードバックを送信しました。ご協力ありがとうございました。",
+				Title = LocalizationService?.Get(Localization.LocalizationKey.FeedbackSentTitle) ?? "フィードバック送信完了",
+				Content = LocalizationService?.Get(Localization.LocalizationKey.FeedbackSentMessage) ?? "フィードバックを送信しました。ご協力ありがとうございました。",
 				CloseButtonText = "OK",
 			}.ShowAsync(SubWindowService?.SettingWindow);
 		}
 		catch (Exception ex)
 		{
 			Logger.LogWarning(ex, "フィードバックの送信に失敗しました");
-			ResultMessage = $"送信に失敗しました: {ex.Message}";
+			ResultMessage = string.Format(
+				LocalizationService?.Get(Localization.LocalizationKey.FeedbackSendFailed) ?? "送信に失敗しました: {0}",
+				ex.Message);
 		}
 		finally
 		{
@@ -346,6 +370,20 @@ public class FeedbackSettingPage : ReactiveObject, ISettingPage
 		}
 		return sb.ToString();
 	}
+}
+
+/// <summary>
+/// フィードバックの種別。<see cref="Value"/> は Sentry のタグや判定に使う安定値、
+/// <see cref="DisplayName"/> は言語切り替えに追従する表示名。
+/// </summary>
+public class FeedbackCategory(string value, Localization.LocalizationKey displayNameKey) : ReactiveObject
+{
+	public string Value { get; } = value;
+	private Localization.LocalizationKey DisplayNameKey { get; } = displayNameKey;
+
+	public string DisplayName => Locator.Current.GetService<Localization.LocalizationService>()?.Get(DisplayNameKey) ?? Value;
+
+	public void RaiseDisplayNameChanged() => this.RaisePropertyChanged(nameof(DisplayName));
 }
 
 public record class FeedbackAttachment(string FilePath, string FileName, long Size)

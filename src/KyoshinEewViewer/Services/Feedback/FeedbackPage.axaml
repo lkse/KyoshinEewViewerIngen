@@ -43,7 +43,13 @@
                 <TextBlock Text="{loc:Localize FeedbackCategory}" Classes="fieldLabel" />
                 <ComboBox ItemsSource="{Binding Categories}"
                           SelectedItem="{Binding Category}"
-                          HorizontalAlignment="Stretch" />
+                          HorizontalAlignment="Stretch">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="vm:FeedbackCategory">
+                            <TextBlock Text="{Binding DisplayName}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
 
                 <TextBlock Text="{loc:Localize FeedbackSubject}" Classes="fieldLabel" />
                 <TextBox Text="{Binding Subject}"
