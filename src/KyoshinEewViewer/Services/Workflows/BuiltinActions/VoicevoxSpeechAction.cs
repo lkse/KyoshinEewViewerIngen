@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using KyoshinEewViewer.Localization;
 using ReactiveUI;
 using Splat;
 using System;
@@ -12,7 +13,7 @@ public class VoicevoxSpeechAction : WorkflowAction
 	[JsonIgnore]
 	public override Control DisplayControl => new VoicevoxSpeechActionControl() { DataContext = this };
 
-	private string _templateText = "アクションによる読み上げ";
+	private string _templateText = Locator.Current.GetService<LocalizationService>()?.Get(LocalizationKey.WorkflowActionVoicevoxTextDefault) ?? "アクションによる読み上げ";
 	public string TemplateText
 	{
 		get => _templateText;

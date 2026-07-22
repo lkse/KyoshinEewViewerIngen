@@ -1,5 +1,7 @@
 using Avalonia.Controls;
+using KyoshinEewViewer.Localization;
 using ReactiveUI;
+using Splat;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -23,9 +25,12 @@ public class MultipleAction : WorkflowAction
 	{
 		if (parameter is not ChildAction action)
 			return;
+		var localizationService = Locator.Current.GetService<LocalizationService>();
 		var result = await DialogHelper.ShowSettingWindowConfirmationDialogAsync(
-			"アクションの削除",
-			$"アクション「{action.SelectedActionInfo?.DisplayName}」を削除しますか？\nこの操作は元に戻すことができません。");
+			localizationService?.Get(LocalizationKey.WorkflowActionRemoveTitle) ?? "アクションの削除",
+			string.Format(
+				localizationService?.Get(LocalizationKey.WorkflowActionRemoveMessage) ?? "アクション「{0}」を削除しますか？\nこの操作は元に戻すことができません。",
+				action.SelectedActionInfo?.DisplayName));
 		
 		if (result)
 		{
@@ -110,9 +115,12 @@ public class ChildAction : ReactiveObject
 		// 既にアクションが設定されている場合は確認ダイアログを表示
 		if (SelectedActionInfo != null && SelectedActionInfo != actionInfo && Action?.GetType() != typeof(DummyAction))
 		{
+			var localizationService = Locator.Current.GetService<LocalizationService>();
 			var confirmed = await DialogHelper.ShowSettingWindowConfirmationDialogAsync(
-				"アクション変更の確認",
-				$"現在の設定「{SelectedActionInfo.DisplayName}」から「{actionInfo.DisplayName}」に変更しますか？\n\n変更すると現在のアクションに設定されている内容は失われます。");
+				localizationService?.Get(LocalizationKey.WorkflowActionChangeTitle) ?? "アクション変更の確認",
+				string.Format(
+					localizationService?.Get(LocalizationKey.WorkflowActionChangeMessage) ?? "現在の設定「{0}」から「{1}」に変更しますか？\n\n変更すると現在のアクションに設定されている内容は失われます。",
+					SelectedActionInfo.DisplayName, actionInfo.DisplayName));
 
 			if (!confirmed)
 				return;

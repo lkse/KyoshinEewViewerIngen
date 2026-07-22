@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using KyoshinEewViewer.Localization;
 using KyoshinEewViewer.Services.Workflows.BuiltinActions;
 using ReactiveUI;
 using Splat;
@@ -9,7 +10,41 @@ using System.Threading.Tasks;
 
 namespace KyoshinEewViewer.Services.Workflows;
 
-public record WorkflowActionInfo(Type Type, string DisplayName, Func<WorkflowAction> Create);
+/// <summary>
+/// アクションの一覧表示に使用する情報。表示名は言語切り替えに追従する。
+/// </summary>
+public class WorkflowActionInfo : ReactiveObject
+{
+	private readonly LocalizationKey _displayNameKey;
+	private LocalizationService? _localizationService;
+
+	public WorkflowActionInfo(Type type, LocalizationKey displayNameKey, Func<WorkflowAction> create)
+	{
+		Type = type;
+		_displayNameKey = displayNameKey;
+		Create = create;
+	}
+
+	public Type Type { get; }
+	public Func<WorkflowAction> Create { get; }
+
+	public string DisplayName => _localizationService?.Get(_displayNameKey) ?? _displayNameKey.ToString();
+
+	public void AttachLocalization(LocalizationService localizationService)
+	{
+		if (_localizationService == localizationService)
+			return;
+		if (_localizationService != null)
+			_localizationService.LanguageChanged -= OnLanguageChanged;
+
+		_localizationService = localizationService;
+		_localizationService.LanguageChanged += OnLanguageChanged;
+		OnLanguageChanged(this, EventArgs.Empty);
+	}
+
+	private void OnLanguageChanged(object? sender, EventArgs e)
+		=> this.RaisePropertyChanged(nameof(DisplayName));
+}
 
 [JsonDerivedType(typeof(DummyAction), typeDiscriminator: "Dummy")]
 [JsonDerivedType(typeof(MultipleAction), typeDiscriminator: "Multiple")]
@@ -26,17 +61,17 @@ public abstract class WorkflowAction : ReactiveObject
 {
 	static WorkflowAction()
 	{
-		WorkflowService.RegisterAction<DummyAction>("何もしない");
-		WorkflowService.RegisterAction<MultipleAction>("複数アクション実行");
-		WorkflowService.RegisterAction<SendNotificationAction>("通知送信");
-		WorkflowService.RegisterAction<PlaySoundAction>("音声再生");
-		WorkflowService.RegisterAction<VoicevoxSpeechAction>("VOICEVOX でテキスト読み上げ");
-		WorkflowService.RegisterAction<WindowActivateAction>("メインウィンドウを最前面に表示");
-		WorkflowService.RegisterAction<SwitchTabAction>("タブを切り替える");
-		WorkflowService.RegisterAction<WaitAction>("指定時間待機");
-		WorkflowService.RegisterAction<LogOutputAction>("ログ出力");
-		WorkflowService.RegisterAction<WebhookAction>("指定したURLに内容をPOST");
-		WorkflowService.RegisterAction<ExecuteFileAction>("指定したファイルを開く(実行)");
+		WorkflowService.RegisterAction<DummyAction>(LocalizationKey.WorkflowActionNameNone);
+		WorkflowService.RegisterAction<MultipleAction>(LocalizationKey.WorkflowActionNameMultiple);
+		WorkflowService.RegisterAction<SendNotificationAction>(LocalizationKey.WorkflowActionNameSendNotification);
+		WorkflowService.RegisterAction<PlaySoundAction>(LocalizationKey.WorkflowActionNamePlaySound);
+		WorkflowService.RegisterAction<VoicevoxSpeechAction>(LocalizationKey.WorkflowActionNameVoicevox);
+		WorkflowService.RegisterAction<WindowActivateAction>(LocalizationKey.WorkflowActionNameWindowActivate);
+		WorkflowService.RegisterAction<SwitchTabAction>(LocalizationKey.WorkflowActionNameSwitchTab);
+		WorkflowService.RegisterAction<WaitAction>(LocalizationKey.WorkflowActionNameWait);
+		WorkflowService.RegisterAction<LogOutputAction>(LocalizationKey.WorkflowActionNameLogOutput);
+		WorkflowService.RegisterAction<WebhookAction>(LocalizationKey.WorkflowActionNameWebhook);
+		WorkflowService.RegisterAction<ExecuteFileAction>(LocalizationKey.WorkflowActionNameExecuteFile);
 	}
 
 	[JsonIgnore]
@@ -62,7 +97,7 @@ public abstract class WorkflowAction : ReactiveObject
 public class DummyAction : WorkflowAction
 {
 	[JsonIgnore]
-	public override Control DisplayControl => new TextBlock { Text = "何もしないアクションです。\n何も実行されず、中断されることもありません。" };
+	public override Control DisplayControl => LocalizedControls.TextBlock(LocalizationKey.WorkflowActionNoneDescription);
 	public override Task ExecuteAsync(WorkflowEvent content)
 		=> Task.CompletedTask;
 }

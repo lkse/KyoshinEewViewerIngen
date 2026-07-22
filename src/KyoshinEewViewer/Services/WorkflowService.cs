@@ -1,4 +1,5 @@
 using KyoshinEewViewer.Core;
+using KyoshinEewViewer.Localization;
 using KyoshinEewViewer.Services.Workflows;
 using Splat;
 using System;
@@ -16,10 +17,24 @@ public class WorkflowService
 	private static readonly List<WorkflowActionInfo> _allActions = [];
 	public static IReadOnlyList<WorkflowActionInfo> AllActions => _allActions;
 
-	public static void RegisterTrigger<T>(string displayName) where T : WorkflowTrigger, new()
-		=> _allTriggers.Add(new WorkflowTriggerInfo(typeof(T), displayName, () => new T()));
-	public static void RegisterAction<T>(string displayName) where T : WorkflowAction, new()
-		=> _allActions.Add(new WorkflowActionInfo(typeof(T), displayName, () => new T()));
+	public static void RegisterTrigger<T>(LocalizationKey displayNameKey) where T : WorkflowTrigger, new()
+		=> _allTriggers.Add(new WorkflowTriggerInfo(typeof(T), displayNameKey, () => new T()));
+	public static void RegisterAction<T>(LocalizationKey displayNameKey) where T : WorkflowAction, new()
+		=> _allActions.Add(new WorkflowActionInfo(typeof(T), displayNameKey, () => new T()));
+
+	/// <summary>
+	/// 登録済みのトリガー/アクションの表示名にローカライズサービスを紐付ける。
+	/// 静的コンストラクタを確実に実行してから紐付ける。
+	/// </summary>
+	public static void AttachLocalization(LocalizationService localizationService)
+	{
+		System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(WorkflowTrigger).TypeHandle);
+		System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(WorkflowAction).TypeHandle);
+		foreach (var trigger in _allTriggers)
+			trigger.AttachLocalization(localizationService);
+		foreach (var action in _allActions)
+			action.AttachLocalization(localizationService);
+	}
 
 	private ILogger Logger { get; }
 

@@ -1,5 +1,7 @@
+using KyoshinEewViewer.Localization;
 using KyoshinEewViewer.Services.Workflows.BuiltinActions;
 using ReactiveUI;
+using Splat;
 using System;
 using System.ComponentModel;
 using System.Linq;
@@ -121,9 +123,12 @@ public class Workflow : ReactiveObject
 		// 既にトリガーが設定されている場合は確認ダイアログを表示
 		if (SelectedTriggerInfo != null && SelectedTriggerInfo != triggerInfo && Trigger?.GetType() != typeof(DummyTrigger))
 		{
+			var localizationService = Locator.Current.GetService<LocalizationService>();
 			var confirmed = await DialogHelper.ShowSettingWindowConfirmationDialogAsync(
-				"トリガー変更の確認",
-				$"現在の設定「{SelectedTriggerInfo.DisplayName}」から「{triggerInfo.DisplayName}」に変更しますか？\n\n変更すると現在設定されているトリガーの内容は失われます。");
+				localizationService?.Get(LocalizationKey.WorkflowTriggerChangeTitle) ?? "トリガー変更の確認",
+				string.Format(
+					localizationService?.Get(LocalizationKey.WorkflowTriggerChangeMessage) ?? "現在の設定「{0}」から「{1}」に変更しますか？\n\n変更すると現在設定されているトリガーの内容は失われます。",
+					SelectedTriggerInfo.DisplayName, triggerInfo.DisplayName));
 
 			if (!confirmed)
 				return;

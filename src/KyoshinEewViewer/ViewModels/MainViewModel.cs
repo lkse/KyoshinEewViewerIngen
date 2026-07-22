@@ -343,6 +343,8 @@ public partial class MainViewModel : ViewModelBase
 #endif
 		SeriesController.RegisterSeries(ObservationPointEditorSeries.MetaData, localizationService);
 
+		WorkflowService.AttachLocalization(localizationService);
+
 		if (StartupOptions.Current?.StandaloneSeriesName is { } ssn && TryGetStandaloneSeries(ssn, out var sSeries))
 		{
 			LeftBottomControlOpacity = 0;

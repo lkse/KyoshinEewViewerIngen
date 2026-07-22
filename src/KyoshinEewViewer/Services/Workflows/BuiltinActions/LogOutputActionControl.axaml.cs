@@ -1,6 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using KyoshinEewViewer.Localization;
 using KyoshinEewViewer.Views.Components;
+using Splat;
 
 namespace KyoshinEewViewer.Services.Workflows.BuiltinActions;
 public partial class LogOutputActionControl : UserControl
@@ -16,7 +18,7 @@ public partial class LogOutputActionControl : UserControl
 			return;
 
 		var (success, templateText) = await TemplateEditorDialog.ShowAsync(
-			"ログ出力テンプレート編集",
+			Locator.Current.GetService<LocalizationService>()?.Get(LocalizationKey.WorkflowActionLogOutputEditorTitle) ?? "ログ出力テンプレート編集",
 			action.TemplateText,
 			action.FindEventType());
 

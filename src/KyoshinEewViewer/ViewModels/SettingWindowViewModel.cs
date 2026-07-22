@@ -283,7 +283,7 @@ public class SettingWindowViewModel : ViewModelBase
 	}
 	public void AddWorkflow()
 	{
-		var wf = new Workflow() { Name = "新しいワークフロー", Trigger = new DummyTrigger() };
+		var wf = new Workflow() { Name = LocalizationService.Get(LocalizationKey.WorkflowNewName), Trigger = new DummyTrigger() };
 		WorkflowService.Workflows.Add(wf);
 		SelectedWorkflow = wf;
 	}

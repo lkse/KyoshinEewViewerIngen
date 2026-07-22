@@ -1,5 +1,7 @@
 using Avalonia.Controls;
+using KyoshinEewViewer.Localization;
 using ReactiveUI;
+using Splat;
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -56,11 +58,11 @@ public class WebhookAction : WorkflowAction
 			sw.Stop();
 			if (responseText.Length > 100)
 				responseText = responseText[..100] + "...";
-			LatestResponse = $"レスポンスタイム: {sw.ElapsedMilliseconds}ms\nステータスコード: {(int)response.StatusCode}\nレスポンス: {responseText}";
+			LatestResponse = string.Format(Locator.Current.GetService<LocalizationService>()?.Get(LocalizationKey.WorkflowActionWebhookResult) ?? "レスポンスタイム: {0}ms\nステータスコード: {1}\nレスポンス: {2}", sw.ElapsedMilliseconds, (int)response.StatusCode, responseText);
 		}
 		catch (Exception e)
 		{
-			LatestResponse = $"例外が発生しました。\n{e.Message}";
+			LatestResponse = string.Format(Locator.Current.GetService<LocalizationService>()?.Get(LocalizationKey.WorkflowActionWebhookException) ?? "例外が発生しました。\n{0}", e.Message);
 		}
 	}
 }

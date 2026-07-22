@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using KyoshinEewViewer.Core;
+using KyoshinEewViewer.Localization;
 using ReactiveUI;
 using Splat;
 using System.Text.Json.Serialization;
@@ -12,7 +13,7 @@ public class LogOutputAction : WorkflowAction
 	[JsonIgnore]
 	public override Control DisplayControl => new LogOutputActionControl() { DataContext = this };
 
-	private string _templateText = "アクションによるログ出力";
+	private string _templateText = Locator.Current.GetService<LocalizationService>()?.Get(LocalizationKey.WorkflowActionLogOutputDefault) ?? "アクションによるログ出力";
 	public string TemplateText
 	{
 		get => _templateText;

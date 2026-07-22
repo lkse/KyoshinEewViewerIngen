@@ -1,6 +1,8 @@
 using Avalonia.Controls;
+using KyoshinEewViewer.Localization;
 using ReactiveUI;
 using Scriban;
+using Splat;
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -91,16 +93,16 @@ public class ExecuteFileAction : WorkflowAction
 				var process = Process.Start(info);
 				if (process == null)
 				{
-					LatestExecuteResult = "プロセスの起動に失敗しました";
+					LatestExecuteResult = Locator.Current.GetService<LocalizationService>()?.Get(LocalizationKey.WorkflowActionExecuteFileStartFailed) ?? "プロセスの起動に失敗しました";
 					return;
 				}
-				LatestExecuteResult = "実行中...";
+				LatestExecuteResult = Locator.Current.GetService<LocalizationService>()?.Get(LocalizationKey.WorkflowActionExecuteFileRunning) ?? "実行中...";
 				process.WaitForExit();
-				LatestExecuteResult = $"終了コード: {process.ExitCode}\n実行時間:{sw.ElapsedMilliseconds}ms";
+				LatestExecuteResult = string.Format(Locator.Current.GetService<LocalizationService>()?.Get(LocalizationKey.WorkflowActionExecuteFileResult) ?? "終了コード: {0}\n実行時間:{1}ms", process.ExitCode, sw.ElapsedMilliseconds);
 			}
 			catch (Exception ex)
 			{
-				LatestExecuteResult = "実行中に例外が発生しました。\n" + ex;
+				LatestExecuteResult = string.Format(Locator.Current.GetService<LocalizationService>()?.Get(LocalizationKey.WorkflowActionExecuteFileException) ?? "実行中に例外が発生しました。\n{0}", ex);
 			}
 		});
 

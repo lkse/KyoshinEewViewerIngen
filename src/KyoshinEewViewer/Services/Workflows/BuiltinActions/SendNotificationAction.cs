@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using KyoshinEewViewer.Localization;
 using KyoshinEewViewer.Notification;
 using ReactiveUI;
 using Splat;
@@ -12,14 +13,14 @@ public class SendNotificationAction : WorkflowAction
 	[JsonIgnore]
 	public override Control DisplayControl => new SendNotificationActionControl() { DataContext = this };
 
-	private string _title = "アクションによる通知タイトル";
+	private string _title = Locator.Current.GetService<LocalizationService>()?.Get(LocalizationKey.WorkflowActionNotificationTitleDefault) ?? "アクションによる通知タイトル";
 	public string Title
 	{
 		get => _title;
 		set => this.RaiseAndSetIfChanged(ref _title, value);
 	}
 
-	private string _templateText = "アクションによる通知本文";
+	private string _templateText = Locator.Current.GetService<LocalizationService>()?.Get(LocalizationKey.WorkflowActionNotificationBodyDefault) ?? "アクションによる通知本文";
 	public string TemplateText
 	{
 		get => _templateText;

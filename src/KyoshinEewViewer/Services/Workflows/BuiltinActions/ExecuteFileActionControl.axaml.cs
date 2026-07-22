@@ -1,6 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using KyoshinEewViewer.Localization;
 using KyoshinEewViewer.Views.Components;
+using Splat;
 
 namespace KyoshinEewViewer.Services.Workflows.BuiltinActions;
 public partial class ExecuteFileActionControl : UserControl
@@ -16,7 +18,7 @@ public partial class ExecuteFileActionControl : UserControl
 			return;
 
 		var (success, templateText) = await TemplateEditorDialog.ShowAsync(
-			"実行ファイルテンプレート編集",
+			Locator.Current.GetService<LocalizationService>()?.Get(LocalizationKey.WorkflowActionExecutableFileEditorTitle) ?? "実行ファイルテンプレート編集",
 			action.FilePath,
 			action.FindEventType());
 
@@ -30,7 +32,7 @@ public partial class ExecuteFileActionControl : UserControl
 			return;
 
 		var (success, templateText) = await TemplateEditorDialog.ShowAsync(
-			"起動引数テンプレート編集",
+			Locator.Current.GetService<LocalizationService>()?.Get(LocalizationKey.WorkflowActionLaunchArgumentsEditorTitle) ?? "起動引数テンプレート編集",
 			action.Arguments,
 			action.FindEventType());
 
@@ -44,7 +46,7 @@ public partial class ExecuteFileActionControl : UserControl
 			return;
 
 		var (success, templateText) = await TemplateEditorDialog.ShowAsync(
-			"作業ディレクトリテンプレート編集",
+			Locator.Current.GetService<LocalizationService>()?.Get(LocalizationKey.WorkflowActionWorkingDirectoryEditorTitle) ?? "作業ディレクトリテンプレート編集",
 			action.WorkingDirectory,
 			action.FindEventType());
 

@@ -1,4 +1,5 @@
 using FluentAvalonia.UI.Controls;
+using KyoshinEewViewer.Localization;
 using Splat;
 using System.Threading.Tasks;
 
@@ -18,12 +19,13 @@ public static class DialogHelper
 		if (windowService == null)
 			return false;
 
+		var localizationService = Locator.Current.GetService<LocalizationService>();
 		var dialog = new FAContentDialog()
 		{
 			Title = title,
 			Content = message,
-			PrimaryButtonText = "はい",
-			SecondaryButtonText = "いいえ",
+			PrimaryButtonText = localizationService?.Get(LocalizationKey.CommonYes) ?? "はい",
+			SecondaryButtonText = localizationService?.Get(LocalizationKey.CommonNo) ?? "いいえ",
 			DefaultButton = FAContentDialogButton.Secondary
 		};
 

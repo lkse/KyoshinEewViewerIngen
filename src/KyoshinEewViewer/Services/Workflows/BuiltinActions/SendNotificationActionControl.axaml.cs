@@ -1,6 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using KyoshinEewViewer.Localization;
 using KyoshinEewViewer.Views.Components;
+using Splat;
 
 namespace KyoshinEewViewer.Services.Workflows.BuiltinActions;
 public partial class SendNotificationActionControl : UserControl
@@ -16,7 +18,7 @@ public partial class SendNotificationActionControl : UserControl
 			return;
 
 		var (success, templateText) = await TemplateEditorDialog.ShowAsync(
-			"通知タイトルテンプレート編集",
+			Locator.Current.GetService<LocalizationService>()?.Get(LocalizationKey.WorkflowActionNotificationTitleEditorTitle) ?? "通知タイトルテンプレート編集",
 			action.Title,
 			action.FindEventType());
 
@@ -30,7 +32,7 @@ public partial class SendNotificationActionControl : UserControl
 			return;
 
 		var (success, templateText) = await TemplateEditorDialog.ShowAsync(
-			"通知本文テンプレート編集",
+			Locator.Current.GetService<LocalizationService>()?.Get(LocalizationKey.WorkflowActionNotificationBodyEditorTitle) ?? "通知本文テンプレート編集",
 			action.TemplateText,
 			action.FindEventType());
 
