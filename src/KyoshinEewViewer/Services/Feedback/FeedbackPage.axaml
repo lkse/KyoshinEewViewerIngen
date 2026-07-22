@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:KyoshinEewViewer.Services.Feedback"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:loc="using:KyoshinEewViewer.Localization"
              mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="800"
              x:DataType="vm:FeedbackSettingPage" x:CompileBindings="True"
              x:Class="KyoshinEewViewer.Services.Feedback.FeedbackPage">
@@ -22,63 +23,63 @@
     </UserControl.Styles>
     <ScrollViewer>
         <StackPanel>
-            <TextBlock Text="フィードバック" FontWeight="Bold" Margin="10,20,10,5" />
+            <TextBlock Text="{loc:Localize FeedbackTitle}" FontWeight="Bold" Margin="10,20,10,5" />
 
             <ui:FAInfoBar IsOpen="{Binding !IsAvailable}"
                         IsClosable="False"
                         Severity="Warning"
-                        Title="フィードバックを送信できません"
-                        Message="クラッシュレポートの送信が無効な状態でアプリを起動したため、フィードバックの送信機能を利用できません。設定を有効にしてから再起動してください。"
+                        Title="{loc:Localize FeedbackUnavailableTitle}"
+                        Message="{loc:Localize FeedbackUnavailableMessage}"
                         Margin="10,5" />
 
             <ui:FAInfoBar IsOpen="{Binding IsAvailable}"
                         IsClosable="False"
                         Severity="Informational"
-                        Title="フィードバックについて"
-                        Message="ご意見・ご要望・不具合のご報告などを開発者へ送信できます。個人を特定できる情報の送信は避けてください。"
+                        Title="{loc:Localize FeedbackAboutTitle}"
+                        Message="{loc:Localize FeedbackAboutMessage}"
                         Margin="10,5" />
 
             <StackPanel IsEnabled="{Binding IsAvailable}" Margin="15,5,15,15">
-                <TextBlock Text="種別" Classes="fieldLabel" />
+                <TextBlock Text="{loc:Localize FeedbackCategory}" Classes="fieldLabel" />
                 <ComboBox ItemsSource="{Binding Categories}"
                           SelectedItem="{Binding Category}"
                           HorizontalAlignment="Stretch" />
 
-                <TextBlock Text="タイトル" Classes="fieldLabel" />
+                <TextBlock Text="{loc:Localize FeedbackSubject}" Classes="fieldLabel" />
                 <TextBox Text="{Binding Subject}"
-                         PlaceholderText="例: 〇〇画面で△△が表示されない"
+                         PlaceholderText="{loc:Localize FeedbackSubjectPlaceholder}"
                          MaxLength="200" />
 
-                <TextBlock Text="本文" Classes="fieldLabel" />
+                <TextBlock Text="{loc:Localize FeedbackBody}" Classes="fieldLabel" />
                 <TextBox Text="{Binding Body}"
                          AcceptsReturn="True"
                          TextWrapping="Wrap"
                          MinHeight="180"
                          MaxLength="10000"
-                         PlaceholderText="内容を具体的にお書きください。&#10;バグの場合は発生手順・発生日時なども記載いただけると助かります。" />
+                         PlaceholderText="{loc:Localize FeedbackBodyPlaceholder}" />
 
-                <TextBlock Text="連絡先メールアドレス（任意）" Classes="fieldLabel" />
-                <TextBlock Text="返信が必要な場合のみご入力ください。" Classes="fieldDescription" />
+                <TextBlock Text="{loc:Localize FeedbackEmail}" Classes="fieldLabel" />
+                <TextBlock Text="{loc:Localize FeedbackEmailDescription}" Classes="fieldDescription" />
                 <TextBox Text="{Binding Email}"
                          PlaceholderText="example@example.com"
                          MaxLength="200" />
 
                 <CheckBox IsChecked="{Binding IncludeLogs}"
-                          Content="直近のログ（最大1000件）をテキストファイルとして添付する"
+                          Content="{loc:Localize FeedbackIncludeLogs}"
                           Margin="0,15,0,0" />
 
                 <Grid ColumnDefinitions="*,auto,auto" Margin="0,15,0,3">
-                    <TextBlock Text="ファイル添付" Classes="fieldLabel" Margin="0" />
+                    <TextBlock Text="{loc:Localize FeedbackAttachments}" Classes="fieldLabel" Margin="0" />
                     <TextBlock Grid.Column="1"
                                Text="{Binding AttachmentsTotalSizeText}"
                                Foreground="{DynamicResource SubForegroundColor}"
                                VerticalAlignment="Center"
                                Margin="10,0" />
                     <Button Grid.Column="2"
-                            Content="ファイルを追加"
+                            Content="{loc:Localize FeedbackAddFile}"
                             Command="{Binding AddAttachmentCommand}" />
                 </Grid>
-                <TextBlock Text="合計20MBまで。画像・ログ・設定ファイルなどを追加できます。"
+                <TextBlock Text="{loc:Localize FeedbackAttachmentsNote}"
                            Classes="fieldDescription" />
                 <ItemsControl ItemsSource="{Binding Attachments}">
                     <ItemsControl.ItemTemplate>
@@ -99,7 +100,7 @@
                                             Padding="8,4"
                                             Command="{Binding $parent[ItemsControl].((vm:FeedbackSettingPage)DataContext).RemoveAttachmentCommand}"
                                             CommandParameter="{Binding}"
-                                            ToolTip.Tip="添付を削除">
+                                            ToolTip.Tip="{loc:Localize FeedbackRemoveAttachment}">
                                         <ui:FASymbolIcon Symbol="Delete" />
                                     </Button>
                                 </Grid>
@@ -114,7 +115,7 @@
                                VerticalAlignment="Center"
                                TextWrapping="Wrap"
                                Margin="0,0,10,0" />
-                    <Button Content="送信"
+                    <Button Content="{loc:Localize FeedbackSend}"
                             Classes="accent"
                             FontSize="16"
                             MinWidth="120"
