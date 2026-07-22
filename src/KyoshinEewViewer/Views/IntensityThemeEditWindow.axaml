@@ -3,6 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:ui="using:FluentAvalonia.UI.Controls"
+        xmlns:loc="using:KyoshinEewViewer.Localization"
         xmlns:converter="clr-namespace:KyoshinEewViewer.Converters;assembly=KyoshinEewViewer"
         xmlns:models="clr-namespace:KyoshinEewViewer.Core.Models;assembly=KyoshinEewViewer.Core"
         xmlns:controls="clr-namespace:KyoshinEewViewer.CustomControl;assembly=KyoshinEewViewer.CustomControl"
@@ -10,7 +11,7 @@
         x:Class="KyoshinEewViewer.Views.IntensityThemeEditWindow"
         x:DataType="models:IntensityTheme"
         d:DataContext="{x:Static models:IntensityTheme.Standard}"
-        Title="震度アイコンテーマ編集" WindowStartupLocation="CenterOwner"
+        Title="{loc:Localize IntensityThemeEditWindowTitle}" WindowStartupLocation="CenterOwner"
         Background="{DynamicResource MainBackgroundColor}" Foreground="{DynamicResource MainForegroundColor}">
     <Window.Styles>
         <Style Selector="Label">
@@ -30,23 +31,23 @@
 
     <Grid RowDefinitions="auto,*">
         <StackPanel Margin="10,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">
-            <TextBlock Text="編集中のテーマ" FontSize="18" />
+            <TextBlock Text="{loc:Localize ThemeEditEditingTheme}" FontSize="18" />
             <TextBlock x:Name="themeDetailText" FontSize="12" Foreground="{DynamicResource SubForegroundColor}" />
         </StackPanel>
         <StackPanel Spacing="5" Orientation="Horizontal" Margin="10" HorizontalAlignment="Right">
             <Button x:Name="rollbackButton" Command="" VerticalAlignment="Stretch"
-                    ToolTip.Tip="復元する(ファイルの状態を読み戻す)" Padding="11">
+                    ToolTip.Tip="{loc:Localize ThemeEditRestore}" Padding="11">
                 <ui:FASymbolIcon Symbol="Undo" FontSize="18" />
             </Button>
             <Button x:Name="saveButton" VerticalAlignment="Stretch" Classes="accent"
-                    ToolTip.Tip="テーマを保存する" Padding="10">
+                    ToolTip.Tip="{loc:Localize ThemeEditSave}" Padding="10">
                 <ui:FASymbolIcon Symbol="Save" FontSize="20" />
             </Button>
         </StackPanel>
 
         <ScrollViewer Grid.Row="1">
             <StackPanel>
-                <ui:FASettingsExpander Header="テーマ名">
+                <ui:FASettingsExpander Header="{loc:Localize ThemeEditThemeName}">
                     <ui:FASettingsExpander.IconSource>
                         <ui:FAFontIconSource Glyph="&#xf5b7;" FontFamily="{StaticResource IconFont}" />
                     </ui:FASettingsExpander.IconSource>
@@ -55,7 +56,7 @@
                     </ui:FASettingsExpander.Footer>
                 </ui:FASettingsExpander>
 
-                <ui:FASettingsExpander Header="縁の太さ">
+                <ui:FASettingsExpander Header="{loc:Localize IntensityThemeBorderThickness}">
                     <ui:FASettingsExpander.IconSource>
                         <ui:FAFontIconSource Glyph="&#xf044;" FontFamily="{StaticResource IconFont}" />
                     </ui:FASettingsExpander.IconSource>
@@ -70,7 +71,7 @@
                 </ui:FASettingsExpander>
 
                 <!-- 震度設定 -->
-                <ui:FASettingsExpander Header="震度" IsExpanded="True">
+                <ui:FASettingsExpander Header="{loc:Localize IntensityThemeIntensity}" IsExpanded="True">
                     <ui:FASettingsExpander.IconSource>
                         <ui:FAFontIconSource Glyph="&#xf410;" FontFamily="{StaticResource IconFont}" />
                     </ui:FASettingsExpander.IconSource>
@@ -105,157 +106,157 @@
                         </StackPanel>
                     </StackPanel>
 
-                    <ui:FASettingsExpanderItem Content="不明">
+                    <ui:FASettingsExpanderItem Content="{loc:Localize IntensityUnknown}">
                         <ui:FASettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="5">
-                                <TextBlock Text="文字:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditForeground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding UnknownForeground, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="背景:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBackground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding UnknownBackground, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="縁:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBorder}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding UnknownBorder, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
                             </StackPanel>
                         </ui:FASettingsExpanderItem.Footer>
                     </ui:FASettingsExpanderItem>
                     
-                    <ui:FASettingsExpanderItem Content="震度0">
+                    <ui:FASettingsExpanderItem Content="{loc:Localize Intensity0}">
                         <ui:FASettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="5">
-                                <TextBlock Text="文字:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditForeground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int0Foreground, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="背景:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBackground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int0Background, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="縁:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBorder}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int0Border, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
                             </StackPanel>
                         </ui:FASettingsExpanderItem.Footer>
                     </ui:FASettingsExpanderItem>
                     
-                    <ui:FASettingsExpanderItem Content="震度1">
+                    <ui:FASettingsExpanderItem Content="{loc:Localize Intensity1}">
                         <ui:FASettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="5">
-                                <TextBlock Text="文字:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditForeground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int1Foreground, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="背景:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBackground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int1Background, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="縁:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBorder}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int1Border, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
                             </StackPanel>
                         </ui:FASettingsExpanderItem.Footer>
                     </ui:FASettingsExpanderItem>
                     
-                    <ui:FASettingsExpanderItem Content="震度2">
+                    <ui:FASettingsExpanderItem Content="{loc:Localize Intensity2}">
                         <ui:FASettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="5">
-                                <TextBlock Text="文字:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditForeground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int2Foreground, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="背景:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBackground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int2Background, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="縁:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBorder}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int2Border, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
                             </StackPanel>
                         </ui:FASettingsExpanderItem.Footer>
                     </ui:FASettingsExpanderItem>
                     
-                    <ui:FASettingsExpanderItem Content="震度3">
+                    <ui:FASettingsExpanderItem Content="{loc:Localize Intensity3}">
                         <ui:FASettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="5">
-                                <TextBlock Text="文字:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditForeground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int3Foreground, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="背景:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBackground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int3Background, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="縁:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBorder}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int3Border, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
                             </StackPanel>
                         </ui:FASettingsExpanderItem.Footer>
                     </ui:FASettingsExpanderItem>
                     
-                    <ui:FASettingsExpanderItem Content="震度4">
+                    <ui:FASettingsExpanderItem Content="{loc:Localize Intensity4}">
                         <ui:FASettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="5">
-                                <TextBlock Text="文字:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditForeground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int4Foreground, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="背景:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBackground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int4Background, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="縁:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBorder}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int4Border, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
                             </StackPanel>
                         </ui:FASettingsExpanderItem.Footer>
                     </ui:FASettingsExpanderItem>
                     
-                    <ui:FASettingsExpanderItem Content="震度5弱">
+                    <ui:FASettingsExpanderItem Content="{loc:Localize Intensity5Lower}">
                         <ui:FASettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="5">
-                                <TextBlock Text="文字:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditForeground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int5LowerForeground, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="背景:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBackground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int5LowerBackground, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="縁:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBorder}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int5LowerBorder, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
                             </StackPanel>
                         </ui:FASettingsExpanderItem.Footer>
                     </ui:FASettingsExpanderItem>
                     
-                    <ui:FASettingsExpanderItem Content="震度5強">
+                    <ui:FASettingsExpanderItem Content="{loc:Localize Intensity5Upper}">
                         <ui:FASettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="5">
-                                <TextBlock Text="文字:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditForeground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int5UpperForeground, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="背景:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBackground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int5UpperBackground, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="縁:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBorder}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int5UpperBorder, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
                             </StackPanel>
                         </ui:FASettingsExpanderItem.Footer>
                     </ui:FASettingsExpanderItem>
                     
-                    <ui:FASettingsExpanderItem Content="震度6弱">
+                    <ui:FASettingsExpanderItem Content="{loc:Localize Intensity6Lower}">
                         <ui:FASettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="5">
-                                <TextBlock Text="文字:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditForeground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int6LowerForeground, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="背景:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBackground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int6LowerBackground, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="縁:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBorder}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int6LowerBorder, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
                             </StackPanel>
                         </ui:FASettingsExpanderItem.Footer>
                     </ui:FASettingsExpanderItem>
                     
-                    <ui:FASettingsExpanderItem Content="震度6強">
+                    <ui:FASettingsExpanderItem Content="{loc:Localize Intensity6Upper}">
                         <ui:FASettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="5">
-                                <TextBlock Text="文字:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditForeground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int6UpperForeground, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="背景:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBackground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int6UpperBackground, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="縁:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBorder}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int6UpperBorder, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
                             </StackPanel>
                         </ui:FASettingsExpanderItem.Footer>
                     </ui:FASettingsExpanderItem>
                     
-                    <ui:FASettingsExpanderItem Content="震度7">
+                    <ui:FASettingsExpanderItem Content="{loc:Localize Intensity7}">
                         <ui:FASettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="5">
-                                <TextBlock Text="文字:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditForeground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int7Foreground, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="背景:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBackground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int7Background, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="縁:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBorder}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding Int7Border, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
                             </StackPanel>
                         </ui:FASettingsExpanderItem.Footer>
                     </ui:FASettingsExpanderItem>
                     
-                    <ui:FASettingsExpanderItem Content="異常">
+                    <ui:FASettingsExpanderItem Content="{loc:Localize IntensityError}">
                         <ui:FASettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="5">
-                                <TextBlock Text="文字:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditForeground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding ErrorForeground, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="背景:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBackground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding ErrorBackground, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="縁:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBorder}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding ErrorBorder, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
                             </StackPanel>
                         </ui:FASettingsExpanderItem.Footer>
@@ -263,7 +264,7 @@
                 </ui:FASettingsExpander>
 
                 <!-- 長周期地震動階級設定 -->
-                <ui:FASettingsExpander Header="長周期地震動階級">
+                <ui:FASettingsExpander Header="{loc:Localize LpgmIntensityScale}">
                     <ui:FASettingsExpander.IconSource>
                         <ui:FAFontIconSource Glyph="&#xf0c7;" FontFamily="{StaticResource IconFont}" />
                     </ui:FASettingsExpander.IconSource>
@@ -288,66 +289,66 @@
                         </StackPanel>
                     </StackPanel>
 
-                    <ui:FASettingsExpanderItem Content="階級0">
+                    <ui:FASettingsExpanderItem Content="{loc:Localize LpgmIntensity0}">
                         <ui:FASettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="5">
-                                <TextBlock Text="文字:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditForeground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding LpgmInt0Foreground, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="背景:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBackground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding LpgmInt0Background, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="縁:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBorder}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding LpgmInt0Border, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
                             </StackPanel>
                         </ui:FASettingsExpanderItem.Footer>
                     </ui:FASettingsExpanderItem>
 
-                    <ui:FASettingsExpanderItem Content="階級1">
+                    <ui:FASettingsExpanderItem Content="{loc:Localize LpgmIntensity1}">
                         <ui:FASettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="5">
-                                <TextBlock Text="文字:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditForeground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding LpgmInt1Foreground, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="背景:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBackground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding LpgmInt1Background, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="縁:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBorder}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding LpgmInt1Border, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
                             </StackPanel>
                         </ui:FASettingsExpanderItem.Footer>
                     </ui:FASettingsExpanderItem>
                     
-                    <ui:FASettingsExpanderItem Content="階級2">
+                    <ui:FASettingsExpanderItem Content="{loc:Localize LpgmIntensity2}">
                         <ui:FASettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="5">
-                                <TextBlock Text="文字:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditForeground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding LpgmInt2Foreground, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="背景:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBackground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding LpgmInt2Background, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="縁:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBorder}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding LpgmInt2Border, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
                             </StackPanel>
                         </ui:FASettingsExpanderItem.Footer>
                     </ui:FASettingsExpanderItem>
                     
-                    <ui:FASettingsExpanderItem Content="階級3">
+                    <ui:FASettingsExpanderItem Content="{loc:Localize LpgmIntensity3}">
                         <ui:FASettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="5">
-                                <TextBlock Text="文字:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditForeground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding LpgmInt3Foreground, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="背景:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBackground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding LpgmInt3Background, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="縁:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBorder}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding LpgmInt3Border, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
                             </StackPanel>
                         </ui:FASettingsExpanderItem.Footer>
                     </ui:FASettingsExpanderItem>
                     
-                    <ui:FASettingsExpanderItem Content="階級4">
+                    <ui:FASettingsExpanderItem Content="{loc:Localize LpgmIntensity4}">
                         <ui:FASettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="5">
-                                <TextBlock Text="文字:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditForeground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding LpgmInt4Foreground, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="背景:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBackground}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding LpgmInt4Background, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
-                                <TextBlock Text="縁:" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize ThemeEditBorder}" VerticalAlignment="Center" />
                                 <ColorPicker Color="{Binding LpgmInt4Border, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
                             </StackPanel>
                         </ui:FASettingsExpanderItem.Footer>
