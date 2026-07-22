@@ -2,73 +2,70 @@ using KyoshinEewViewer.Series.KyoshinMonitor.Models;
 using KyoshinEewViewer.Services.Workflows;
 using KyoshinMonitorLib;
 using System;
-using System.ComponentModel;
+using KyoshinEewViewer.Localization;
 
 namespace KyoshinEewViewer.Series.KyoshinMonitor.Workflow;
 
 public class EewEvent(KyoshinMonitorSeries? series, EewEventType subType) : WorkflowEvent("Eew", series)
 {
-	[Description("EEW イベント種別 (New, UpdateNewSerial, UpdateWithMoreAccurate, Final, Cancel, NewWarning, UpdateWarning, CancelWarning, WarningLevelReached, IncreaseMaxIntensity, DecreaseMaxIntensity)")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarEewEventType)]
 	public EewEventType EventSubType { get; init; } = subType;
 
-	[Description("地震発生時刻")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarEewOccurrenceTime)]
 	public DateTime? OccurrenceAt { get; init; }
 
-	[Description("イベントID")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarEewEventId)]
 	public required string EewId { get; init; }
 
-	[Description("緊急地震速報の発表元 (強震モニタ / DM-D.S.S(大阪管区気象台) など)")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarEewSource)]
 	public required string EewSource { get; init; }
 
-	[Description("報番号 (1始まり)")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarEewSerial)]
 	public int SerialNo { get; init; }
 
-	[Description("確実にキャンセルされたか（強震モニタ経由で擬似的にキャンセルした場合は false になります）")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarEewIsDefinitelyCancelled)]
 	public bool IsTrueCancelled { get; init; }
 
-	[Description("最大予測震度 (Unknown, Int0, Int1, Int2, Int3, Int4, Int5Lower, Int5Upper, Int6Lower, Int6Upper, Int7)")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarEewMaxIntensity)]
 	public JmaIntensity Intensity { get; init; }
 
-	[Description("最大予測震度の長い表記 (例: \"震度5強\")")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarEewMaxIntensityLong)]
 	public string IntensityLongName => Intensity.ToLongString();
 
-	[Description("最大予測震度が震度5弱以上かどうか")]
-	public bool IsAtLeastInt5Lower => Intensity >= JmaIntensity.Int5Lower;
-
-	[Description("予測震度が「程度以上」かどうか")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarEewIsIntensityOver)]
 	public bool IsIntensityOver { get; init; }
 
-	[Description("震央地名")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarEewEpicenterName)]
 	public string? EpicenterPlaceName { get; init; }
 
-	[Description("震央位置 (緯度経度)")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarEewEpicenterLocation)]
 	public Location? EpicenterLocation { get; init; }
 
-	[Description("マグニチュード")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarEewMagnitude)]
 	public float? Magnitude { get; init; }
 
-	[Description("震源の深さ (km)")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarEewDepth)]
 	public int? Depth { get; init; }
 
-	[Description("仮定震源かどうか (PLUM 法)")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarEewIsAssumedHypocenter)]
 	public bool? IsTemporaryEpicenter { get; init; }
 
-	[Description("警報かどうか")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarEewIsWarning)]
 	public bool IsWarning { get; init; }
 
-	[Description("警報対象地域コード配列")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarEewWarningAreaCodes)]
 	public int[]? WarningAreaCodes { get; init; }
 
-	[Description("警報対象地域名配列")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarEewWarningAreaNames)]
 	public string[]? WarningAreaNames { get; init; }
 
-	[Description("最終報かどうか")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarEewIsFinal)]
 	public bool IsFinal { get; init; }
 
-	[Description("キャンセルされているかどうか")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarEewIsCancelled)]
 	public bool IsCancelled { get; init; }
 
-	[Description("リプレイ中に発生したイベントかどうか")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarEewIsReplay)]
 	public bool IsReplay { get; init; }
 
 	public static EewEvent FromEewModel(KyoshinMonitorSeries series, EewEventType type, Eew eew, bool isReplay)

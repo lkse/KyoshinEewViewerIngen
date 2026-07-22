@@ -5,8 +5,8 @@ using KyoshinEewViewer.Series.Qzss.Workflow;
 using KyoshinEewViewer.Series.Tsunami.Workflow;
 using KyoshinEewViewer.Services.Workflows.BuiltinTriggers;
 using System;
-using System.ComponentModel;
 using System.Text.Json.Serialization;
+using KyoshinEewViewer.Localization;
 
 namespace KyoshinEewViewer.Services.Workflows;
 
@@ -26,12 +26,12 @@ public abstract class WorkflowEvent(string eventType, SeriesBase? eventedSeries)
 	[JsonIgnore]
 	public SeriesBase? EventedSeries { get; } = eventedSeries;
 
-	[Description("イベントの種類 (ShakeDetected / Eew / EarthquakeInformation など)")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarBaseEventType)]
 	public string EventType { get; } = eventType;
 
-	[Description("イベントの一意 ID")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarBaseEventId)]
 	public Guid EventId { get; } = Guid.NewGuid();
 
-	[Description("テスト実行で発火したイベントかどうか")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarBaseIsTest)]
 	public bool IsTest { get; init; }
 }

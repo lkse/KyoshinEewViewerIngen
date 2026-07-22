@@ -6,6 +6,8 @@ using System.Reflection;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using AvaloniaEdit.CodeCompletion;
+using KyoshinEewViewer.Localization;
+using Splat;
 
 namespace KyoshinEewViewer.Views.Components.TemplateEditor;
 
@@ -217,10 +219,13 @@ internal static partial class ScribanCompletionData
                 var hasChildren = !IsTerminalType(propType) && !IsCollectionType(propType);
                 var typeDesc = hasChildren ? $"{typeName} ({p.Name}.*)" : typeName;
 
-                // [Description] 属性があれば説明を追加
-                var descAttr = p.GetCustomAttribute<DescriptionAttribute>();
-                var description = descAttr != null
-                    ? $"{descAttr.Description}\n({typeDesc})"
+                // [LocalizedDescription] / [Description] 属性があれば説明を追加
+                var localizedDescAttr = p.GetCustomAttribute<LocalizedDescriptionAttribute>();
+                var descText = localizedDescAttr != null
+                    ? Locator.Current.GetService<LocalizationService>()?.Get(localizedDescAttr.Key)
+                    : p.GetCustomAttribute<DescriptionAttribute>()?.Description;
+                var description = descText != null
+                    ? $"{descText}\n({typeDesc})"
                     : typeDesc;
 
                 return (ICompletionData)new ScribanCompletionItem(p.Name, description, ScribanSymbolKind.Property);

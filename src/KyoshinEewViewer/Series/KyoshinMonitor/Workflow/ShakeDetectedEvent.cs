@@ -2,8 +2,8 @@ using KyoshinEewViewer.Core.Models;
 using KyoshinEewViewer.Series.KyoshinMonitor.Models;
 using KyoshinEewViewer.Services.Workflows;
 using System;
-using System.ComponentModel;
 using System.Linq;
+using KyoshinEewViewer.Localization;
 
 namespace KyoshinEewViewer.Series.KyoshinMonitor.Workflow;
 
@@ -17,30 +17,30 @@ public class ShakeDetectedEvent(
 	ShakeDetectedRegion[] regionDetails
 ) : WorkflowEvent("KyoshinShakeDetected", series)
 {
-	[Description("揺れ検知時刻 (現在のイベント時点)")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarShakeDetectedTime)]
 	public DateTime EventedAt { get; } = time;
 
-	[Description("最初に揺れを検知した時刻")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarShakeFirstDetectedTime)]
 	public DateTime FirstEventedAt { get; } = evt.CreatedAt;
 
-	[Description("検知レベル (Weaker, Weak, Medium, Strong, Stronger)")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarShakeLevel)]
 	public KyoshinEventLevel Level { get; } = evt.Level;
 
-	[Description("検知イベントの一意 ID")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarShakeEventId)]
 	public Guid KyoshinEventId { get; } = evt.Id;
 
-	[Description("揺れを検知した地域名の配列")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarShakeRegionNames)]
 	public string[] Regions { get; } = evt.Points.Select(p => p.Region).Distinct().ToArray();
 
-	[Description("最大レベルを検出した地域とそのサブ地域の配列")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarShakePeakRegions)]
 	public ShakeDetectedRegion[] RegionDetails { get; } = regionDetails;
 
-	[Description("リプレイ中に発生したイベントかどうか")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarShakeIsReplay)]
 	public bool IsReplay { get; } = isReplay;
 
-	[Description("地域 (Region) が拡大したイベントかどうか")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarShakeIsRegionExpanded)]
 	public bool IsRegionExpanded { get; } = isRegionExpanded;
 
-	[Description("サブ地域 (Region+SubRegion) が拡大したイベントかどうか")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarShakeIsSubRegionExpanded)]
 	public bool IsSubRegionExpanded { get; } = isSubRegionExpanded;
 }

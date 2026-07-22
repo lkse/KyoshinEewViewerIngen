@@ -1,9 +1,9 @@
 using Avalonia.Controls;
 using ReactiveUI;
 using System;
-using System.ComponentModel;
 using System.Reflection;
 using System.Text.Json.Serialization;
+using KyoshinEewViewer.Localization;
 
 namespace KyoshinEewViewer.Services.Workflows.BuiltinTriggers;
 
@@ -32,9 +32,9 @@ public class UpdateAvailableTrigger : WorkflowTrigger
 
 public class UpdateAvailableEvent(bool isContinuous, string latestVersion) : WorkflowEvent("UpdateAvailable", null)
 {
-	[Description("継続した通知(過去に発生した通知)かどうか")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarUpdateIsContinued)]
 	public bool IsContinuous { get; } = isContinuous;
 
-	[Description("利用可能な最新バージョン番号")]
+	[LocalizedDescription(LocalizationKey.WorkflowVarUpdateLatestVersion)]
 	public string LatestVersion { get; } = latestVersion;
 }
