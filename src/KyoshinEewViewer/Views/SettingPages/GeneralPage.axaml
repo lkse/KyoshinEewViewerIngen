@@ -24,27 +24,27 @@
         </Style>
     </UserControl.Styles>
     <ScrollViewer>
-	        <StackPanel>
-				<TextBlock Text="{loc:Localize GeneralLanguage}" FontWeight="Bold" Margin="10,20,10,5" />
-				<ui:FASettingsExpander Header="{loc:Localize GeneralLanguage}" Description="{loc:Localize GeneralLanguageDescription}">
-					<ui:FASettingsExpander.IconSource>
-						<ui:FAFontIconSource Glyph="&#xf1ab;" FontFamily="{StaticResource IconFont}" />
-					</ui:FASettingsExpander.IconSource>
-					<ui:FASettingsExpander.Footer>
-						<ComboBox ItemsSource="{Binding LocalizationService.SupportedLanguages}"
-								  SelectedItem="{Binding LocalizationService.SelectedLanguage, Mode=TwoWay}"
-								  MinWidth="160">
-							<ComboBox.ItemTemplate>
-								<DataTemplate x:DataType="loc:LanguageOption">
-									<TextBlock Text="{Binding DisplayName}" />
-								</DataTemplate>
-							</ComboBox.ItemTemplate>
-						</ComboBox>
-					</ui:FASettingsExpander.Footer>
-				</ui:FASettingsExpander>
+        <StackPanel>
+            <TextBlock Text="{loc:Localize GeneralLanguage}" FontWeight="Bold" Margin="10,20,10,5" />
+            <ui:FASettingsExpander Header="{loc:Localize GeneralLanguage}" Description="{loc:Localize GeneralLanguageDescription}">
+                <ui:FASettingsExpander.IconSource>
+                    <ui:FAFontIconSource Glyph="&#xf1ab;" FontFamily="{StaticResource IconFont}" />
+                </ui:FASettingsExpander.IconSource>
+                <ui:FASettingsExpander.Footer>
+                    <ComboBox ItemsSource="{Binding LocalizationService.SupportedLanguages}"
+                              SelectedItem="{Binding LocalizationService.SelectedLanguage, Mode=TwoWay}"
+                              MinWidth="160">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="loc:LanguageOption">
+                                <TextBlock Text="{Binding DisplayName}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </ui:FASettingsExpander.Footer>
+            </ui:FASettingsExpander>
 
-	            <TextBlock Text="{loc:Localize GeneralAppearance}" FontWeight="Bold" Margin="10,20,10,5" />
-	            <ui:FASettingsExpander Header="{loc:Localize GeneralWindowTheme}" Description="{loc:Localize GeneralWindowThemeDescription}">
+            <TextBlock Text="{loc:Localize GeneralAppearance}" FontWeight="Bold" Margin="10,20,10,5" />
+            <ui:FASettingsExpander Header="{loc:Localize GeneralWindowTheme}" Description="{loc:Localize GeneralWindowThemeDescription}">
                 <ui:FASettingsExpander.IconSource>
                     <ui:FAFontIconSource Glyph="&#xf2d2;" FontFamily="{StaticResource IconFont}" />
                 </ui:FASettingsExpander.IconSource>

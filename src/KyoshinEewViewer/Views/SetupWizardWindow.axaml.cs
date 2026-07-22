@@ -1,10 +1,15 @@
 using Avalonia.Controls;
+using KyoshinEewViewer.Core;
+using KyoshinEewViewer.Localization;
+using Splat;
 using System;
 
 namespace KyoshinEewViewer.Views;
 public partial class SetupWizardWindow : Window
 {
 	public event Action? Continued;
+
+	private LocalizationService LocalizationService { get; } = Locator.Current.RequireService<LocalizationService>();
 
 	private int Index { get; set; }
 	private UserControl[] Pages { get; } = [
@@ -31,19 +36,19 @@ public partial class SetupWizardWindow : Window
 		{
 			BeforeButton.IsEnabled = false;
 			NextButton.IsEnabled = true;
-			SkipButtonText.Text = Properties.Resources.SetupWizardSkipAndRun;
+			SkipButtonText.Text = LocalizationService.Get(LocalizationKey.SetupWizardSkipAndRun);
 		}
 		else if (Index >= Pages.Length - 1)
 		{
 			BeforeButton.IsEnabled = true;
 			NextButton.IsEnabled = false;
-			SkipButtonText.Text = Properties.Resources.SetupWizardRun;
+			SkipButtonText.Text = LocalizationService.Get(LocalizationKey.SetupWizardRun);
 		}
 		else
 		{
 			BeforeButton.IsEnabled = true;
 			NextButton.IsEnabled = true;
-			SkipButtonText.Text = Properties.Resources.SetupWizardSkipAndRun;
+			SkipButtonText.Text = LocalizationService.Get(LocalizationKey.SetupWizardSkipAndRun);
 		}
 		SkipButtonText.HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center;
 		ContentControl.Content = Pages[Index];

@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:control="clr-namespace:KyoshinEewViewer.Controls;assembly=KyoshinEewViewer"
-             xmlns:p="clr-namespace:KyoshinEewViewer.Properties;assembly=KyoshinEewViewer"
+             xmlns:loc="using:KyoshinEewViewer.Localization"
 			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
 			 FontSize="16"
              x:Class="KyoshinEewViewer.Views.SetupWizardPages.WelcomePage">
@@ -16,8 +16,8 @@
 		</StackPanel.Styles>
 		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 			<Image Source="avares://KyoshinEewViewer.Desktop/Assets/logo.ico" Width="46" Height="46" Margin="5,20,5,5" VerticalAlignment="Center" />
-			<TextBlock x:Name="TitleText" Text="{x:Static p:Resources.SetupWizardWelcomePageTitle}" FontSize="32" VerticalAlignment="Center" />
+			<TextBlock x:Name="TitleText" Text="{loc:Localize SetupWizardWelcomeTitle}" FontSize="32" VerticalAlignment="Center" />
 		</StackPanel>
-		<control:MarkdownViewer Markdown="{x:Static p:Resources.SetupWizardWelcomePageFunctionDetail}" />
+		<control:MarkdownViewer Markdown="{loc:Localize SetupWizardWelcomeContent}" />
 	</StackPanel>
 </UserControl>

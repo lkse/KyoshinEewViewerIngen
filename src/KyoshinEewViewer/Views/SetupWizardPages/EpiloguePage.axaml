@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:control="clr-namespace:KyoshinEewViewer.Controls;assembly=KyoshinEewViewer"
-             xmlns:p="clr-namespace:KyoshinEewViewer.Properties;assembly=KyoshinEewViewer"
+             xmlns:loc="using:KyoshinEewViewer.Localization"
 			 xmlns:vm="using:KyoshinEewViewer.ViewModels"
 			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
 			 x:DataType="vm:SetupWizardWindowViewModel" x:CompileBindings="True"
@@ -14,7 +14,7 @@
 				<Setter Property="TextWrapping" Value="Wrap" />
 			</Style>
 		</StackPanel.Styles>
-		<TextBlock Text="{x:Static p:Resources.SetupWizardEpiloguePageTitle}" FontSize="32" HorizontalAlignment="Center" />
-		<control:MarkdownViewer Markdown="{x:Static p:Resources.SetupWizardEpiloguePageContent}" />
+		<TextBlock Text="{loc:Localize SetupWizardEpilogueTitle}" FontSize="32" HorizontalAlignment="Center" />
+		<control:MarkdownViewer Markdown="{loc:Localize SetupWizardEpilogueContent}" />
 	</StackPanel>
 </UserControl>

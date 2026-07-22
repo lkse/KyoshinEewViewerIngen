@@ -1,6 +1,9 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using KyoshinEewViewer.Core;
+using KyoshinEewViewer.Localization;
+using Splat;
 using System;
 
 namespace KyoshinEewViewer.Views.SetupWizardPages;
@@ -15,6 +18,6 @@ public partial class WelcomePage : UserControl
 	{
 		base.OnAttachedToVisualTree(e);
 		if (new Random().NextDouble() < .05) // 5%
-			this.FindControl<TextBlock>("titleText")!.Text = Properties.Resources.SetupWizardWelcomePageTitleAlt;
+			this.FindControl<TextBlock>("titleText")!.Text = Locator.Current.RequireService<LocalizationService>().Get(LocalizationKey.SetupWizardWelcomeTitleAlt);
 	}
 }
