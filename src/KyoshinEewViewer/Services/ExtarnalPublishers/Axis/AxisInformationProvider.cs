@@ -1,5 +1,6 @@
 using KyoshinEewViewer.Core;
 using KyoshinEewViewer.Core.Models;
+using KyoshinEewViewer.Localization;
 using KyoshinEewViewer.Services.ExtarnalPublishers.Axis.ApiModels;
 using ReactiveUI;
 using Splat;
@@ -13,6 +14,8 @@ public class AxisInformationProvider : ReactiveObject
 {
 	private ILogger Logger { get; }
 	private KyoshinEewViewerConfiguration Config { get; }
+
+	private static LocalizationService? Loc => Locator.Current.GetService<LocalizationService>();
 
 	private AxisApiClient ApiClient { get; } = new AxisApiClient();
 	private AxisWebSocketConnection WebSocketConnection { get; }
@@ -49,7 +52,7 @@ public class AxisInformationProvider : ReactiveObject
 		private set => this.RaiseAndSetIfChanged(ref _currentJwtErrorMessage, value);
 	}
 
-	private string? _currentStatus = "待機中";
+	private string? _currentStatus = Loc?.Get(LocalizationKey.AxisStatusWaiting) ?? "待機中";
 	public string? CurrentStatus
 	{
 		get => _currentStatus;
@@ -72,12 +75,12 @@ public class AxisInformationProvider : ReactiveObject
 		WebSocketConnection.Connected += () =>
 		{
 			IsConnected = true;
-			CurrentStatus = "接続完了";
+			CurrentStatus = Loc?.Get(LocalizationKey.AxisStatusConnected) ?? "接続完了";
 			BackoffTime = 1;
 		};
 		WebSocketConnection.PingCompleted += time =>
 		{
-			CurrentStatus = $"接続完了 (RTT: {time.TotalMilliseconds:0.0}ms)";
+			CurrentStatus = string.Format(Loc?.Get(LocalizationKey.AxisStatusConnectedRtt) ?? "接続完了 (RTT: {0:0.0}ms)", time.TotalMilliseconds);
 		};
 		WebSocketConnection.Error += (message, canRetry) =>
 		{
@@ -89,10 +92,10 @@ public class AxisInformationProvider : ReactiveObject
 		WebSocketConnection.Disconnected += () =>
 		{
 			IsConnected = false;
-			CurrentStatus = "切断されました";
+			CurrentStatus = Loc?.Get(LocalizationKey.AxisStatusDisconnected) ?? "切断されました";
 			if (Config.Axis.Enable)
 			{
-				CurrentStatus = $"切断されました。{BackoffTime:0}秒後に再接続を行います…";
+				CurrentStatus = string.Format(Loc?.Get(LocalizationKey.AxisStatusReconnecting) ?? "切断されました。{0:0}秒後に再接続を行います…", BackoffTime);
 				ReconnectTimer.Change(TimeSpan.FromSeconds(BackoffTime), Timeout.InfiniteTimeSpan);
 			}
 		};
@@ -109,7 +112,7 @@ public class AxisInformationProvider : ReactiveObject
 				Config.Axis.Enable = false;
 				ApiClient.Jwt = null;
 				CurrentPayload = null;
-				PayloadErrorMessage = "トークンが入力されていません。";
+				PayloadErrorMessage = Loc?.Get(LocalizationKey.AxisTokenNotEntered) ?? "トークンが入力されていません。";
 				return;
 			}
 			try
@@ -119,7 +122,7 @@ public class AxisInformationProvider : ReactiveObject
 				if (DateTimeOffset.FromUnixTimeSeconds(CurrentPayload.Exp) < DateTimeOffset.UtcNow)
 				{
 					Config.Axis.Enable = false;
-					PayloadErrorMessage = "トークンの有効期限が切れています。";
+					PayloadErrorMessage = Loc?.Get(LocalizationKey.AxisTokenExpired) ?? "トークンの有効期限が切れています。";
 				}
 				else
 					PayloadErrorMessage = null;
@@ -177,14 +180,14 @@ public class AxisInformationProvider : ReactiveObject
 		{
 			IsConnecting = true;
 			// 有効化
-			CurrentStatus = "接続中…";
+			CurrentStatus = Loc?.Get(LocalizationKey.AxisStatusConnecting) ?? "接続中…";
 			await WebSocketConnection.ConnectAsync();
 			JwtRefreshTimer.Change(TimeSpan.FromMinutes(1), TimeSpan.FromDays(1));
 		}
 		catch (Exception ex)
 		{
 			Logger.LogError(ex, "接続に失敗しました。");
-			CurrentStatus = "接続に失敗しました。自動でリトライされます…";
+			CurrentStatus = Loc?.Get(LocalizationKey.AxisStatusConnectFailed) ?? "接続に失敗しました。自動でリトライされます…";
 			ReconnectTimer.Change(TimeSpan.FromSeconds(BackoffTime), Timeout.InfiniteTimeSpan);
 			IsConnected = false;
 		}
@@ -195,7 +198,7 @@ public class AxisInformationProvider : ReactiveObject
 	{
 		try
 		{
-			CurrentStatus = "切断中…";
+			CurrentStatus = Loc?.Get(LocalizationKey.AxisStatusDisconnecting) ?? "切断中…";
 			JwtRefreshTimer.Change(Timeout.Infinite, Timeout.Infinite);
 			ReconnectTimer.Change(Timeout.Infinite, Timeout.Infinite);
 			await WebSocketConnection.DisconnectAsync();
@@ -205,7 +208,7 @@ public class AxisInformationProvider : ReactiveObject
 		{
 			Logger.LogError(ex, "切断に失敗しました。");
 		}
-		CurrentStatus = "切断しました";
+		CurrentStatus = Loc?.Get(LocalizationKey.AxisStatusDisconnectedDone) ?? "切断しました";
 	}
 
 	public async void CheckAndRefreshJwt()
@@ -222,7 +225,7 @@ public class AxisInformationProvider : ReactiveObject
 			// 間に合わなかった
 			if (payload.ExpDateTime <= DateTimeOffset.UtcNow)
 			{
-				PayloadErrorMessage = "トークンの有効期限が切れています。";
+				PayloadErrorMessage = Loc?.Get(LocalizationKey.AxisTokenExpired) ?? "トークンの有効期限が切れています。";
 				Config.Axis.Enable = false;
 				return;
 			}

@@ -17,6 +17,7 @@ using System.Text.Json;
 using KyoshinEewViewer.Services.ExtarnalPublishers.Axis.ApiModels.Message;
 using KyoshinMonitorLib;
 using KyoshinEewViewer.Core;
+using KyoshinEewViewer.Localization;
 
 namespace KyoshinEewViewer.Series.KyoshinMonitor;
 
@@ -48,7 +49,7 @@ public class RealtimeEarthquakeInformationHost : EarthquakeInformationHost
 		ObservationPointsUpdateService observationPointsUpdateService
 	) : base(false, config)
 	{
-		ReplayDescription = "リアルタイム";
+		ReplayDescription = Locator.Current.GetService<LocalizationService>()?.Get(LocalizationKey.ReplayRealtime) ?? "リアルタイム";
 
 		Logger = logManager.GetLogger<RealtimeEarthquakeInformationHost>();
 		TimerService = timerService;

@@ -28,8 +28,9 @@ public class DmdataSettingPage : ReactiveObject, ISettingPage
 	public DmdataRedundantTelegramPublisher DmdataRedundantTelegramPublisher { get; }
 	public KyoshinEewViewerConfiguration Config { get; }
 
+	private static Localization.LocalizationService? Loc => Locator.Current.GetService<Localization.LocalizationService>();
 
-	private string _dmdataStatusString = "未認証";
+	private string _dmdataStatusString = Loc?.Get(Localization.LocalizationKey.DmdataStatusUnauthenticated) ?? "未認証";
 	public string DmdataStatusString
 	{
 		get => _dmdataStatusString;
@@ -79,13 +80,13 @@ public class DmdataSettingPage : ReactiveObject, ISettingPage
 		if (!string.IsNullOrEmpty(Config.Dmdata.RefreshToken))
 			return;
 
-		DmdataStatusString = "認証しています";
+		DmdataStatusString = Loc?.Get(Localization.LocalizationKey.DmdataStatusAuthenticating) ?? "認証しています";
 
 		AuthorizeCancellationTokenSource = new CancellationTokenSource();
 		try
 		{
 			await DmdataRedundantTelegramPublisher.AuthorizeAsync(AuthorizeCancellationTokenSource.Token);
-			DmdataStatusString = "認証成功";
+			DmdataStatusString = Loc?.Get(Localization.LocalizationKey.DmdataStatusAuthSuccess) ?? "認証成功";
 		}
 		catch (Exception ex)
 		{
@@ -104,14 +105,14 @@ public class DmdataSettingPage : ReactiveObject, ISettingPage
 		if (string.IsNullOrEmpty(Config.Dmdata.RefreshToken))
 			return;
 
-		DmdataStatusString = "認証を解除しています";
+		DmdataStatusString = Loc?.Get(Localization.LocalizationKey.DmdataStatusDeauthenticating) ?? "認証を解除しています";
 		try
 		{
 			await DmdataRedundantTelegramPublisher.UnauthorizeAsync();
 		}
 		catch
 		{
-			DmdataStatusString = "トークン無効化失敗";
+			DmdataStatusString = Loc?.Get(Localization.LocalizationKey.DmdataStatusTokenRevokeFailed) ?? "トークン無効化失敗";
 		}
 
 		UpdateDmdataStatus();
@@ -125,12 +126,12 @@ public class DmdataSettingPage : ReactiveObject, ISettingPage
 		try
 		{
 			await DmdataRedundantTelegramPublisher.ReconnectImmediatelyAsync();
-			DmdataStatusString = "再接続を開始しました";
+			DmdataStatusString = Loc?.Get(Localization.LocalizationKey.DmdataStatusReconnectStarted) ?? "再接続を開始しました";
 		}
 		catch (Exception ex)
 		{
 			Logger.LogError(ex, "即時再接続に失敗しました");
-			DmdataStatusString = "再接続に失敗しました";
+			DmdataStatusString = Loc?.Get(Localization.LocalizationKey.DmdataStatusReconnectFailed) ?? "再接続に失敗しました";
 		}
 	}
 
@@ -148,14 +149,14 @@ public class DmdataSettingPage : ReactiveObject, ISettingPage
 	{
 		if (!string.IsNullOrWhiteSpace(Config.Dmdata.OAuthClientSecret))
 		{
-			DmdataStatusString = "クライアント資格情報フローを利用中";
+			DmdataStatusString = Loc?.Get(Localization.LocalizationKey.DmdataStatusClientCredential) ?? "クライアント資格情報フローを利用中";
 			return;
 		}
 		if (string.IsNullOrEmpty(Config.Dmdata.RefreshToken))
 		{
-			DmdataStatusString = "未認証";
+			DmdataStatusString = Loc?.Get(Localization.LocalizationKey.DmdataStatusUnauthenticated) ?? "未認証";
 			return;
 		}
-		DmdataStatusString = "認証済み";
+		DmdataStatusString = Loc?.Get(Localization.LocalizationKey.DmdataStatusAuthenticated) ?? "認証済み";
 	}
 }

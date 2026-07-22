@@ -1,5 +1,6 @@
 using KyoshinEewViewer.Core.Models;
 using KyoshinEewViewer.Core.Models.EarthquakeReplay;
+using KyoshinEewViewer.Localization;
 using KyoshinEewViewer.Series.KyoshinMonitor.Services.Eew;
 using KyoshinEewViewer.Series.KyoshinMonitor.Services;
 using KyoshinEewViewer.Services;
@@ -64,7 +65,7 @@ public class ReplayFileEarthquakeInformationHost : EarthquakeInformationHost
 			this.RaiseAndSetIfChanged(ref _speedMultiplier, value);
 			if (Runner != null)
 				Runner.SpeedMultiplier = value;
-			ReplayDescription = $"リプレイファイル {SpeedMultiplier:0.0}倍速";
+			ReplayDescription = string.Format(Locator.Current.GetService<LocalizationService>()?.Get(LocalizationKey.ReplayFileSpeed) ?? "リプレイファイル {0:0.0}倍速", SpeedMultiplier);
 		}
 	}
 
@@ -256,10 +257,10 @@ public class ReplayFileEarthquakeInformationHost : EarthquakeInformationHost
 		Runner.Finished += time =>
 		{
 			OnRealtimeDataUpdated((time, Array.Empty<RealtimeObservationPoint>(), Array.Empty<KyoshinEvent>()));
-			WarningMessage = "リプレイファイルの再生が終了しました";
+			WarningMessage = Locator.Current.GetService<LocalizationService>()?.Get(LocalizationKey.ReplayFileFinished) ?? "リプレイファイルの再生が終了しました";
 		};
 
-		ReplayDescription = $"リプレイファイル {SpeedMultiplier:0.0}倍速";
+		ReplayDescription = string.Format(Locator.Current.GetService<LocalizationService>()?.Get(LocalizationKey.ReplayFileSpeed) ?? "リプレイファイル {0:0.0}倍速", SpeedMultiplier);
 
 		Eews = [];
 		KyoshinEvents = [];

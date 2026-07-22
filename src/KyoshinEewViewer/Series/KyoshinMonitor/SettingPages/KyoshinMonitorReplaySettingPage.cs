@@ -2,11 +2,12 @@ using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using FluentAvalonia.UI.Controls;
 using KyoshinEewViewer.Core.Models;
+using KyoshinEewViewer.Localization;
 using KyoshinEewViewer.Services;
 using ReactiveUI;
+using Splat;
 using System;
 using System.Reactive;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace KyoshinEewViewer.Series.KyoshinMonitor.SettingPages;
@@ -49,7 +50,9 @@ public class KyoshinMonitorReplaySettingPage : ReactiveObject, ISettingPage
 			TimeshiftedDateTime = TimerService.CurrentDisplayTime.AddSeconds(-TimeshiftSeconds);
 		}
 	}
-	private string _timeshiftSecondsString = "リアルタイム";
+	private static LocalizationService? Loc => Locator.Current.GetService<LocalizationService>();
+
+	private string _timeshiftSecondsString = Loc?.Get(LocalizationKey.ReplayRealtime) ?? "リアルタイム";
 
 	public KyoshinMonitorReplaySettingPage(
 		KyoshinEewViewerConfiguration config,
@@ -82,21 +85,11 @@ public class KyoshinMonitorReplaySettingPage : ReactiveObject, ISettingPage
 	{
 		if (TimeshiftSeconds == 0)
 		{
-			TimeshiftSecondsString = "リアルタイム";
+			TimeshiftSecondsString = Loc?.Get(LocalizationKey.ReplayRealtime) ?? "リアルタイム";
 			return;
 		}
 
-		var sb = new StringBuilder();
-		var time = TimeSpan.FromSeconds(TimeshiftSeconds);
-		if (time.TotalHours >= 1)
-			sb.Append((int)time.TotalHours + "時間");
-		if (time.Minutes > 0)
-			sb.Append(time.Minutes + "分");
-		if (time.Seconds > 0)
-			sb.Append(time.Seconds + "秒");
-		sb.Append('前');
-
-		TimeshiftSecondsString = sb.ToString();
+		TimeshiftSecondsString = LocalizedTime.FormatAgo(TimeSpan.FromSeconds(TimeshiftSeconds));
 	}
 
 	private DateTime _timeshiftedDateTime;
@@ -116,7 +109,7 @@ public class KyoshinMonitorReplaySettingPage : ReactiveObject, ISettingPage
 				return;
 			var files = await KyoshinEewViewerApp.TopLevelControl.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
 			{
-				Title = "リプレイファイルを開く",
+				Title = Loc?.Get(LocalizationKey.ReplayOpenFileTitle) ?? "リプレイファイルを開く",
 				FileTypeFilter = [FilePickerFileTypes.All],
 				AllowMultiple = false,
 			});

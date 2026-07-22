@@ -1,5 +1,6 @@
 using KyoshinEewViewer.Core.Models;
 using KyoshinEewViewer.CustomControl;
+using KyoshinEewViewer.Localization;
 using KyoshinEewViewer.Map;
 using KyoshinEewViewer.Series.KyoshinMonitor.Models;
 using KyoshinEewViewer.Series.KyoshinMonitor.Services;
@@ -11,7 +12,6 @@ using Splat;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace KyoshinEewViewer.Series.KyoshinMonitor;
 public class TimeshiftEarthquakeInformationHost : EarthquakeInformationHost
@@ -159,17 +159,9 @@ public class TimeshiftEarthquakeInformationHost : EarthquakeInformationHost
 		// タイムシフト開始
 		TimeshiftSeconds = timeshiftSeconds;
 
-		var sb = new StringBuilder("タイムシフト ");
-		var time = TimeSpan.FromSeconds(TimeshiftSeconds);
-		if (time.TotalHours >= 1)
-			sb.Append((int)time.TotalHours + "時間");
-		if (time.Minutes > 0)
-			sb.Append(time.Minutes + "分");
-		if (time.Seconds > 0)
-			sb.Append(time.Seconds + "秒");
-		sb.Append('前');
-
-		ReplayDescription = sb.ToString();
+		ReplayDescription = string.Format(
+			Locator.Current.GetService<LocalizationService>()?.Get(LocalizationKey.ReplayTimeshiftFormat) ?? "タイムシフト {0}",
+			LocalizedTime.FormatAgo(TimeSpan.FromSeconds(TimeshiftSeconds)));
 		IsRunning = true;
 
 		Eews = [];

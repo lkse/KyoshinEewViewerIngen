@@ -1,4 +1,6 @@
+using KyoshinEewViewer.Localization;
 using KyoshinEewViewer.Services.ExtarnalPublishers.Axis.ApiModels;
+using Splat;
 using System;
 using System.Diagnostics;
 using System.Net.WebSockets;
@@ -176,7 +178,7 @@ public class AxisWebSocketConnection
 						continue;
 					}
 
-					Error?.Invoke("WebSocket接続が開始されませんでした。", true);
+					Error?.Invoke(Locator.Current.GetService<LocalizationService>()?.Get(LocalizationKey.AxisErrorWebSocketNotStarted) ?? "WebSocket接続が開始されませんでした。", true);
 					await WebSocket.CloseAsync(WebSocketCloseStatus.Empty, null, token);
 					OnDisconnected();
 					return;
@@ -200,7 +202,7 @@ public class AxisWebSocketConnection
 		catch (Exception ex)
 		{
 			Debug.WriteLine("WebSocket受信スレッドで例外が発生しました\n" + ex);
-			Error?.Invoke("WebSocket受信スレッドで例外が発生しました", true);
+			Error?.Invoke(Locator.Current.GetService<LocalizationService>()?.Get(LocalizationKey.AxisErrorReceiveThread) ?? "WebSocket受信スレッドで例外が発生しました", true);
 			if (IsConnected && WebSocket != null)
 				await WebSocket.CloseAsync(WebSocketCloseStatus.Empty, null, token);
 			OnDisconnected();
