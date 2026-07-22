@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ui="using:FluentAvalonia.UI.Controls"
         xmlns:cc="clr-namespace:KyoshinEewViewer.CustomControl;assembly=KyoshinEewViewer.CustomControl"
+        xmlns:loc="using:KyoshinEewViewer.Localization"
         xmlns:vm="using:KyoshinEewViewer.ViewModels"
         xmlns:converter="clr-namespace:KyoshinEewViewer.Converters"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
@@ -45,7 +46,7 @@
                         Command="{Binding ReturnToHomeMap}"
                         Padding="10,7"
                         Theme="{StaticResource TransparentButton}"
-                        ToolTip.Tip="地図の座標を戻す">
+                        ToolTip.Tip="{loc:Localize MainRestoreMapPosition}">
                     <Viewbox Height="28" Margin="0,2">
                         <ui:FASymbolIcon Symbol="Home" />
                     </Viewbox>

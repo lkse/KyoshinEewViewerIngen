@@ -40,7 +40,7 @@ namespace KyoshinEewViewer.Series.Earthquake;
 
 public class EarthquakeSeries : SeriesBase
 {
-	public static SeriesMeta MetaData { get; } = new(typeof(EarthquakeSeries), "earthquake", "地震情報", new FAFontIconSource { Glyph = "\xf05a", FontFamily = new(Utils.IconFontName) }, true, "震源･震度情報を受信･表示します。");
+	public static SeriesMeta MetaData { get; } = new(typeof(EarthquakeSeries), "earthquake", Localization.LocalizationKey.SeriesEarthquakeName, new FAFontIconSource { Glyph = "\xf05a", FontFamily = new(Utils.IconFontName) }, true, Localization.LocalizationKey.SeriesEarthquakeDescription);
 
 	public bool IsDebugBuild { get; }
 #if DEBUG
@@ -217,7 +217,7 @@ public class EarthquakeSeries : SeriesBase
 	private EarthquakeView? _control;
 	public override Control DisplayControl => _control ?? throw new InvalidOperationException("初期化前にコントロールが呼ばれています");
 	public override ISettingPage[] SettingPages => [
-		new BasicSettingPage<EarthquakePage>("\xf05a", "地震情報", []),
+		new BasicSettingPage<EarthquakePage>("\xf05a", Localization.LocalizationKey.SeriesEarthquakeName, [])
 	];
 
 	public override void Initialize()

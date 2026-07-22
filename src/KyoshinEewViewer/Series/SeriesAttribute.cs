@@ -1,10 +1,13 @@
 using FluentAvalonia.UI.Controls;
+using KyoshinEewViewer.Localization;
+using ReactiveUI;
 using System;
 
 namespace KyoshinEewViewer.Series;
 
-public class SeriesMeta(Type type, string key, string name, FAIconSource icon, bool isDefaultEnabled, string detail = "")
+public class SeriesMeta(Type type, string key, LocalizationKey nameKey, FAIconSource icon, bool isDefaultEnabled, LocalizationKey? detailKey = null) : ReactiveObject
 {
+	private LocalizationService? _localizationService;
 	public Type Type { get; } = type;
 
 	/// <summary>
@@ -15,7 +18,7 @@ public class SeriesMeta(Type type, string key, string name, FAIconSource icon, b
 	/// <summary>
 	/// 表示名
 	/// </summary>
-	public string Name { get; } = name;
+	public string Name => GetLocalizedString(nameKey);
 
 	/// <summary>
 	/// アイコン
@@ -30,5 +33,27 @@ public class SeriesMeta(Type type, string key, string name, FAIconSource icon, b
 	/// <summary>
 	/// 機能についての詳細
 	/// </summary>
-	public string Detail { get; } = detail;
+	public string Detail => detailKey is { } key ? GetLocalizedString(key) : "";
+
+	public void AttachLocalization(LocalizationService localizationService)
+	{
+		if (_localizationService == localizationService)
+			return;
+		if (_localizationService != null)
+			_localizationService.LanguageChanged -= OnLanguageChanged;
+
+		_localizationService = localizationService;
+		_localizationService.LanguageChanged += OnLanguageChanged;
+		OnLanguageChanged(this, EventArgs.Empty);
+	}
+
+	private string GetLocalizedString(LocalizationKey key)
+		=> _localizationService?.Get(key)
+			?? throw new InvalidOperationException("SeriesMeta にローカライズサービスが設定されていません");
+
+	private void OnLanguageChanged(object? sender, EventArgs e)
+	{
+		this.RaisePropertyChanged(nameof(Name));
+		this.RaisePropertyChanged(nameof(Detail));
+	}
 }

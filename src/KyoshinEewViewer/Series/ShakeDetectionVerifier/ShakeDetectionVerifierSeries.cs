@@ -26,10 +26,10 @@ public class ShakeDetectionVerifierSeries : SeriesBase
 	public static SeriesMeta MetaData { get; } = new(
 		typeof(ShakeDetectionVerifierSeries),
 		"shake-detection-verifier",
-		"揺れ検知",
+		Localization.LocalizationKey.SeriesShakeDetectionVerifierName,
 		new FAFontIconSource { Glyph = "\xe13a", FontFamily = new(Utils.IconFontName) },
 		false,
-		"揺れ検知のパラメータを調整し、比較検証を行います。"
+		Localization.LocalizationKey.SeriesShakeDetectionVerifierDescription
 	);
 
 	private ShakeDetectionVerifierView? _control;

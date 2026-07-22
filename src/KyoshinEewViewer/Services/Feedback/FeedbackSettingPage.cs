@@ -26,6 +26,7 @@ public class FeedbackSettingPage : ReactiveObject, ISettingPage
 	public bool IsVisible => true;
 	public string? Icon => "\xf0e0";
 	public string Title => "フィードバック";
+	public Localization.LocalizationKey? TitleKey => Localization.LocalizationKey.SettingFeedback;
 	public Control DisplayControl => new FeedbackPage() { DataContext = this };
 	public ISettingPage[] SubPages => [];
 

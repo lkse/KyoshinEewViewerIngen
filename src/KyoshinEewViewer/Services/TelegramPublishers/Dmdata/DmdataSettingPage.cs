@@ -18,6 +18,7 @@ public class DmdataSettingPage : ReactiveObject, ISettingPage
 	public string? Icon => null;
 
 	public string Title => "DM-D.S.S";
+	public Localization.LocalizationKey? TitleKey => Localization.LocalizationKey.SettingDmdata;
 
 	public Control DisplayControl => new DmdataPage() { DataContext = this };
 

@@ -18,6 +18,7 @@ public class KyoshinMonitorReplaySettingPage : ReactiveObject, ISettingPage
 	public string? Icon => null;
 
 	public string Title => "リプレイ";
+	public Localization.LocalizationKey? TitleKey => Localization.LocalizationKey.SettingReplay;
 
 	public Control DisplayControl => new KyoshinMonitorReplayPage() { DataContext = this };
 

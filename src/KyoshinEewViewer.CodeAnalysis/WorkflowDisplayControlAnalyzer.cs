@@ -23,11 +23,11 @@ public class WorkflowDisplayControlAnalyzer : DiagnosticAnalyzer
 	private static readonly DiagnosticDescriptor Rule = new(
 		DiagnosticId,
 		"ワークフローの Control プロパティには [JsonIgnore] が必要",
-		"{0}.{1} は Control を返すため [JsonIgnore] を付与してください。付与しないと workflows.json の型グラフに Avalonia の Control が混入し、トリミング(リリース)ビルドでワークフローの読み込みが失敗します",
+		"{0}.{1} は Control を返すため [JsonIgnore] を付与してください（付与しないと workflows.json の型グラフに Avalonia の Control が混入し、トリミング(リリース)ビルドでワークフローの読み込みが失敗します）",
 		"Serialization",
 		DiagnosticSeverity.Error,
 		isEnabledByDefault: true,
-		description: "WorkflowTrigger / WorkflowAction を継承する型の Control 返却プロパティに [JsonIgnore] が無いと、リリース(トリム)ビルドでワークフロー全体の読み込みが NotSupportedException で失敗します。");
+		description: "WorkflowTrigger / WorkflowAction を継承する型の Control 返却プロパティに [JsonIgnore] が無いと、リリース(トリム)ビルドでワークフロー全体の読み込みが NotSupportedException で失敗します.");
 
 	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 

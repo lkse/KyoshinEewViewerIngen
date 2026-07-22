@@ -21,7 +21,7 @@ namespace KyoshinEewViewer.Series.Radar;
 
 public class RadarSeries : SeriesBase
 {
-	public static SeriesMeta MetaData { get; } = new(typeof(RadarSeries), "radar", "雨雲(β)", new FAFontIconSource { Glyph = "\xf740", FontFamily = new FontFamily(Utils.IconFontName) }, false, "雨雲レーダー画像を表示します。(試験機能)");
+	public static SeriesMeta MetaData { get; } = new(typeof(RadarSeries), "radar", Localization.LocalizationKey.SeriesRadarName, new FAFontIconSource { Glyph = "\xf740", FontFamily = new FontFamily(Utils.IconFontName) }, false, Localization.LocalizationKey.SeriesRadarDescription);
 
 	public HttpClient Client { get; }
 	private ILogger Logger { get; }
@@ -101,7 +101,7 @@ public class RadarSeries : SeriesBase
 	private RadarView? _control;
 	public override Control DisplayControl => _control ?? throw new Exception("初期化前にコントロールが呼ばれています");
 	public override ISettingPage[] SettingPages => [
-		new BasicSettingPage<RadarPage>("\xf740", "雨雲レーダー", []),
+		new BasicSettingPage<RadarPage>("\xf740", Localization.LocalizationKey.SettingRadar, [])
 	];
 
 	public override void Initialize()

@@ -24,7 +24,7 @@ namespace KyoshinEewViewer.Series.Qzss;
 
 public class QzssSeries : SeriesBase
 {
-	public static SeriesMeta MetaData { get; } = new(typeof(QzssSeries), "qzss", "災危通報", new FAFontIconSource { Glyph = "\xf7bf", FontFamily = new FontFamily(Utils.IconFontName) }, false, "\"みちびき\" から配信される防災情報を表示します。");
+	public static SeriesMeta MetaData { get; } = new(typeof(QzssSeries), "qzss", Localization.LocalizationKey.SeriesQzssName, new FAFontIconSource { Glyph = "\xf7bf", FontFamily = new FontFamily(Utils.IconFontName) }, false, Localization.LocalizationKey.SeriesQzssDescription);
 
 	private MapData? MapData { get; set; }
 

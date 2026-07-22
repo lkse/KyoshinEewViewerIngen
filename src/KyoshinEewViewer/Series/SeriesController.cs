@@ -1,4 +1,5 @@
 using KyoshinEewViewer.Core.Models;
+using KyoshinEewViewer.Localization;
 using Splat;
 using System;
 using System.Collections.Generic;
@@ -22,10 +23,11 @@ public class SeriesController
 		SplatRegistrations.RegisterLazySingleton<SeriesController>();
 	}
 
-	public void RegisterSeries(SeriesMeta series)
+	public void RegisterSeries(SeriesMeta series, LocalizationService localizationService)
 	{
 		if (Series.Any(s => s.Key == series.Key))
 			throw new ArgumentException($"Key {series.Key} はすでに登録されています", nameof(series));
+		series.AttachLocalization(localizationService);
 		Series.Add(series);
 	}
 

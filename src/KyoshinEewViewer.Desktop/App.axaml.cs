@@ -9,6 +9,7 @@ using KyoshinEewViewer.Core.Models;
 using KyoshinEewViewer.Core.Models.Events;
 using KyoshinEewViewer.CustomControl;
 using KyoshinEewViewer.Desktop.Services;
+using KyoshinEewViewer.Localization;
 using KyoshinEewViewer.Desktop.Views;
 using KyoshinEewViewer.Notification;
 using KyoshinEewViewer.Series;
@@ -52,6 +53,7 @@ public class App : Application
 	public override void OnFrameworkInitializationCompleted()
 	{
 		KyoshinEewViewerApp.Application = this;
+		Locator.Current.RequireService<LocalizationService>().Initialize(this);
 
 		if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
 		{

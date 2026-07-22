@@ -40,13 +40,16 @@
 
 	<ItemGroup>
 		<AvaloniaResource Include="Assets\**" />
-    </ItemGroup>
-
+		<EmbeddedResource Include="Localization\Localization.*.json" />
+	</ItemGroup>
     <ItemGroup>
         <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="KeyType" />
         <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="KeyFormat" />
         <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ValueType" />
         <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="ValueFormat" />
+        <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="LocalizationCulture" />
+        <AdditionalFiles Include="Localization\Localization.ja.json" LocalizationCulture="ja" />
+        <AdditionalFiles Include="Localization\Localization.en.json" LocalizationCulture="en" />
         <AdditionalFiles Include="..\..\jma-code-dictionary\csv\AdditionalCommentEarthquake.csv" Link="csv\AdditionalCommentEarthquake.csv" KeyType="int" KeyFormat="{0}" ValueType="string" ValueFormat="&quot;{1}&quot;" />
         <AdditionalFiles Include="..\..\jma-code-dictionary\csv\AreaEpicenter.csv" Link="csv\AreaEpicenter.csv" KeyType="int" KeyFormat="{0}" ValueType="string" ValueFormat="&quot;{1}&quot;" />
         <AdditionalFiles Include="..\..\jma-code-dictionary\csv\AreaInformationPrefectureEarthquake.csv" Link="csv\AreaInformationPrefectureEarthquake.csv" KeyType="int" KeyFormat="{0}" ValueType="string" ValueFormat="&quot;{1}&quot;" />

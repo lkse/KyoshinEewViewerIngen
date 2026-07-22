@@ -3,6 +3,7 @@
         xmlns:vm="using:KyoshinEewViewer.ViewModels"
 		xmlns:ui="using:FluentAvalonia.UI.Controls"
 		xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
+		xmlns:loc="using:KyoshinEewViewer.Localization"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 
@@ -20,7 +21,7 @@
         Background="{DynamicResource TitleBackgroundColor}" Foreground="{DynamicResource MainForegroundColor}"
         FontFamily="{StaticResource MainFont}" FontWeight="Regular"
         Icon="/Assets/logo.ico"
-        Title="{Binding Title}">
+        Title="{loc:Localize SettingsWindowTitle}">
 	<Window.Styles>
 		<Style Selector="Label">
 			<Setter Property="Foreground" Value="{DynamicResource MainForegroundColor}" />

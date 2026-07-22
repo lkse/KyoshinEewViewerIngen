@@ -1,7 +1,8 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:core="using:KyoshinEewViewer.Core"
-			 xmlns:sty="using:FluentAvalonia.Styling"
+				 xmlns:loc="using:KyoshinEewViewer.Localization"
+				 xmlns:sty="using:FluentAvalonia.Styling"
 			 xmlns:md="clr-namespace:LiveMarkdown.Avalonia;assembly=LiveMarkdown.Avalonia"
              x:Class="KyoshinEewViewer.Desktop.App"
              Name="KyoshinEewViewer for ingen">
@@ -52,7 +53,7 @@
 
 	<NativeMenu.Menu>
 		<NativeMenu>
-			<NativeMenuItem Header="設定" Click="OpenSettingsClicked" />
+			<NativeMenuItem Header="{loc:Localize ApplicationSettings}" Click="OpenSettingsClicked" />
 		</NativeMenu>
 	</NativeMenu.Menu>
 </Application>

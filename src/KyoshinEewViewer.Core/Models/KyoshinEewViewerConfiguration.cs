@@ -19,6 +19,13 @@ public interface IWindowPlacementConfig
 
 public class KyoshinEewViewerConfiguration : ReactiveObject, IWindowPlacementConfig
 {
+	private string _language = "ja";
+	public string Language
+	{
+		get => _language;
+		set => this.RaiseAndSetIfChanged(ref _language, value);
+	}
+
 	private bool _showWizard = true;
 	public bool ShowWizard
 	{

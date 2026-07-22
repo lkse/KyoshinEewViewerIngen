@@ -6,6 +6,7 @@ using KyoshinEewViewer.Core;
 using KyoshinEewViewer.Core.Models;
 using KyoshinEewViewer.Core.Models.Events;
 using KyoshinEewViewer.Events;
+using KyoshinEewViewer.Localization;
 using KyoshinEewViewer.Map.Data;
 using KyoshinEewViewer.Map.Layers;
 using KyoshinEewViewer.Core.Models.Metrics;
@@ -236,6 +237,7 @@ public partial class MainViewModel : ViewModelBase
 	public MainViewModel(
 		SeriesController? seriesController,
 		KyoshinEewViewerConfiguration config,
+		LocalizationService localizationService,
 		UpdateCheckService updateCheckService,
 		NotificationService notifyService,
 		TelegramProvideService telegramProvideService,
@@ -328,18 +330,18 @@ public partial class MainViewModel : ViewModelBase
 				.Subscribe(_ => SubWindowsService.CloseAllSeriesWindows());
 		}
 
-		SeriesController.RegisterSeries(KyoshinMonitorSeries.MetaData);
-		SeriesController.RegisterSeries(EarthquakeSeries.MetaData);
-		SeriesController.RegisterSeries(TsunamiSeries.MetaData);
-		SeriesController.RegisterSeries(RadarSeries.MetaData);
-		SeriesController.RegisterSeries(QzssSeries.MetaData);
+		SeriesController.RegisterSeries(KyoshinMonitorSeries.MetaData, localizationService);
+		SeriesController.RegisterSeries(EarthquakeSeries.MetaData, localizationService);
+		SeriesController.RegisterSeries(TsunamiSeries.MetaData, localizationService);
+		SeriesController.RegisterSeries(RadarSeries.MetaData, localizationService);
+		SeriesController.RegisterSeries(QzssSeries.MetaData, localizationService);
 
 #if DEBUG
-		SeriesController.RegisterSeries(Series.Typhoon.TyphoonSeries.MetaData);
-		SeriesController.RegisterSeries(Series.Lightning.LightningSeries.MetaData);
-		SeriesController.RegisterSeries(Series.ShakeDetectionVerifier.ShakeDetectionVerifierSeries.MetaData);
+		SeriesController.RegisterSeries(Series.Typhoon.TyphoonSeries.MetaData, localizationService);
+		SeriesController.RegisterSeries(Series.Lightning.LightningSeries.MetaData, localizationService);
+		SeriesController.RegisterSeries(Series.ShakeDetectionVerifier.ShakeDetectionVerifierSeries.MetaData, localizationService);
 #endif
-		SeriesController.RegisterSeries(ObservationPointEditorSeries.MetaData);
+		SeriesController.RegisterSeries(ObservationPointEditorSeries.MetaData, localizationService);
 
 		if (StartupOptions.Current?.StandaloneSeriesName is { } ssn && TryGetStandaloneSeries(ssn, out var sSeries))
 		{

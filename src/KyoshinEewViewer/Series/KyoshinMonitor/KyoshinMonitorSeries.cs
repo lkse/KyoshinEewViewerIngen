@@ -23,7 +23,7 @@ namespace KyoshinEewViewer.Series.KyoshinMonitor;
 
 public class KyoshinMonitorSeries : SeriesBase
 {
-	public static SeriesMeta MetaData { get; } = new(typeof(KyoshinMonitorSeries), "kyoshin-monitor", "強震モニタ", new FAFontIconSource { Glyph = "\xe3b1", FontFamily = new(Utils.IconFontName) }, true, "強震モニタ･緊急地震速報を表示します。");
+	public static SeriesMeta MetaData { get; } = new(typeof(KyoshinMonitorSeries), "kyoshin-monitor", Localization.LocalizationKey.SeriesKyoshinMonitorName, new FAFontIconSource { Glyph = "\xe3b1", FontFamily = new(Utils.IconFontName) }, true, Localization.LocalizationKey.SeriesKyoshinMonitorDescription);
 
 	public override Size MinViewSize { get; } = new(500, 600);
 
@@ -44,11 +44,11 @@ public class KyoshinMonitorSeries : SeriesBase
 
 	private KyoshinMonitorReplaySettingPage ReplaySettingPage { get; }
 	public override ISettingPage[] SettingPages => [
-		new BasicSettingPage<KyoshinMonitorPage>("\xf108", "強震モニタ", [
+		new BasicSettingPage<KyoshinMonitorPage>("\xf108", Localization.LocalizationKey.SeriesKyoshinMonitorName, [
 			ReplaySettingPage,
-			new BasicSettingPage<KyoshinMonitorMapPage>(null, "地図アイコン", []),
-			new BasicSettingPage<KyoshinMonitorEewPage>(null, "緊急地震速報", []),
-			new BasicSettingPage<ObservationPointsDataPage>(null, "観測点データ", []),
+			new BasicSettingPage<KyoshinMonitorMapPage>(null, Localization.LocalizationKey.SettingMapIcons, []),
+			new BasicSettingPage<KyoshinMonitorEewPage>(null, Localization.LocalizationKey.SettingEarthquakeEarlyWarning, []),
+			new BasicSettingPage<ObservationPointsDataPage>(null, Localization.LocalizationKey.SettingObservationPointData, []),
 		]),
 	];
 

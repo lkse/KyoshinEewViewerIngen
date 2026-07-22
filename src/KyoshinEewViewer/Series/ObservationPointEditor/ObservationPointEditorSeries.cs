@@ -31,10 +31,10 @@ public class ObservationPointEditorSeries : SeriesBase
 	public static SeriesMeta MetaData { get; } = new(
 		typeof(ObservationPointEditorSeries),
 		"observation-point-editor",
-		"観測点編集",
+		Localization.LocalizationKey.SeriesObservationPointEditorName,
 		new FAFontIconSource { Glyph = "\xf044", FontFamily = new(Utils.IconFontName) },
 		false,
-		"強震観測点データの編集・管理機能を提供します。"
+		Localization.LocalizationKey.SeriesObservationPointEditorDescription
 	);
 
 	private static readonly JsonSerializerOptions JsonOptions = new()

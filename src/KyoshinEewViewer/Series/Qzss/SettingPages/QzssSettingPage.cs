@@ -23,6 +23,7 @@ public class QzssSettingPage : ReactiveObject, ISettingPage
 	public string? Icon => "\xf7bf";
 
 	public string Title => "みちびき 災危通報";
+	public Localization.LocalizationKey? TitleKey => Localization.LocalizationKey.SettingQzss;
 
 	public Control DisplayControl => new QzssPage() { DataContext = this };
 

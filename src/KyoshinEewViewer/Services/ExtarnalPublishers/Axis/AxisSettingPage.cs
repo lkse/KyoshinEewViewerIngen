@@ -12,6 +12,7 @@ public class AxisSettingPage : ISettingPage
 	public string? Icon => null;
 
 	public string Title => "AXIS(試験中)";
+	public Localization.LocalizationKey? TitleKey => Localization.LocalizationKey.SettingAxisExperimental;
 
 	public Control DisplayControl => new AxisPage() { DataContext = this };
 

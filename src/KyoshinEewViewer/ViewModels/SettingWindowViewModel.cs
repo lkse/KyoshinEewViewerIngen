@@ -4,6 +4,7 @@ using KyoshinEewViewer.Core;
 using KyoshinEewViewer.Core.Models;
 using KyoshinEewViewer.Core.Models.Events;
 using KyoshinEewViewer.DCReportParser;
+using KyoshinEewViewer.Localization;
 using KyoshinEewViewer.Series;
 using KyoshinEewViewer.Series.Qzss.Events;
 using KyoshinEewViewer.Services;
@@ -59,6 +60,7 @@ public class SettingWindowViewModel : ViewModelBase
 	};
 
 	public KyoshinEewViewerConfiguration Config { get; }
+	public LocalizationService LocalizationService { get; }
 	public SeriesController SeriesController { get; }
 	public SoundPlayerService SoundPlayerService { get; }
 	public UpdateCheckService UpdateCheckService { get; }
@@ -68,25 +70,24 @@ public class SettingWindowViewModel : ViewModelBase
 
 	private ILogger Logger { get; }
 
-	private ISettingPage _selectedSettingPage;
-	public ISettingPage SelectedSettingPage
+	private SettingPageViewModel _selectedSettingPage;
+	public SettingPageViewModel SelectedSettingPage
 	{
 		get => _selectedSettingPage;
-		set {
-			var oldValue = _selectedSettingPage;
-			this.RaiseAndSetIfChanged(ref _selectedSettingPage, value);
-			if (value is BasicSettingPage && oldValue is not BasicSettingPage)
-			{
-				SelectedSettingPage = oldValue;
+		set
+		{
+			if (!value.IsSelectable)
 				return;
-			}
+			this.RaiseAndSetIfChanged(ref _selectedSettingPage, value);
 		}
 	}
-	private BasicSettingPage<UpdatePage> UpdatePage { get; }
-	public ISettingPage[] SettingPages { get; }
+	private BasicSettingPage<UpdatePage> UpdatePageSource { get; }
+	private SettingPageViewModel UpdatePage { get; }
+	public SettingPageViewModel[] SettingPages { get; }
 
 	public SettingWindowViewModel(
 		KyoshinEewViewerConfiguration config,
+		LocalizationService localizationService,
 		SeriesController seriesController,
 		UpdateCheckService updateCheckService,
 		SoundPlayerService soundPlayerService,
@@ -101,6 +102,7 @@ public class SettingWindowViewModel : ViewModelBase
 		SplatRegistrations.RegisterLazySingleton<SettingWindowViewModel>();
 
 		Config = config;
+		LocalizationService = localizationService;
 		SeriesController = seriesController ?? throw new ArgumentNullException(nameof(seriesController));
 		UpdateCheckService = updateCheckService;
 		SoundPlayerService = soundPlayerService;
@@ -142,9 +144,9 @@ public class SettingWindowViewModel : ViewModelBase
 		updateCheckService.Updated += a =>
 		{
 			VersionInfos = a;
-			if ((a?.Length ?? 0) > 0 && UpdatePage != null)
+			if ((a?.Length ?? 0) > 0 && UpdatePage != null && UpdatePageSource != null)
 			{
-				UpdatePage.IsVisible = true;
+				UpdatePageSource.IsVisible = true;
 				SelectedSettingPage = UpdatePage;
 			}
 		};
@@ -166,33 +168,35 @@ public class SettingWindowViewModel : ViewModelBase
 			}).FirstOrDefault(s => s.SpeakerId == config.Voicevox.SpeakerId)?.Name ?? "不明");
 
 
-		UpdatePage = new BasicSettingPage<UpdatePage>("\xf071", "アプリの更新", []) { IsVisible = false };
-		SettingPages = [
-			UpdatePage,
-			new BasicSettingPage<GeneralPage>("\xf53f", "外観･基本設定", []),
-			new BasicSettingPage<FeaturePage>("\xf085", "機能設定", []),
-			new BasicSettingPage<NotifyPage>("\xf075", "通知", []),
-			new BasicSettingPage<MultiWindowPage>("\xf2d2", "マルチウィンドウ", []),
-			new BasicSettingPage<SoundPage>("\xf028", "音声", []),
-			new BasicSettingPage<WorkflowPage>("\xe289", "ワークフロー", []),
-			new BasicSettingPage<VoicevoxPage>("\xf075", "VOICEVOX", []),
+		UpdatePageSource = new BasicSettingPage<UpdatePage>("\xf071", LocalizationKey.SettingUpdate, []) { IsVisible = false };
+		ISettingPage[] settingPages = [
+			UpdatePageSource,
+			new BasicSettingPage<GeneralPage>("\xf53f", LocalizationKey.SettingGeneral, []),
+			new BasicSettingPage<FeaturePage>("\xf085", LocalizationKey.SettingFeatures, []),
+			new BasicSettingPage<NotifyPage>("\xf075", LocalizationKey.SettingNotification, []),
+			new BasicSettingPage<MultiWindowPage>("\xf2d2", LocalizationKey.SettingMultiWindow, []),
+			new BasicSettingPage<SoundPage>("\xf028", LocalizationKey.SettingAudio, []),
+			new BasicSettingPage<WorkflowPage>("\xe289", LocalizationKey.SettingWorkflow, []),
+			new BasicSettingPage<VoicevoxPage>("\xf075", LocalizationKey.SettingVoicevox, []),
 			..SeriesController.EnabledSeries.SelectMany(s => s.SettingPages),
-			new BasicSettingPage("\xf48b", "配信サービス", [
+			new BasicSettingPage("\xf48b", LocalizationKey.SettingDistributionServices, [
 				dmdataPage,
 				axisPage,
 			]),
-			new BasicSettingPage<MapPage>("\xf5a0", "地図", []),
+			new BasicSettingPage<MapPage>("\xf5a0", LocalizationKey.SettingMap, []),
 			feedbackPage,
-			new BasicSettingPage<AboutPage>("\xf129", "このアプリについて", []),
-			new BasicSettingPage<LicencePage>("\xf2c2", "ライセンス", []),
+			new BasicSettingPage<AboutPage>("\xf129", LocalizationKey.SettingAbout, []),
+			new BasicSettingPage<LicencePage>("\xf2c2", LocalizationKey.SettingLicenses, []),
 #if DEBUG
-			new BasicSettingPage<DebugMenuPage>("\xf188", "デバッグメニュー", []),
+			new BasicSettingPage<DebugMenuPage>("\xf188", LocalizationKey.SettingDebugMenu, []),
 #endif
 		];
+		SettingPages = settingPages.Select(p => new SettingPageViewModel(p, localizationService)).ToArray();
+		UpdatePage = SettingPages[0];
 		_selectedSettingPage = SettingPages[1];
 		if ((updateCheckService.AvailableUpdateVersions?.Length ?? 0) > 0)
 		{
-			UpdatePage.IsVisible = true;
+			UpdatePageSource.IsVisible = true;
 			SelectedSettingPage = UpdatePage;
 		}
 
@@ -219,7 +223,6 @@ public class SettingWindowViewModel : ViewModelBase
 #endif
 	}
 
-	public string Title { get; } = "設定 - KyoshinEewViewer for ingen";
 
 	private bool _isDebug;
 	public bool IsDebug

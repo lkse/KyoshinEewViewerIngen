@@ -7,6 +7,7 @@
 			 xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
 			 xmlns:cc="clr-namespace:KyoshinEewViewer.CustomControl;assembly=KyoshinEewViewer.CustomControl"
 			 xmlns:series="clr-namespace:KyoshinEewViewer.Series;assembly=KyoshinEewViewer"
+			 xmlns:loc="using:KyoshinEewViewer.Localization"
 			 xmlns:vm="using:KyoshinEewViewer.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
 			 x:DataType="vm:MainViewModel" x:CompileBindings="True"
@@ -131,7 +132,7 @@
                                 <Style Selector="ui|FANavigationViewItem.multiwindow">
                                     <Setter Property="ContextFlyout">
                                         <MenuFlyout>
-                                            <MenuItem Header="別ウィンドウで開く"
+                                            <MenuItem Header="{loc:Localize MainOpenInSeparateWindow}"
                                                       Command="{Binding $parent[UserControl].((vm:MainViewModel)DataContext).SeparateSeries}"
                                                       CommandParameter="{Binding}" />
                                         </MenuFlyout>
@@ -201,7 +202,7 @@
                             BoxShadow="0 8 32 0 #44000000">
                         <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto">
                             <TextBlock Grid.Row="0" Grid.Column="0"
-                                       Text="アプリケーションの更新があります"
+                                       Text="{loc:Localize MainUpdateAvailable}"
                                        FontWeight="SemiBold"
                                        VerticalAlignment="Center"
                                        TextWrapping="Wrap" />
@@ -213,12 +214,12 @@
                                 <ui:FASymbolIcon Symbol="Dismiss" FontSize="12" />
                             </Button>
                             <TextBlock Grid.Row="1" Grid.ColumnSpan="2"
-                                       Text="設定画面から詳細の確認ができます"
+                                       Text="{loc:Localize MainUpdateAvailableDescription}"
                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                        TextWrapping="Wrap"
                                        Margin="0,4,0,0" />
                             <Button Grid.Row="2" Grid.ColumnSpan="2"
-                                    Content="設定画面を開く"
+                                    Content="{loc:Localize MainOpenSettings}"
                                     Command="{Binding ShowSettingWindow}"
                                     Margin="0,8,0,0"
                                     HorizontalAlignment="Left" />
@@ -229,7 +230,7 @@
 
             <Panel Width="64" HorizontalAlignment="Left" VerticalAlignment="Bottom">
                 <StackPanel HorizontalAlignment="Center" Spacing="3" Opacity="{Binding LeftBottomControlOpacity}" >
-                    <Button Name="MuteButton" Command="{Binding ToggleMute}" Padding="10,7" Theme="{StaticResource TransparentButton}" ToolTip.Tip="音声をミュート" IsVisible="{Binding Config.Audio.ShowMuteButtonInMainWindow}">
+                    <Button Name="MuteButton" Command="{Binding ToggleMute}" Padding="10,7" Theme="{StaticResource TransparentButton}" ToolTip.Tip="{loc:Localize MainMuteAudio}" IsVisible="{Binding Config.Audio.ShowMuteButtonInMainWindow}">
                         <Button.Styles>
                             <Style Selector="ui|FASymbolIcon.muted">
                                 <Setter Property="Foreground" Value="{DynamicResource EmphasisForegroundColor}" />
@@ -239,12 +240,12 @@
                             <ui:FASymbolIcon Symbol="{Binding Config.Audio.IsMuted, Converter={x:Static converter:BoolToStringConverter.VolumeIcon}}" Classes.muted="{Binding Config.Audio.IsMuted}" />
                         </Viewbox>
                     </Button>
-                    <Button Name="HomeButton" Click="HomeButton_Click" Padding="10,7" Theme="{StaticResource TransparentButton}" ToolTip.Tip="地図の座標を戻す">
+                    <Button Name="HomeButton" Click="HomeButton_Click" Padding="10,7" Theme="{StaticResource TransparentButton}" ToolTip.Tip="{loc:Localize MainRestoreMapPosition}">
                         <Viewbox Height="28" Margin="0,2">
                             <ui:FASymbolIcon Symbol="Home" />
                         </Viewbox>
                     </Button>
-                    <Button Name="OpenSettingWindowButton" Command="{Binding ShowSettingWindow}" Padding="10,7" Theme="{StaticResource TransparentButton}" ToolTip.Tip="設定画面を開く">
+                    <Button Name="OpenSettingWindowButton" Command="{Binding ShowSettingWindow}" Padding="10,7" Theme="{StaticResource TransparentButton}" ToolTip.Tip="{loc:Localize MainOpenSettings}">
                         <Panel>
                             <Viewbox Height="28" Margin="0,2">
                                 <ui:FASymbolIcon Symbol="Setting" />

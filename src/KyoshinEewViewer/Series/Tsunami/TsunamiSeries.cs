@@ -33,7 +33,7 @@ using Location = KyoshinMonitorLib.Location;
 namespace KyoshinEewViewer.Series.Tsunami;
 public class TsunamiSeries : SeriesBase
 {
-	public static SeriesMeta MetaData { get; } = new(typeof(TsunamiSeries), "tsunami", "津波情報", new FAFontIconSource { Glyph = "\xe515", FontFamily = new(Utils.IconFontName) }, true, "津波情報を表示します。");
+	public static SeriesMeta MetaData { get; } = new(typeof(TsunamiSeries), "tsunami", Localization.LocalizationKey.SeriesTsunamiName, new FAFontIconSource { Glyph = "\xe515", FontFamily = new(Utils.IconFontName) }, true, Localization.LocalizationKey.SeriesTsunamiDescription);
 
 	private bool IsInitializing { get; set; }
 	private ILogger Logger { get; set; }
@@ -202,7 +202,7 @@ public class TsunamiSeries : SeriesBase
 	private TsunamiView? _control;
 	public override Control DisplayControl => _control ?? throw new InvalidOperationException("初期化前にコントロールが呼ばれています");
 	public override ISettingPage[] SettingPages => [
-		new BasicSettingPage<TsunamiPage>("\xe515", "津波情報", []),
+		new BasicSettingPage<TsunamiPage>("\xe515", Localization.LocalizationKey.SeriesTsunamiName, [])
 	];
 
 	private string? _sourceName;
