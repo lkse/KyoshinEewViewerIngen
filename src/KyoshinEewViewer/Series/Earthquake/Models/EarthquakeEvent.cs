@@ -1,5 +1,6 @@
 using KyoshinEewViewer.Core;
 using KyoshinEewViewer.JmaXmlParser;
+using KyoshinEewViewer.Localization;
 using KyoshinEewViewer.Services.TelegramPublishers;
 using KyoshinMonitorLib;
 using ReactiveUI;
@@ -22,26 +23,8 @@ public class EarthquakeEvent : ReactiveObject
 			(only, applied) => only.Value || applied.Value
 		).ToProperty(this, x => x.IsHypocenterAvailable);
 
-		_title = this.WhenAny(
-			x => x.IsHypocenterOnly,
-			x => x.IsSokuhou,
-			x => x.IsVolcano,
-			x => x.IsForeign,
-			(only, sokuhou, volcano, foreign) =>
-			{
-				if (sokuhou.Value && only.Value)
-					return "震度速報+震源情報";
-				if (sokuhou.Value)
-					return "震度速報";
-				if (only.Value)
-					return "震源情報";
-				if (volcano.Value)
-					return "大規模噴火";
-				if (foreign.Value)
-					return "遠地地震情報";
-				return "震源･震度情報";
-			}
-		).ToProperty(this, x => x.Title);
+		if (LocalizationService.Instance is { } loc)
+			loc.LanguageChanged += (_, _) => RefreshAllLocalized();
 
 		_isVeryShallow = this.WhenAny(
 			x => x.Depth,
@@ -57,6 +40,8 @@ public class EarthquakeEvent : ReactiveObject
 			x => x.Intensity,
 			intensity => intensity.Value == JmaIntensity.Unknown
 		).ToProperty(this, x => x.IsUnknownIntensity);
+
+		RefreshTitle();
 	}
 
 	private bool _isSelecting;
@@ -193,6 +178,7 @@ public class EarthquakeEvent : ReactiveObject
 				LpgmIntensity = lpgm.MaxLpgmIntensity;
 			}
 		}
+		RefreshTitle();
 	}
 
 	/// <summary>
@@ -200,11 +186,74 @@ public class EarthquakeEvent : ReactiveObject
 	/// </summary>
 	public string EventId { get; }
 
-	private readonly ObservableAsPropertyHelper<string?> _title;
+	private string? _title;
 	/// <summary>
 	/// イベントのタイトル(現在の情報種別)
 	/// </summary>
-	public string? Title => _title?.Value;
+	public string? Title
+	{
+		get => _title;
+		set => this.RaiseAndSetIfChanged(ref _title, value);
+	}
+
+	/// <summary>
+	/// 言語に応じた日付文字列
+	/// </summary>
+	public string FormattedDate
+	{
+		get
+		{
+			if (LocalizationService.Instance?.SelectedLanguage.Code == "en")
+				return "Approx " + _time.ToString("yyyy/MM/dd");
+			return _time.ToString("yyyy年MM月dd日");
+		}
+	}
+
+	/// <summary>
+	/// 言語に応じた時刻文字列
+	/// </summary>
+	public string FormattedTime
+	{
+		get
+		{
+			if (LocalizationService.Instance?.SelectedLanguage.Code == "en")
+				return _time.ToString("HH:mm");
+			return _time.ToString("HH時mm分");
+		}
+	}
+
+	/// <summary>
+	/// 英語時は接尾辞の「約」を非表示にする
+	/// </summary>
+	public bool ShowApproxSuffix => LocalizationService.Instance?.SelectedLanguage.Code != "en";
+
+	/// <summary>
+	/// 言語に応じた更新時刻文字列
+	/// </summary>
+	public string FormattedUpdatedTime
+	{
+		get
+		{
+			if (LocalizationService.Instance?.SelectedLanguage.Code == "en")
+				return $"Updated {GetOrdinalSuffix(_updatedTime.Day)} {_updatedTime:HH:mm}";
+			return _updatedTime.ToString("d日HH:mm更新");
+		}
+	}
+
+	/// <summary>
+	/// 言語に応じたコメント(固定付加文)
+	/// </summary>
+	public string? LocalizedComment
+	{
+		get
+		{
+			if (_comment is null)
+				return null;
+			if (LocalizationService.Instance?.SelectedLanguage.Code == "en" && CommentTranslations.TryGetValue(_comment, out var en))
+				return en;
+			return _comment;
+		}
+	}
 
 	private string? _subtitle;
 	/// <summary>
@@ -223,7 +272,11 @@ public class EarthquakeEvent : ReactiveObject
 	public DateTime UpdatedTime
 	{
 		get => _updatedTime;
-		set => this.RaiseAndSetIfChanged(ref _updatedTime, value);
+		set
+		{
+			this.RaiseAndSetIfChanged(ref _updatedTime, value);
+			this.RaisePropertyChanged(nameof(FormattedUpdatedTime));
+		}
 	}
 
 	private bool _isSokuhou;
@@ -333,7 +386,12 @@ public class EarthquakeEvent : ReactiveObject
 	public DateTime Time
 	{
 		get => _time;
-		set => this.RaiseAndSetIfChanged(ref _time, value);
+		set
+		{
+			this.RaiseAndSetIfChanged(ref _time, value);
+			this.RaisePropertyChanged(nameof(FormattedDate));
+			this.RaisePropertyChanged(nameof(FormattedTime));
+		}
 	}
 
 	private bool _isDetectTime;
@@ -443,7 +501,11 @@ public class EarthquakeEvent : ReactiveObject
 	public string? Comment
 	{
 		get => _comment;
-		set => this.RaiseAndSetIfChanged(ref _comment, value);
+		set
+		{
+			this.RaiseAndSetIfChanged(ref _comment, value);
+			this.RaisePropertyChanged(nameof(LocalizedComment));
+		}
 	}
 
 	private string? _freeFormComment;
@@ -467,6 +529,69 @@ public class EarthquakeEvent : ReactiveObject
 
 	private readonly ObservableAsPropertyHelper<bool> _isUnknownIntensity;
 	public bool IsUnknownIntensity => _isUnknownIntensity.Value;
+
+	private void RefreshTitle()
+	{
+		if (IsSokuhou && IsHypocenterOnly)
+			Title = LocalizationService.Instance?.Get(LocalizationKey.EarthquakeTitleSokuhouAndHypocenter);
+		else if (IsSokuhou)
+			Title = LocalizationService.Instance?.Get(LocalizationKey.EarthquakeTitleSokuhou);
+		else if (IsHypocenterOnly)
+			Title = LocalizationService.Instance?.Get(LocalizationKey.EarthquakeTitleHypocenter);
+		else if (IsVolcano)
+			Title = LocalizationService.Instance?.Get(LocalizationKey.EarthquakeTitleVolcano);
+		else if (IsForeign)
+			Title = LocalizationService.Instance?.Get(LocalizationKey.EarthquakeTitleForeign);
+		else
+			Title = LocalizationService.Instance?.Get(LocalizationKey.EarthquakeHypocenterAndIntensity);
+	}
+
+	private void RefreshAllLocalized()
+	{
+		RefreshTitle();
+		this.RaisePropertyChanged(nameof(FormattedDate));
+		this.RaisePropertyChanged(nameof(FormattedTime));
+		this.RaisePropertyChanged(nameof(FormattedUpdatedTime));
+		this.RaisePropertyChanged(nameof(LocalizedComment));
+		this.RaisePropertyChanged(nameof(ShowApproxSuffix));
+	}
+
+	private static string GetOrdinalSuffix(int day)
+	{
+		if (day >= 11 && day <= 13)
+			return $"{day}th";
+		return (day % 10) switch
+		{
+			1 => $"{day}st",
+			2 => $"{day}nd",
+			3 => $"{day}rd",
+			_ => $"{day}th",
+		};
+	}
+
+	private static readonly Dictionary<string, string> CommentTranslations = new()
+	{
+		{"この地震による津波の心配はありません。", "This earthquake poses no tsunami risk."},
+		{"この地震により、日本の沿岸では若干の海面変動があるかもしれませんが、被害の心配はありません。", "Although there may be slight sea-level changes in coastal regions of Japan, this earthquake has caused no damage."},
+		{"この地震について、緊急地震速報を発表しています。", "Earthquake Early Warning is in effect for this earthquake."},
+		{"この地震について、緊急地震速報を発表しています。この地震の最大震度は２でした。", "Earthquake Early Warning is in effect for this earthquake. Its maximum seismic intensity was 2."},
+		{"この地震について、緊急地震速報を発表しています。この地震の最大震度は１でした。", "Earthquake Early Warning is in effect for this earthquake. Its maximum seismic intensity was 1."},
+		{"この地震について、緊急地震速報を発表しています。この地震で震度１以上は観測されていません。", "Earthquake Early Warning is in effect for this earthquake. There was no observation of seismic intensity 1 or above."},
+		{"この地震で緊急地震速報を発表しましたが、強い揺れは観測されませんでした。", "Earthquake Early Warning was issued for this earthquake, however no strong tremors were observed."},
+		{"震源要素を訂正します。", "Information related to the hypocenter has been corrected."},
+		{"この地震により観測された最大震度は●です", "This earthquake resulted in the maximum seismic intensity recorded."},
+		{"震度３以上が観測された地域はありません。", "There are no areas that recorded a seismic intensity of 3 or stronger."},
+		{"震度３以上が観測された市町村はありません。", "There are no municipalities that record a seismic intensity of 3 or stronger."},
+		{"この地震により観測された最大長周期地震動階級は○です", "This earthquake resulted in the maximum Long-Period Ground Motion class recorded."},
+		{"津波警報等（大津波警報・津波警報あるいは津波注意報）を発表中です。", "Tsunami warnings or advisories are currently in effect."},
+		{"津波注意報が発表されています。", "A tsunami advisory is in effect."},
+		{"津波警報が発表されています。", "A tsunami warning is in effect."},
+		{"大津波警報が発表されています。", "A major tsunami warning is in effect."},
+		{"今後の情報に注意してください。", "Check the information which will be issued from now on."},
+		{"強い揺れに警戒してください。", "Watch out for strong tremors."},
+		{"地震です　落ち着いて　身を守ってください", "An earthquake has just occurred. Stay calm and secure your personal safety."},
+		{"この地震で緊急地震速報を発表しましたが、強い揺れは観測されませんでした。", "Earthquake Early Warning was issued for this earthquake, however no strong tremors were observed."},
+	};
 
 	[Obsolete("GetNotificationMessage()は非推奨です。代わりにScribanテンプレートを使用してください。")]
 	public string GetNotificationMessage()

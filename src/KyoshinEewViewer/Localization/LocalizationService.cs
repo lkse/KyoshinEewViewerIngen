@@ -25,6 +25,8 @@ public class LocalizationService : ReactiveObject
 
 	public event EventHandler? LanguageChanged;
 
+	public static LocalizationService? Instance { get; private set; }
+
 	private readonly KyoshinEewViewerConfiguration _config;
 	private Application? _application;
 	private ResourceDictionary? _currentCatalog;
@@ -48,6 +50,7 @@ public class LocalizationService : ReactiveObject
 
 	public LocalizationService(KyoshinEewViewerConfiguration config)
 	{
+		Instance = this;
 		SplatRegistrations.RegisterLazySingleton<LocalizationService>();
 
 		_config = config;
