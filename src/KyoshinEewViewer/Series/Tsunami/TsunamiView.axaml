@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:local="clr-namespace:KyoshinEewViewer.Series.Tsunami;assembly=KyoshinEewViewer"
 			 xmlns:models="clr-namespace:KyoshinEewViewer.Series.Tsunami.Models;assembly=KyoshinEewViewer"
+			 xmlns:loc="using:KyoshinEewViewer.Localization"
              mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
 			 FontFamily="{StaticResource MainFont}" FontSize="14"
 			 Foreground="{DynamicResource MainForegroundColor}"
@@ -14,8 +15,8 @@
             <Grid IsVisible="{Binding Current, Converter={x:Static ObjectConverters.IsNotNull}}" Grid.Column="0" RowDefinitions="auto,*">
                 <Border Background="{DynamicResource DockTitleBackgroundColor}" Margin="2,2,2,5" CornerRadius="4">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center">
-                        <TextBlock Text="津波情報" IsVisible="{Binding Current.SpecialState, Converter={x:Static ObjectConverters.IsNull}}" FontSize="22" FontWeight="Bold" Margin="5,3,7,5" />
-                        <TextBlock Text="{Binding Current.SpecialState, StringFormat={}津波情報({0})}" IsVisible="{Binding Current.SpecialState, Converter={x:Static ObjectConverters.IsNotNull}}" FontSize="22" FontWeight="Bold" Margin="5,3,7,5" />
+                        <TextBlock Text="{loc:Localize TsunamiInformation}" IsVisible="{Binding Current.SpecialState, Converter={x:Static ObjectConverters.IsNull}}" FontSize="22" FontWeight="Bold" Margin="5,3,7,5" />
+                        <TextBlock Text="{loc:LocalizeFormat TsunamiInformationWithState, Value={Binding Current.SpecialState}}" IsVisible="{Binding Current.SpecialState, Converter={x:Static ObjectConverters.IsNotNull}}" FontSize="22" FontWeight="Bold" Margin="5,3,7,5" />
                         <TextBlock Text="{Binding Current.ReportedAt, StringFormat={}{0:d日 HH:mm発表}}" FontSize="16" Margin="0,0,0,5" VerticalAlignment="Bottom" HorizontalAlignment="Center" />
                     </StackPanel>
                 </Border>
@@ -77,17 +78,17 @@
                                                     <TextBlock Text="{Binding NameKana}" IsVisible="{Binding NameKana, Converter={x:Static ObjectConverters.IsNotNull}}" HorizontalAlignment="Center" />
                                                     <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="20" Margin="0,-5,0,0" HorizontalAlignment="Center" />
                                                     <TextBlock Text="{Binding FirstHeightDetail}" HorizontalAlignment="Center" />
-                                                    <TextBlock Text="{Binding FirstHeight, StringFormat={}予想高さ {0}}" IsVisible="{Binding FirstHeight, Converter={x:Static ObjectConverters.IsNotNull}}" FontWeight="Bold" Margin="0,5,0,0" />
-                                                    <TextBlock Text="観測値" FontWeight="Bold" Margin="0,5,0,0" />
+                                                    <TextBlock Text="{loc:LocalizeFormat TsunamiEstimatedHeight, Value={Binding FirstHeight}}" IsVisible="{Binding FirstHeight, Converter={x:Static ObjectConverters.IsNotNull}}" FontWeight="Bold" Margin="0,5,0,0" />
+                                                    <TextBlock Text="{loc:Localize TsunamiObservation}" FontWeight="Bold" Margin="0,5,0,0" />
                                                     <TextBlock Text="{Binding MaxHeightTime, StringFormat={}{0:d日 HH時mm分}}" IsVisible="{Binding MaxHeightTime, Converter={x:Static ObjectConverters.IsNotNull}}" Margin="10,0" VerticalAlignment="Bottom" />
                                                     <TextBlock Text="{Binding MaxHeightDetail}" IsVisible="{Binding MaxHeight, Converter={x:Static ObjectConverters.IsNull}}" VerticalAlignment="Center" Margin="10,0" />
                                                     <StackPanel Orientation="Horizontal" Spacing="5" Margin="10,0" IsVisible="{Binding MaxHeight, Converter={x:Static ObjectConverters.IsNotNull}}">
                                                         <TextBlock Text="{Binding MaxHeight, StringFormat={}{0:0.0}m}" VerticalAlignment="Center" HorizontalAlignment="Right" />
-                                                        <TextBlock Text="上昇中" IsVisible="{Binding IsRising}" Grid.Column="1" />
-                                                        <TextBlock Text="以上" IsVisible="{Binding IsOutRange}" Grid.Column="1" />
+                                                        <TextBlock Text="{loc:Localize TsunamiRising}" IsVisible="{Binding IsRising}" Grid.Column="1" />
+                                                        <TextBlock Text="{loc:Localize DCReportOrMore}" IsVisible="{Binding IsOutRange}" Grid.Column="1" />
                                                     </StackPanel>
-                                                    <TextBlock Text="これより高い津波が押し寄せています。" Margin="15,0" IsVisible="{Binding IsOutRange}" />
-                                                    <TextBlock Text="満潮時刻" FontWeight="Bold" Margin="0,5,0,0" />
+                                                    <TextBlock Text="{loc:Localize TsunamiHigherArriving}" Margin="15,0" IsVisible="{Binding IsOutRange}" />
+                                                    <TextBlock Text="{loc:Localize TsunamiHighTideTime}" FontWeight="Bold" Margin="0,5,0,0" />
                                                     <TextBlock Text="{Binding HighTideTime, StringFormat={}{0:d日HH時mm分}}" Margin="10,0" />
                                                 </StackPanel>
                                             </ToolTip.Tip>
@@ -106,7 +107,7 @@
                                                 <Grid ColumnDefinitions="2*,*" IsVisible="{Binding MaxHeight, Converter={x:Static ObjectConverters.IsNotNull}}" VerticalAlignment="Stretch" Grid.Column="5">
                                                     <TextBlock FontSize="14" Text="{Binding MaxHeight, StringFormat={}{0:0.0}m}" VerticalAlignment="Center" HorizontalAlignment="Right" />
                                                     <TextBlock FontSize="11" Text="⬆" IsVisible="{Binding IsRising}" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center" />
-                                                    <TextBlock FontSize="10" Text="以上" IsVisible="{Binding IsOutRange}" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Center" />
+                                                    <TextBlock FontSize="10" Text="{loc:Localize DCReportOrMore}" IsVisible="{Binding IsOutRange}" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Center" />
                                                 </Grid>
                                             </Grid>
                                             <Rectangle Fill="{DynamicResource DockBackgroundColor}" Classes="StationSeparator" Height="1" />
@@ -117,7 +118,7 @@
                         </StackPanel.Styles>
                         <Border IsVisible="{Binding Current.MajorWarningAreas, Converter={x:Static ObjectConverters.IsNotNull}}" Background="{DynamicResource TsunamiMajorWarningColor}" BorderThickness="4" CornerRadius="4">
                             <StackPanel>
-                                <TextBlock Text="大津波警報" Foreground="{DynamicResource TsunamiMajorWarningForegroundColor}" FontSize="22" FontWeight="Bold" Margin="5,0,7,5" VerticalAlignment="Top" HorizontalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize DCReportMajorTsunamiWarning}" Foreground="{DynamicResource TsunamiMajorWarningForegroundColor}" FontSize="22" FontWeight="Bold" Margin="5,0,7,5" VerticalAlignment="Top" HorizontalAlignment="Center" />
                                 <Border Background="{DynamicResource DockBackgroundColor}" CornerRadius="3" ClipToBounds="True">
                                     <ItemsControl ItemsSource="{Binding Current.MajorWarningAreas}" Classes="WarningAreas" />
                                 </Border>
@@ -125,7 +126,7 @@
                         </Border>
                         <Border IsVisible="{Binding Current.WarningAreas, Converter={x:Static ObjectConverters.IsNotNull}}" Background="{DynamicResource TsunamiWarningColor}" BorderThickness="4" CornerRadius="4">
                             <StackPanel>
-                                <TextBlock Text="津波警報" Foreground="{DynamicResource TsunamiWarningForegroundColor}" FontSize="22" FontWeight="Bold" Margin="5,0,7,5" VerticalAlignment="Top" HorizontalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize DCReportTsunamiWarning}" Foreground="{DynamicResource TsunamiWarningForegroundColor}" FontSize="22" FontWeight="Bold" Margin="5,0,7,5" VerticalAlignment="Top" HorizontalAlignment="Center" />
                                 <Border Background="{DynamicResource DockBackgroundColor}" CornerRadius="3" ClipToBounds="True">
                                     <ItemsControl ItemsSource="{Binding Current.WarningAreas}" Classes="WarningAreas" />
                                 </Border>
@@ -133,7 +134,7 @@
                         </Border>
                         <Border IsVisible="{Binding Current.AdvisoryAreas, Converter={x:Static ObjectConverters.IsNotNull}}" Background="{DynamicResource TsunamiAdvisoryColor}" BorderThickness="4" CornerRadius="4">
                             <StackPanel>
-                                <TextBlock Text="津波注意報" Foreground="{DynamicResource TsunamiAdvisoryForegroundColor}" FontSize="22" FontWeight="Bold" Margin="5,0,7,5" VerticalAlignment="Top" HorizontalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize TsunamiAdvisory}" Foreground="{DynamicResource TsunamiAdvisoryForegroundColor}" FontSize="22" FontWeight="Bold" Margin="5,0,7,5" VerticalAlignment="Top" HorizontalAlignment="Center" />
                                 <Border Background="{DynamicResource DockBackgroundColor}" CornerRadius="3" ClipToBounds="True">
                                     <ItemsControl ItemsSource="{Binding Current.AdvisoryAreas}" Classes="WarningAreas" />
                                 </Border>
@@ -142,7 +143,7 @@
                         <Border IsVisible="{Binding Current.ForecastAreas, Converter={x:Static ObjectConverters.IsNotNull}}" Background="{DynamicResource TsunamiForecastColor}" BorderThickness="4" CornerRadius="4">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <TextBlock Text="津波予報" FontSize="22" FontWeight="Bold" Margin="5,0,5,5" VerticalAlignment="Top" HorizontalAlignment="Center" Foreground="{DynamicResource TsunamiForecastForegroundColor}" />
+                                    <TextBlock Text="{loc:Localize TsunamiForecast}" FontSize="22" FontWeight="Bold" Margin="5,0,5,5" VerticalAlignment="Top" HorizontalAlignment="Center" Foreground="{DynamicResource TsunamiForecastForegroundColor}" />
                                     <TextBlock Text="{Binding Current.ExpireAt, StringFormat={}{0:d日 HH:mmまで有効}}" IsVisible="{Binding Current.ExpireAt, Converter={x:Static ObjectConverters.IsNotNull}}" FontSize="16" Margin="0,0,0,5" VerticalAlignment="Bottom" HorizontalAlignment="Center" Foreground="{DynamicResource TsunamiForecastForegroundColor}" />
                                 </StackPanel>
                                 <Border Background="{DynamicResource DockBackgroundColor}" CornerRadius="3" ClipToBounds="True">
@@ -161,14 +162,14 @@
                                 </MultiBinding>
                             </Border.IsVisible>
                             <StackPanel Margin="0,5" Spacing="2">
-                                <TextBlock Text="津波警報・注意報・予報は解除されました。" HorizontalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize TsunamiAllCancelled}" HorizontalAlignment="Center" />
                                 <TextBlock Text="{Binding Current.ExpireAt, StringFormat={}{0:d日 HH:mmまで有効}}" IsVisible="{Binding Current.ExpireAt, Converter={x:Static ObjectConverters.IsNotNull}}" FontSize="16" Margin="0,0,0,5" HorizontalAlignment="Right" />
                             </StackPanel>
                         </Border>
                         
                         <Border IsVisible="{Binding Current.NoTsunamiAreas, Converter={x:Static ObjectConverters.IsNotNull}}" Background="{DynamicResource DockTitleBackgroundColor}" BorderThickness="4" CornerRadius="4">
                             <StackPanel>
-                                <TextBlock Text="津波なし" FontSize="22" FontWeight="Bold" Margin="5,0,7,5" VerticalAlignment="Top" HorizontalAlignment="Center" />
+                                <TextBlock Text="{loc:Localize DCReportNoTsunami}" FontSize="22" FontWeight="Bold" Margin="5,0,7,5" VerticalAlignment="Top" HorizontalAlignment="Center" />
                                 <Border Background="{DynamicResource DockBackgroundColor}" CornerRadius="3" ClipToBounds="True">
                                     <ItemsControl ItemsSource="{Binding Current.NoTsunamiAreas}" Classes="ForecastAreas" />
                                 </Border>
@@ -178,10 +179,10 @@
                 </ScrollViewer>
             </Grid>
             <Border Grid.ColumnSpan="2" IsVisible="{Binding Current, Converter={x:Static ObjectConverters.IsNull}}" Background="{DynamicResource DockBackgroundColor}" CornerRadius="4" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock Text="津波情報は発表されていません" FontSize="32" Margin="10,0" />
+                <TextBlock Text="{loc:Localize TsunamiNotIssued}" FontSize="32" Margin="10,0" />
             </Border>
             <Border Grid.Column="1" Background="{DynamicResource DockBackgroundColor}" CornerRadius="4" VerticalAlignment="Bottom" HorizontalAlignment="Right">
-                <TextBlock Text="{Binding SourceName, StringFormat={}接続中: {0}}" Margin="5,3" />
+                <TextBlock Text="{loc:LocalizeFormat CommonConnectedTo, Value={Binding SourceName}}" Margin="5,3" />
             </Border>
         </Grid>
 
@@ -193,14 +194,14 @@
         <Border IsVisible="{Binding SourceName, Converter={x:Static ObjectConverters.IsNull}}" Background="#AA000000" CornerRadius="4">
             <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <TextBlock Text="&#xf7a9; " Classes="icon" HorizontalAlignment="Center" FontSize="20" Margin="5" />
-                <TextBlock Text="読み込み中" TextWrapping="Wrap" HorizontalAlignment="Center" FontSize="13" />
+                <TextBlock Text="{loc:Localize TsunamiLoading}" TextWrapping="Wrap" HorizontalAlignment="Center" FontSize="13" />
             </StackPanel>
         </Border>
         <Border IsVisible="{Binding IsFault}" Background="#AA000000" CornerRadius="4">
             <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <TextBlock Text="&#xf7a9; " Classes="icon" HorizontalAlignment="Center" FontSize="20" Margin="5" />
-                <TextBlock Text="情報の取得に問題が発生しました" TextWrapping="Wrap" HorizontalAlignment="Center" FontSize="13" />
-                <Button Margin="5" Content="再試行" Command="{Binding Restart}" HorizontalAlignment="Center" />
+                <TextBlock Text="{loc:Localize CommonFetchFailed}" TextWrapping="Wrap" HorizontalAlignment="Center" FontSize="13" />
+                <Button Margin="5" Content="{loc:Localize CommonRetry}" Command="{Binding Restart}" HorizontalAlignment="Center" />
             </StackPanel>
         </Border>
     </Panel>
