@@ -775,5 +775,20 @@
 	"EarthquakeCancelled": "取り消されました",
 	"EarthquakeDisplaying": "表示中",
 	"EarthquakeFetching": "取得中",
-	"EarthquakeShowPastList": "過去の地震リストを表示する"
+	"EarthquakeShowPastList": "過去の地震リストを表示する",
+	"QzssLocalTime": "現地時刻",
+	"QzssLatitude": "緯度",
+	"QzssLongitude": "経度",
+	"QzssDisconnected": "切断されています",
+	"QzssReceptionHistory": "災危通報受信履歴",
+	"QzssLastReceived": "最終受信:",
+	"QzssListEew": "EEW(警報)",
+	"QzssListSeismicIntensity": "震度情報",
+	"QzssMax": "最大",
+	"QzssListNankaiTrough": "南海トラフ",
+	"QzssListNorthwestPacificTsunami": "北西太平洋津波",
+	"QzssListAshFall": "降灰予報",
+	"QzssListFlood": "洪水予報",
+	"QzssNotImplemented": "未実装",
+	"QzssDrillTest": "訓練･試験"
 }

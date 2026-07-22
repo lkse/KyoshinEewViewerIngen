@@ -775,5 +775,20 @@
 	"EarthquakeCancelled": "Cancelled",
 	"EarthquakeDisplaying": "Displaying",
 	"EarthquakeFetching": "Fetching",
-	"EarthquakeShowPastList": "Show past earthquake list"
+	"EarthquakeShowPastList": "Show past earthquake list",
+	"QzssLocalTime": "Local time",
+	"QzssLatitude": "Latitude",
+	"QzssLongitude": "Longitude",
+	"QzssDisconnected": "Disconnected",
+	"QzssReceptionHistory": "Disaster Prevention Information reception history",
+	"QzssLastReceived": "Last received:",
+	"QzssListEew": "EEW (Warning)",
+	"QzssListSeismicIntensity": "Seismic intensity information",
+	"QzssMax": "Max",
+	"QzssListNankaiTrough": "Nankai Trough",
+	"QzssListNorthwestPacificTsunami": "Northwest Pacific Tsunami",
+	"QzssListAshFall": "Volcanic Ash Fall Forecast",
+	"QzssListFlood": "Flood Forecast",
+	"QzssNotImplemented": "Not implemented",
+	"QzssDrillTest": "Drill/Test"
 }
