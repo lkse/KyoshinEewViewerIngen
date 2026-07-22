@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:local="clr-namespace:KyoshinEewViewer.Series.Qzss.Models"
              xmlns:conv="clr-namespace:KyoshinEewViewer.Series.Qzss.Converters"
+             xmlns:loc="using:KyoshinEewViewer.Localization"
              Foreground="{DynamicResource MainForegroundColor}"
              x:DataType="local:NorthwestPacificTsunamiReportGroup"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
@@ -13,14 +14,14 @@
     </UserControl.Resources>
     <Panel>
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Width="240">
-            <local:DCReportHeaderControl Title="防災気象情報(北西太平洋津波)" ShowReportCount="True" />
+            <local:DCReportHeaderControl Title="{loc:Localize DCReportTitleNorthwestPacificTsunami}" ShowReportCount="True" />
         </StackPanel>
         
         <Grid RowDefinitions="*" Width="450" Margin="0,110,0,0" HorizontalAlignment="Center">
             <ScrollViewer Grid.Row="1" TextElement.FontSize="16">
                 <Border Background="{DynamicResource DockTitleBackgroundColor}" BorderThickness="4" CornerRadius="4" VerticalAlignment="Top">
                     <StackPanel>
-                        <TextBlock Text="北西太平洋津波情報" FontSize="20" FontWeight="Bold" Margin="5,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" />
+                        <TextBlock Text="{loc:Localize DCReportNorthwestPacificTsunamiInfo}" FontSize="20" FontWeight="Bold" Margin="5,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" />
                         <TextBlock Text="{Binding TsunamigenicPotential, Converter={StaticResource DCReportConverter}, ConverterParameter=TsunamigenicPotential}" FontSize="16" Margin="0,0,0,5" VerticalAlignment="Bottom" HorizontalAlignment="Center" />
                         <Border Background="{DynamicResource DockBackgroundColor}" CornerRadius="3" ClipToBounds="True">
                             <ItemsControl ItemsSource="{Binding Areas}" Classes="WarningAreas">

@@ -714,4 +714,5 @@ public enum LocalizationKey
 	DCReportMapControls,
 	DCReportMapNotImplemented,
 	DCReportAreaCountFormat,
+	DCReportTyphoonNumberFormat,
 }

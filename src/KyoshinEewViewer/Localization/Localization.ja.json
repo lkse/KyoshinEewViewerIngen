@@ -710,5 +710,6 @@
 	"DCReportLiftedParen": "(解除)",
 	"DCReportMapControls": "地図操作",
 	"DCReportMapNotImplemented": "地図表示未実装",
-	"DCReportAreaCountFormat": "{0}地域"
+	"DCReportAreaCountFormat": "{0}地域",
+	"DCReportTyphoonNumberFormat": "台風{0}号"
 }

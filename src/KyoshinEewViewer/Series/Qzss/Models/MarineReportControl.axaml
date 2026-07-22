@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:local="clr-namespace:KyoshinEewViewer.Series.Qzss.Models"
              xmlns:conv="clr-namespace:KyoshinEewViewer.Series.Qzss.Converters"
+             xmlns:loc="using:KyoshinEewViewer.Localization"
              Foreground="{DynamicResource MainForegroundColor}"
              x:DataType="local:MarineReportGroup"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
@@ -13,12 +14,12 @@
     </UserControl.Resources>
     <Grid RowDefinitions="auto,*" ColumnDefinitions="240,*">
         <StackPanel>
-            <local:DCReportHeaderControl Title="防災気象情報(海上)" ShowReportCount="True" />
+            <local:DCReportHeaderControl Title="{loc:Localize DCReportTitleMarine}" ShowReportCount="True" />
 
             <Border Background="{DynamicResource DockTitleBackgroundColor}" CornerRadius="4,4,0,0">
                 <StackPanel Orientation="Horizontal" Margin="10,0" Spacing="5" HorizontalAlignment="Center">
-                    <TextBlock Text="海上警報" FontWeight="Bold" FontSize="20" />
-                    <TextBlock Text="{Binding TotalAreaCount,StringFormat={}{0}地域}" Foreground="{DynamicResource SubForegroundColor}" VerticalAlignment="Bottom"/>
+                    <TextBlock Text="{loc:Localize DCReportMarineWarning}" FontWeight="Bold" FontSize="20" />
+                    <TextBlock Text="{loc:LocalizeFormat DCReportAreaCountFormat, Value={Binding TotalAreaCount}}" Foreground="{DynamicResource SubForegroundColor}" VerticalAlignment="Bottom"/>
                 </StackPanel>
             </Border>
         </StackPanel>

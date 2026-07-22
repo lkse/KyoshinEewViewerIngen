@@ -710,5 +710,6 @@
 	"DCReportLiftedParen": "(Lifted)",
 	"DCReportMapControls": "Map controls",
 	"DCReportMapNotImplemented": "Map display not implemented",
-	"DCReportAreaCountFormat": "{0} areas"
+	"DCReportAreaCountFormat": "{0} areas",
+	"DCReportTyphoonNumberFormat": "Typhoon No. {0}"
 }
