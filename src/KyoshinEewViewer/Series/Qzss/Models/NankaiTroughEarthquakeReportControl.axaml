@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:local="clr-namespace:KyoshinEewViewer.Series.Qzss.Models"
              xmlns:conv="clr-namespace:KyoshinEewViewer.Series.Qzss.Converters"
+             xmlns:loc="using:KyoshinEewViewer.Localization"
              Foreground="{DynamicResource MainForegroundColor}"
              x:DataType="local:NankaiTroughEarthquakeReportGroup"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
@@ -13,12 +14,12 @@
     </UserControl.Resources>
     <Panel>
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Width="240">
-            <local:DCReportHeaderControl Title="防災気象情報(南海トラフ地震)" ShowReportCount="True" />
+            <local:DCReportHeaderControl Title="{loc:Localize DCReportTitleNankaiTrough}" ShowReportCount="True" />
         </StackPanel>
         <Grid RowDefinitions="auto,auto" MaxWidth="500" Margin="0,10" VerticalAlignment="Center">
             <Border Background="{DynamicResource DockTitleBackgroundColor}" CornerRadius="4,4,0,0">
                 <StackPanel Orientation="Horizontal" Margin="10,0" Spacing="5" HorizontalAlignment="Center">
-                    <TextBlock Text="南海トラフ地震臨時情報" FontWeight="Bold" FontSize="20" />
+                    <TextBlock Text="{loc:Localize DCReportNankaiExtraInfo}" FontWeight="Bold" FontSize="20" />
                     <TextBlock Text="{Binding CurrentProgressString}" Foreground="{DynamicResource SubForegroundColor}" VerticalAlignment="Bottom"/>
                 </StackPanel>
             </Border>
@@ -27,7 +28,7 @@
                     <ProgressBar Value="{Binding CurrentProgress}" Maximum="{Binding TotalPage}" />
                     <TextBlock Text="{Binding ReportTime, StringFormat={}MM月dd日 HH時mm分 発表}" FontSize="16" Margin="10,0" />
                     <StackPanel Orientation="Horizontal" Margin="10,0" Spacing="5">
-                        <TextBlock Text="状態" VerticalAlignment="Bottom" />
+                        <TextBlock Text="{loc:Localize DCReportStatus}" VerticalAlignment="Bottom" />
                         <TextBlock Text="{Binding InformationSerialCode, Converter={StaticResource DCReportConverter}, ConverterParameter=InformationSerialCode}" FontSize="24" FontWeight="Bold" />
                     </StackPanel>
                     <TextBlock Text="{Binding Contents}" Margin="10" TextWrapping="Wrap" />
