@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:local="clr-namespace:KyoshinEewViewer.Series.Qzss.Models"
              xmlns:conv="clr-namespace:KyoshinEewViewer.Series.Qzss.Converters"
+             xmlns:loc="using:KyoshinEewViewer.Localization"
              Foreground="{DynamicResource SubForegroundColor}"
              x:DataType="local:DCReportGroup"
              mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="100"
@@ -22,21 +23,21 @@
             <StackPanel Margin="5,0">
                 <Panel>
                     <TextBlock HorizontalAlignment="Left">
-                        <Run Text="分類" FontSize="12" />
+                        <Run Text="{loc:Localize DCReportClassification}" FontSize="12" />
                         <Run Text="{Binding Classification, Converter={StaticResource DCReportConverter}, ConverterParameter=ReportClassificationLong, Mode=OneWay}" FontSize="16" />
                     </TextBlock>
                     <TextBlock HorizontalAlignment="Right">
-                        <Run Text="種別" FontSize="12" />
+                        <Run Text="{loc:Localize DCReportType}" FontSize="12" />
                         <Run Text="{Binding InformationType, Converter={StaticResource DCReportConverter}, ConverterParameter=InformationType, Mode=OneWay}" FontSize="16" />
                     </TextBlock>
                 </Panel>
                 <Panel>
                     <TextBlock HorizontalAlignment="Left">
-                        <Run Text="発表" FontSize="12" />
+                        <Run Text="{loc:Localize DCReportIssued}" FontSize="12" />
                         <Run Text="{Binding ReportTime, StringFormat={}M月dd日 HH時mm分, Mode=OneWay}" FontSize="16" />
                     </TextBlock>
                     <TextBlock HorizontalAlignment="Right" IsVisible="{Binding ShowReportCount, ElementName=Root}">
-                        <Run Text="統合" FontSize="12" />
+                        <Run Text="{loc:Localize DCReportMerged}" FontSize="12" />
                         <Run Text="{Binding ReportCount}" FontSize="14" />
                     </TextBlock>
                 </Panel>

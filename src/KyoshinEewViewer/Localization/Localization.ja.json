@@ -574,5 +574,12 @@
 	"FeedbackAddFile": "ファイルを追加",
 	"FeedbackAttachmentsNote": "合計20MBまで。画像・ログ・設定ファイルなどを追加できます。",
 	"FeedbackRemoveAttachment": "添付を削除",
-	"FeedbackSend": "送信"
+	"FeedbackSend": "送信",
+	"CommonCancel": "キャンセル",
+	"TemplateEditorTitle": "テンプレート編集",
+	"TemplateEditorDescription": "Scribanテンプレート言語を使用して動的なコンテンツを作成できます",
+	"DCReportClassification": "分類",
+	"DCReportType": "種別",
+	"DCReportIssued": "発表",
+	"DCReportMerged": "統合"
 }

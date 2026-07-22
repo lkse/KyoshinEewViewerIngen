@@ -578,4 +578,11 @@ public enum LocalizationKey
 	FeedbackAttachmentsNote,
 	FeedbackRemoveAttachment,
 	FeedbackSend,
+	CommonCancel,
+	TemplateEditorTitle,
+	TemplateEditorDescription,
+	DCReportClassification,
+	DCReportType,
+	DCReportIssued,
+	DCReportMerged,
 }

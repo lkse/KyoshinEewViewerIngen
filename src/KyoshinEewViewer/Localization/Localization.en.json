@@ -574,5 +574,12 @@
 	"FeedbackAddFile": "Add file",
 	"FeedbackAttachmentsNote": "Up to 20 MB total. You can add images, logs, configuration files, and more.",
 	"FeedbackRemoveAttachment": "Remove attachment",
-	"FeedbackSend": "Send"
+	"FeedbackSend": "Send",
+	"CommonCancel": "Cancel",
+	"TemplateEditorTitle": "Edit template",
+	"TemplateEditorDescription": "You can create dynamic content using the Scriban template language",
+	"DCReportClassification": "Classification",
+	"DCReportType": "Type",
+	"DCReportIssued": "Issued",
+	"DCReportMerged": "Merged"
 }
