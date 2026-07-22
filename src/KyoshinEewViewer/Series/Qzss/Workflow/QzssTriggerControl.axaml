@@ -3,35 +3,36 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		     xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:loc="using:KyoshinEewViewer.Localization"
              xmlns:wf="clr-namespace:KyoshinEewViewer.Series.Qzss.Workflow;assembly=KyoshinEewViewer"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:DataType="wf:QzssTrigger" x:CompileBindings="True"
              x:Class="KyoshinEewViewer.QzssTriggerControl">
     <StackPanel>
-        <TextBlock Text="条件" FontWeight="Bold" />
-        <TextBlock Text="情報自体の発表や更新によるトリガーの条件です。" FontSize="12" Foreground="{DynamicResource SubForegroundColor}" />
+        <TextBlock Text="{loc:Localize WorkflowTriggerCondition}" FontWeight="Bold" />
+        <TextBlock Text="{loc:Localize WorkflowTriggerIssueUpdateConditionDescription}" FontSize="12" Foreground="{DynamicResource SubForegroundColor}" />
         <WrapPanel Margin="5,0">
-            <CheckBox Content="新規受信" IsChecked="{Binding NewSentenceReceived}" ToolTip.Tip="重複しない災危通報を受信した場合" />
-            <CheckBox Content="新規グループ作成" IsChecked="{Binding ReportGroupCreated}" />
-            <CheckBox Content="グループ更新" IsChecked="{Binding ReportGroupUpdated}" />
-            <CheckBox Content="南海トラフ地震臨時情報受信完了" IsChecked="{Binding NankaiTroughReportCompleted}" ToolTip.Tip="種類 で 南海トラフ地震情報 が有効になっていない場合はトリガーされません" />
+            <CheckBox Content="{loc:Localize WorkflowTriggerQzssNewReceived}" IsChecked="{Binding NewSentenceReceived}" ToolTip.Tip="{loc:Localize WorkflowTriggerQzssNewReceivedDescription}" />
+            <CheckBox Content="{loc:Localize WorkflowTriggerQzssNewGroup}" IsChecked="{Binding ReportGroupCreated}" />
+            <CheckBox Content="{loc:Localize WorkflowTriggerQzssGroupUpdated}" IsChecked="{Binding ReportGroupUpdated}" />
+            <CheckBox Content="{loc:Localize WorkflowTriggerQzssNankaiCompleted}" IsChecked="{Binding NankaiTroughReportCompleted}" ToolTip.Tip="{loc:Localize WorkflowTriggerQzssNankaiCompletedDescription}" />
         </WrapPanel>
-        <TextBlock Text="種類" FontWeight="Bold" />
-        <TextBlock Text="トリガー対象とする災危通報。" FontSize="12" Foreground="{DynamicResource SubForegroundColor}" />
+        <TextBlock Text="{loc:Localize WorkflowTriggerQzssType}" FontWeight="Bold" />
+        <TextBlock Text="{loc:Localize WorkflowTriggerQzssTypeDescription}" FontSize="12" Foreground="{DynamicResource SubForegroundColor}" />
         <WrapPanel Margin="5,0">
-            <CheckBox Content="緊急地震速報" IsChecked="{Binding Eew}" />
-            <CheckBox Content="震源" IsChecked="{Binding Hypocenter}" />
-            <CheckBox Content="震度" IsChecked="{Binding SeismicIntensity}" />
-            <CheckBox Content="南海トラフ地震" IsChecked="{Binding NankaiTrough}" />
-            <CheckBox Content="津波" IsChecked="{Binding Tsunami}" />
-            <CheckBox Content="北西太平洋津波" IsChecked="{Binding NorthwestPacificTsunami}" />
-            <CheckBox Content="火山" IsChecked="{Binding Volcano}" />
-            <CheckBox Content="降灰" IsChecked="{Binding AshFall}" />
-            <CheckBox Content="天気" IsChecked="{Binding Weather}" />
-            <CheckBox Content="洪水" IsChecked="{Binding Flood}" />
-            <CheckBox Content="台風" IsChecked="{Binding Typhoon}" />
-            <CheckBox Content="海上" IsChecked="{Binding Marine}" />
-            <CheckBox Content="不明" IsChecked="{Binding Unknown}" />
+            <CheckBox Content="{loc:Localize WorkflowTriggerQzssEew}" IsChecked="{Binding Eew}" />
+            <CheckBox Content="{loc:Localize WorkflowTriggerQzssHypocenter}" IsChecked="{Binding Hypocenter}" />
+            <CheckBox Content="{loc:Localize WorkflowTriggerQzssSeismicIntensity}" IsChecked="{Binding SeismicIntensity}" />
+            <CheckBox Content="{loc:Localize WorkflowTriggerQzssNankaiTrough}" IsChecked="{Binding NankaiTrough}" />
+            <CheckBox Content="{loc:Localize WorkflowTriggerQzssTsunami}" IsChecked="{Binding Tsunami}" />
+            <CheckBox Content="{loc:Localize WorkflowTriggerQzssNorthwestPacificTsunami}" IsChecked="{Binding NorthwestPacificTsunami}" />
+            <CheckBox Content="{loc:Localize WorkflowTriggerQzssVolcano}" IsChecked="{Binding Volcano}" />
+            <CheckBox Content="{loc:Localize WorkflowTriggerQzssAshFall}" IsChecked="{Binding AshFall}" />
+            <CheckBox Content="{loc:Localize WorkflowTriggerQzssWeather}" IsChecked="{Binding Weather}" />
+            <CheckBox Content="{loc:Localize WorkflowTriggerQzssFlood}" IsChecked="{Binding Flood}" />
+            <CheckBox Content="{loc:Localize WorkflowTriggerQzssTyphoon}" IsChecked="{Binding Typhoon}" />
+            <CheckBox Content="{loc:Localize WorkflowTriggerQzssMarine}" IsChecked="{Binding Marine}" />
+            <CheckBox Content="{loc:Localize WorkflowTriggerQzssUnknown}" IsChecked="{Binding Unknown}" />
             <CheckBox Content="DCX" IsChecked="{Binding DCX}" />
         </WrapPanel>
     </StackPanel>

@@ -3,32 +3,33 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		     xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:loc="using:KyoshinEewViewer.Localization"
              xmlns:wf="clr-namespace:KyoshinEewViewer.Series.Earthquake.Workflow;assembly=KyoshinEewViewer"
              mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="350"
              x:DataType="wf:EarthquakeInformationTrigger" x:CompileBindings="True"
              x:Class="KyoshinEewViewer.Series.Earthquake.Workflow.EarthquakeInformationTriggerControl">
     <StackPanel>
         <StackPanel Orientation="Horizontal">
-            <TextBlock Text="最大震度: " VerticalAlignment="Center" />
+            <TextBlock Text="{loc:Localize WorkflowTriggerMaxIntensity}" VerticalAlignment="Center" />
             <ComboBox ItemsSource="{x:Static wf:EarthquakeInformationTrigger.ShindoNames}" SelectedValue="{Binding Intensity}" SelectedValueBinding="{ReflectionBinding Key}" DisplayMemberBinding="{ReflectionBinding Value}" />
-            <CheckBox Content="以上を含む" IsChecked="{Binding IncludeGreaterIntensity}" Margin="8,0,0,0" VerticalAlignment="Center" />
+            <CheckBox Content="{loc:Localize WorkflowTriggerIncludeGreater}" IsChecked="{Binding IncludeGreaterIntensity}" Margin="8,0,0,0" VerticalAlignment="Center" />
         </StackPanel>
         <WrapPanel Margin="0,0,0,10">
-            <RadioButton Content="情報受信時" IsChecked="{Binding !IsIntensityChangeOnly}"
-                            ToolTip.Tip="情報の更新の有無にかかわらず情報を受信した時" />
-            <RadioButton Content="最大震度変更時" IsChecked="{Binding IsIntensityChangeOnly}"
-                            ToolTip.Tip="最大震度が変更されたとき 新規に受信したときにもトリガーされます" />
+            <RadioButton Content="{loc:Localize WorkflowTriggerOnReceive}" IsChecked="{Binding !IsIntensityChangeOnly}"
+                            ToolTip.Tip="{loc:Localize WorkflowTriggerOnReceiveDescription}" />
+            <RadioButton Content="{loc:Localize WorkflowTriggerOnMaxIntensityChange}" IsChecked="{Binding IsIntensityChangeOnly}"
+                            ToolTip.Tip="{loc:Localize WorkflowTriggerOnMaxIntensityChangeDescription}" />
         </WrapPanel>
         <WrapPanel IsVisible="{Binding IsIntensityChangeOnly}">
-            <CheckBox Content="震度が上昇したときのみ" IsChecked="{Binding IsIntensityIncreaseOnly}" />
+            <CheckBox Content="{loc:Localize WorkflowTriggerOnlyIntensityIncrease}" IsChecked="{Binding IsIntensityIncreaseOnly}" />
         </WrapPanel>
         <WrapPanel IsVisible="{Binding !IsIntensityChangeOnly}">
-            <CheckBox IsChecked="{Binding EnableSokuhou}" Content="震度速報" />
-            <CheckBox IsChecked="{Binding EnableEpicenter}" Content="震源情報" />
-            <CheckBox IsChecked="{Binding EnableDetail}" Content="震源･震度情報" />
-            <CheckBox IsChecked="{Binding EnableUpdateEpicenter}" Content="顕著な地震の震源要素更新" />
-            <CheckBox IsChecked="{Binding EnableTsunami}" Content="津波情報による震源情報更新" />
-            <CheckBox IsChecked="{Binding EnableLpgm}" Content="長周期地震動観測情報" />
+            <CheckBox IsChecked="{Binding EnableSokuhou}" Content="{loc:Localize EarthquakeIntensityReport}" />
+            <CheckBox IsChecked="{Binding EnableEpicenter}" Content="{loc:Localize WorkflowTriggerEarthquakeHypocenter}" />
+            <CheckBox IsChecked="{Binding EnableDetail}" Content="{loc:Localize EarthquakeHypocenterAndIntensity}" />
+            <CheckBox IsChecked="{Binding EnableUpdateEpicenter}" Content="{loc:Localize WorkflowTriggerEarthquakeHypocenterUpdate}" />
+            <CheckBox IsChecked="{Binding EnableTsunami}" Content="{loc:Localize WorkflowTriggerEarthquakeTsunamiHypocenterUpdate}" />
+            <CheckBox IsChecked="{Binding EnableLpgm}" Content="{loc:Localize WorkflowTriggerEarthquakeLpgm}" />
         </WrapPanel>
     </StackPanel>
 </UserControl>

@@ -3,21 +3,22 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		     xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:loc="using:KyoshinEewViewer.Localization"
              xmlns:wf="clr-namespace:KyoshinEewViewer.Series.KyoshinMonitor.Workflow;assembly=KyoshinEewViewer"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:DataType="wf:ShakeDetectTrigger" x:CompileBindings="True"
              x:Class="KyoshinEewViewer.Series.KyoshinMonitor.Workflow.ShakeDetectTriggerControl">
     <StackPanel>
         <StackPanel Orientation="Horizontal">
-            <TextBlock Text="検知レベル: " VerticalAlignment="Center" />
+            <TextBlock Text="{loc:Localize WorkflowTriggerShakeDetectionLevel}" VerticalAlignment="Center" />
             <ComboBox ItemsSource="{x:Static wf:ShakeDetectTrigger.LevelNames}" SelectedValue="{Binding Level}" SelectedValueBinding="{ReflectionBinding Key}" DisplayMemberBinding="{ReflectionBinding Value}" />
         </StackPanel>
-        <CheckBox Content="レベルが一致しているときのみ実行する" IsChecked="{Binding IsExact}"
-                  ToolTip.Tip="デフォルトではより高いレベルのイベントもトリガ対象となります。&#xA;このオプションを有効にするとそのレベルの時のみでアクションを実行することが可能です。"/>
+        <CheckBox Content="{loc:Localize WorkflowTriggerShakeLevelMatchOnly}" IsChecked="{Binding IsExact}"
+                  ToolTip.Tip="{loc:Localize WorkflowTriggerLevelMatchDescription}"/>
         <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
-            <TextBlock Text="最大レベル地域拡大時: " VerticalAlignment="Center" />
+            <TextBlock Text="{loc:Localize WorkflowTriggerShakePeakRegionExpansion}" VerticalAlignment="Center" />
             <ComboBox ItemsSource="{x:Static wf:ShakeDetectTrigger.PeakRegionExpansionModeNames}" SelectedValue="{Binding PeakRegionExpansionMode}" SelectedValueBinding="{ReflectionBinding Key}" DisplayMemberBinding="{ReflectionBinding Value}"
-                      ToolTip.Tip="最大の揺れレベルを観測している地域が増加した場合の動作を設定します。&#xA;・なにもしない: 地域拡大時はトリガーを発火しません&#xA;・地域のみ: 新しい地域が追加された場合のみ発火します&#xA;・サブ地域も含む: サブ地域が増加した場合も発火します" />
+                      ToolTip.Tip="{loc:Localize WorkflowTriggerShakePeakRegionExpansionDescription}" />
         </StackPanel>
     </StackPanel>
 </UserControl>

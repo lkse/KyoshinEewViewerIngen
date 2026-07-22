@@ -3,27 +3,28 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		     xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:loc="using:KyoshinEewViewer.Localization"
              xmlns:wf="clr-namespace:KyoshinEewViewer.Series.Tsunami.Workflow;assembly=KyoshinEewViewer"
              mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="350"
              x:DataType="wf:TsunamiInformationTrigger" x:CompileBindings="True"
              x:Class="KyoshinEewViewer.Series.Tsunami.Workflow.TsunamiInformationTriggerControl">
     <StackPanel>
         <StackPanel Orientation="Horizontal">
-            <TextBlock Text="発表レベル: " VerticalAlignment="Center" />
+            <TextBlock Text="{loc:Localize WorkflowTriggerTsunamiIssuedLevel}" VerticalAlignment="Center" />
             <ComboBox ItemsSource="{x:Static wf:TsunamiInformationTrigger.LevelNames}" SelectedValue="{Binding Level}" SelectedValueBinding="{ReflectionBinding Key}" DisplayMemberBinding="{ReflectionBinding Value}" />
         </StackPanel>
-        <CheckBox Content="一致しているときのみ実行する" IsChecked="{Binding IsExact}"
-                  ToolTip.Tip="デフォルトではより高いレベルのイベントもトリガ対象となります。&#xA;このオプションを有効にするとそのレベルの時のみでアクションを実行することが可能です。"/>
+        <CheckBox Content="{loc:Localize WorkflowTriggerTsunamiLevelMatchOnly}" IsChecked="{Binding IsExact}"
+                  ToolTip.Tip="{loc:Localize WorkflowTriggerLevelMatchDescription}"/>
 
         <WrapPanel>
-            <CheckBox IsChecked="{Binding EnableIssued}" Content="発表" Margin="0,2,10,2"
-                      ToolTip.Tip="未発表状態から津波情報が発表されたとき" />
-            <CheckBox IsChecked="{Binding EnableUpgraded}" Content="警報レベル上昇" Margin="0,2,10,2"
-                      ToolTip.Tip="より上位の警報に切り替えられたとき" />
-            <CheckBox IsChecked="{Binding EnableDowngraded}" Content="警報レベル下降・解除" Margin="0,2,10,2"
-                      ToolTip.Tip="警報レベルが下がったり解除されたとき" />
-            <CheckBox IsChecked="{Binding EnableUpdated}" Content="その他更新" Margin="0,2,10,2"
-                      ToolTip.Tip="地域の増減など、上記以外の情報更新時" />
+            <CheckBox IsChecked="{Binding EnableIssued}" Content="{loc:Localize WorkflowTriggerTsunamiIssued}" Margin="0,2,10,2"
+                      ToolTip.Tip="{loc:Localize WorkflowTriggerTsunamiIssuedDescription}" />
+            <CheckBox IsChecked="{Binding EnableUpgraded}" Content="{loc:Localize WorkflowTriggerTsunamiUpgraded}" Margin="0,2,10,2"
+                      ToolTip.Tip="{loc:Localize WorkflowTriggerTsunamiUpgradedDescription}" />
+            <CheckBox IsChecked="{Binding EnableDowngraded}" Content="{loc:Localize WorkflowTriggerTsunamiDowngraded}" Margin="0,2,10,2"
+                      ToolTip.Tip="{loc:Localize WorkflowTriggerTsunamiDowngradedDescription}" />
+            <CheckBox IsChecked="{Binding EnableUpdated}" Content="{loc:Localize WorkflowTriggerTsunamiOtherUpdate}" Margin="0,2,10,2"
+                      ToolTip.Tip="{loc:Localize WorkflowTriggerTsunamiOtherUpdateDescription}" />
         </WrapPanel>
     </StackPanel>
 </UserControl>
