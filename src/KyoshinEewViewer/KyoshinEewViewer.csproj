@@ -40,7 +40,7 @@
 
 	<ItemGroup>
 		<AvaloniaResource Include="Assets\**" />
-		<EmbeddedResource Include="Localization\Localization.*.json" />
+		<EmbeddedResource Include="Localization\Localization.*.json" WithCulture="false" />
 	</ItemGroup>
 
 	<!-- ローカライズ監査モード(dotnet build -p:LocalizationAudit=true)でのみ
