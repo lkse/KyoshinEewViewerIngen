@@ -27,7 +27,7 @@ public class KyoshinMonitorSeries : SeriesBase
 
 	public override Size MinViewSize { get; } = new(500, 600);
 
-	public SoundCategory SoundCategory { get; } = new("KyoshinMonitor", "強震モニタ");
+	public SoundCategory SoundCategory { get; } = new("KyoshinMonitor", Localization.LocalizationKey.SeriesKyoshinMonitorName);
 	private Sound WeakShakeDetectedSound { get; set; }
 	private Sound MediumShakeDetectedSound { get; set; }
 	private Sound StrongShakeDetectedSound { get; set; }
@@ -172,10 +172,10 @@ public class KyoshinMonitorSeries : SeriesBase
 		Config = config;
 		WorkflowService = workflowService;
 
-		WeakShakeDetectedSound = soundPlayer.RegisterSound(SoundCategory, "WeakShakeDetected", "揺れ検出(震度1未満)", "鳴動させるためには揺れ検出の設定を有効にしている必要があります。");
-		MediumShakeDetectedSound = soundPlayer.RegisterSound(SoundCategory, "MediumShakeDetected", "揺れ検出(震度1以上3未満)", "震度上昇時にも鳴動します。\n鳴動させるためには揺れ検出の設定を有効にしている必要があります。");
-		StrongShakeDetectedSound = soundPlayer.RegisterSound(SoundCategory, "StrongShakeDetected", "揺れ検出(震度3以上5弱未満)", "震度上昇時にも鳴動します。\n鳴動させるためには揺れ検出の設定を有効にしている必要があります。");
-		StrongerShakeDetectedSound = soundPlayer.RegisterSound(SoundCategory, "StrongerShakeDetected", "揺れ検出(震度5弱以上)", "震度上昇時にも鳴動します。\n鳴動させるためには揺れ検出の設定を有効にしている必要があります。");
+		WeakShakeDetectedSound = soundPlayer.RegisterSound(SoundCategory, "WeakShakeDetected", Localization.LocalizationKey.SoundKmWeakShake, Localization.LocalizationKey.SoundKmWeakShakeDesc);
+		MediumShakeDetectedSound = soundPlayer.RegisterSound(SoundCategory, "MediumShakeDetected", Localization.LocalizationKey.SoundKmMediumShake, Localization.LocalizationKey.SoundKmShakeDesc);
+		StrongShakeDetectedSound = soundPlayer.RegisterSound(SoundCategory, "StrongShakeDetected", Localization.LocalizationKey.SoundKmStrongShake, Localization.LocalizationKey.SoundKmShakeDesc);
+		StrongerShakeDetectedSound = soundPlayer.RegisterSound(SoundCategory, "StrongerShakeDetected", Localization.LocalizationKey.SoundKmStrongerShake, Localization.LocalizationKey.SoundKmShakeDesc);
 
 		ReplaySettingPage = new KyoshinMonitorReplaySettingPage(Config, this, timerService, subWindowService);
 

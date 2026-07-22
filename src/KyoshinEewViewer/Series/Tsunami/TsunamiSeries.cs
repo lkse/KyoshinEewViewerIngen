@@ -54,7 +54,7 @@ public class TsunamiSeries : SeriesBase
 
 	private static readonly string[] SupportedControlTitle = ["津波警報・注意報・予報a", "津波情報a"];
 
-	private SoundCategory SoundCategory { get; } = new("Tsunami", "津波情報");
+	private SoundCategory SoundCategory { get; } = new("Tsunami", Localization.LocalizationKey.SeriesTsunamiName);
 	private Sound? NewSound { get; set; }
 	private Sound? UpdatedSound { get; set; }
 	private Sound? UpgradeSound { get; set; }
@@ -91,10 +91,10 @@ public class TsunamiSeries : SeriesBase
 			],
 		};
 
-		NewSound = soundPlayer.RegisterSound(SoundCategory, "New", "津波情報の発表", "未発表状態から受信した際に鳴動します。\n{lv}: 警報種別 [fore, adv, warn, major]", new() { { "lv", "fore" }, });
-		UpgradeSound = soundPlayer.RegisterSound(SoundCategory, "Upgrade", "警報/注意報の更新", "より上位の警報/注意報が発表された際に鳴動します。\n{lv}: 更新後の警報種別 [fore, adv, warn, major]", new() { { "lv", "warn" }, });
-		DowngradeSound = soundPlayer.RegisterSound(SoundCategory, "Downgrade", "警報/注意報の解除", "最大の警報レベルが下がった時に鳴動します。\n{lv}: 解除後の警報種別 [none, fore, adv, warn, major]", new() { { "lv", "none" }, });
-		UpdatedSound = soundPlayer.RegisterSound(SoundCategory, "Updated", "津波情報の更新", "他の津波関連の音声が再生されなかった場合、この音声が鳴動します。\n{lv}: 最大の警報種別 [fore, adv, warn, major]", new() { { "lv", "adv" }, });
+		NewSound = soundPlayer.RegisterSound(SoundCategory, "New", Localization.LocalizationKey.SoundTsunamiNew, Localization.LocalizationKey.SoundTsunamiNewDesc, new() { { "lv", "fore" }, });
+		UpgradeSound = soundPlayer.RegisterSound(SoundCategory, "Upgrade", Localization.LocalizationKey.SoundTsunamiUpgrade, Localization.LocalizationKey.SoundTsunamiUpgradeDesc, new() { { "lv", "warn" }, });
+		DowngradeSound = soundPlayer.RegisterSound(SoundCategory, "Downgrade", Localization.LocalizationKey.SoundTsunamiDowngrade, Localization.LocalizationKey.SoundTsunamiDowngradeDesc, new() { { "lv", "none" }, });
+		UpdatedSound = soundPlayer.RegisterSound(SoundCategory, "Updated", Localization.LocalizationKey.SoundTsunamiUpdated, Localization.LocalizationKey.SoundTsunamiUpdatedDesc, new() { { "lv", "adv" }, });
 
 		ExpireTimer = new Timer(_ =>
 		{

@@ -47,7 +47,7 @@ public class EarthquakeSeries : SeriesBase
 			= true;
 #endif
 
-	private SoundCategory SoundCategory { get; } = new("Earthquake", "地震情報");
+	private SoundCategory SoundCategory { get; } = new("Earthquake", Localization.LocalizationKey.SeriesEarthquakeName);
 	private Sound UpdatedSound { get; }
 	private Sound IntensityUpdatedSound { get; }
 	private Sound UpdatedTrainingSound { get; }
@@ -79,9 +79,9 @@ public class EarthquakeSeries : SeriesBase
 		NotificationService = notifyService;
 		WorkflowService = workflowService;
 
-		UpdatedSound = soundPlayer.RegisterSound(SoundCategory, "Updated", "地震情報の更新", "{int}: 最大震度 [？,0,1,...,6-,6+,7]", new() { { "int", "4" }, });
-		IntensityUpdatedSound = soundPlayer.RegisterSound(SoundCategory, "IntensityUpdated", "震度の更新", "{int}: 最大震度 [？,0,1,...,6-,6+,7]", new() { { "int", "4" }, });
-		UpdatedTrainingSound = soundPlayer.RegisterSound(SoundCategory, "TrainingUpdated", "地震情報の更新(訓練)", "{int}: 最大震度 [？,0,1,...,6-,6+,7]", new() { { "int", "6+" }, });
+		UpdatedSound = soundPlayer.RegisterSound(SoundCategory, "Updated", Localization.LocalizationKey.SoundEqUpdated, Localization.LocalizationKey.SoundMaxIntensityDesc, new() { { "int", "4" }, });
+		IntensityUpdatedSound = soundPlayer.RegisterSound(SoundCategory, "IntensityUpdated", Localization.LocalizationKey.SoundEqIntensityUpdated, Localization.LocalizationKey.SoundMaxIntensityDesc, new() { { "int", "4" }, });
+		UpdatedTrainingSound = soundPlayer.RegisterSound(SoundCategory, "TrainingUpdated", Localization.LocalizationKey.SoundEqTrainingUpdated, Localization.LocalizationKey.SoundMaxIntensityDesc, new() { { "int", "6+" }, });
 
 		//ProcessHistoryXml = ReactiveCommand.CreateFromTask<string>(async id =>
 		//{

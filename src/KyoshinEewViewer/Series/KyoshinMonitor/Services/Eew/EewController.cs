@@ -22,7 +22,7 @@ public class EewController
 	private KyoshinMonitorSeries Series { get; }
 	private KyoshinEewViewerConfiguration Config { get; }
 	private WorkflowService WorkflowService { get; }
-	private SoundCategory SoundCategory { get; } = new("Eew", "緊急地震速報");
+	private SoundCategory SoundCategory { get; } = new("Eew", Localization.LocalizationKey.SoundCategoryEew);
 
 	private Lock _lock = new();
 	private Dictionary<string, Models.Eew> EewCache { get; } = [];
@@ -51,10 +51,10 @@ public class EewController
 		Config = config;
 		WorkflowService = workflowService;
 
-		EewReceivedSound = soundPlayer.RegisterSound(SoundCategory, "EewReceived", "緊急地震速報受信", "{int}: 最大震度 [？,0,1,...,6-,6+,7]", new() { { "int", "4" }, });
-		EewBeginReceivedSound = soundPlayer.RegisterSound(SoundCategory, "EewBeginReceived", "緊急地震速報受信(初回)", "{int}: 最大震度 [-,0,1,...,6-,6+,7]", new() { { "int", "5+" }, });
-		EewFinalReceivedSound = soundPlayer.RegisterSound(SoundCategory, "EewFinalReceived", "緊急地震速報受信(最終)", "{int}: 最大震度 [-,0,1,...,6-,6+,7]", new() { { "int", "-" }, });
-		EewCanceledSound = soundPlayer.RegisterSound(SoundCategory, "EewCanceled", "緊急地震速報受信(キャンセル)");
+		EewReceivedSound = soundPlayer.RegisterSound(SoundCategory, "EewReceived", Localization.LocalizationKey.SoundEewReceived, Localization.LocalizationKey.SoundMaxIntensityDesc, new() { { "int", "4" }, });
+		EewBeginReceivedSound = soundPlayer.RegisterSound(SoundCategory, "EewBeginReceived", Localization.LocalizationKey.SoundEewBeginReceived, Localization.LocalizationKey.SoundEewMaxIntensityDesc, new() { { "int", "5+" }, });
+		EewFinalReceivedSound = soundPlayer.RegisterSound(SoundCategory, "EewFinalReceived", Localization.LocalizationKey.SoundEewFinalReceived, Localization.LocalizationKey.SoundEewMaxIntensityDesc, new() { { "int", "-" }, });
+		EewCanceledSound = soundPlayer.RegisterSound(SoundCategory, "EewCanceled", Localization.LocalizationKey.SoundEewCanceled);
 
 	}
 

@@ -28,7 +28,7 @@ public class QzssSeries : SeriesBase
 
 	private MapData? MapData { get; set; }
 
-	private SoundCategory SoundCategory { get; } = new("Qzss", "災危通報");
+	private SoundCategory SoundCategory { get; } = new("Qzss", Localization.LocalizationKey.SeriesQzssName);
 	private Sound ReceivedSound { get; }
 	private Sound GroupAddedSound { get; }
 	private Sound NankaiTroughCompletedSound { get; }
@@ -49,9 +49,9 @@ public class QzssSeries : SeriesBase
 
 		WorkflowService = workflowService;
 
-		ReceivedSound = soundPlayer.RegisterSound(SoundCategory, "Received", "新規情報の受信", "同時発表の情報に統合された場合でも鳴動しますが、完全に同じ情報では鳴動しません。");
-		GroupAddedSound = soundPlayer.RegisterSound(SoundCategory, "GroupAdded", "新規グループ受信", "同時発表の情報と統合された場合には鳴動しません。");
-		NankaiTroughCompletedSound = soundPlayer.RegisterSound(SoundCategory, "NankaiTroughCompleted", "南海トラフ情報受信完了", "南海トラフに関する情報の受信が完了した場合に鳴動します。");
+		ReceivedSound = soundPlayer.RegisterSound(SoundCategory, "Received", Localization.LocalizationKey.SoundQzssReceived, Localization.LocalizationKey.SoundQzssReceivedDesc);
+		GroupAddedSound = soundPlayer.RegisterSound(SoundCategory, "GroupAdded", Localization.LocalizationKey.SoundQzssGroupAdded, Localization.LocalizationKey.SoundQzssGroupAddedDesc);
+		NankaiTroughCompletedSound = soundPlayer.RegisterSound(SoundCategory, "NankaiTroughCompleted", Localization.LocalizationKey.SoundQzssNankaiCompleted, Localization.LocalizationKey.SoundQzssNankaiCompletedDesc);
 
 		Connector = connector;
 		Connector.WhenAnyValue(s => s.CurrentLocation).Subscribe(s =>

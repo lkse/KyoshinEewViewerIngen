@@ -14,7 +14,7 @@ public class LightningSeries : SeriesBase
 {
 	public static SeriesMeta MetaData { get; } = new(typeof(LightningSeries), "lightning", Localization.LocalizationKey.SeriesLightningName, new FAFontIconSource { Glyph = "\xf76c", FontFamily = new FontFamily(Utils.IconFontName) }, true, Localization.LocalizationKey.SeriesLightningDescription);
 
-	private SoundCategory SoundCategory { get; } = new("Lightning", "落雷情報");
+	private SoundCategory SoundCategory { get; } = new("Lightning", Localization.LocalizationKey.SoundCategoryLightning);
 	private Sound? ArrivalSound { get; set; }
 
 	private LightningLayer Layer { get; }
@@ -35,7 +35,7 @@ public class LightningSeries : SeriesBase
 	{
 		SplatRegistrations.RegisterLazySingleton<LightningSeries>();
 
-		ArrivalSound = soundPlayer.RegisterSound(SoundCategory, "Arrival", "情報受信時");
+		ArrivalSound = soundPlayer.RegisterSound(SoundCategory, "Arrival", Localization.LocalizationKey.SoundLightningArrival);
 
 		Layer = new LightningLayer(timer);
 

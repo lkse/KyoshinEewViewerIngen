@@ -109,6 +109,7 @@ public class SettingWindowViewModel : ViewModelBase
 			this.RaisePropertyChanged(nameof(KyoshinMonitorModeNames));
 			this.RaisePropertyChanged(nameof(ShakeDetectionDisplayModeNames));
 			this.RaisePropertyChanged(nameof(ShakeDetectionAnimationModeNames));
+			this.RaisePropertyChanged(nameof(RegisteredSounds));
 		};
 		SeriesController = seriesController ?? throw new ArgumentNullException(nameof(seriesController));
 		UpdateCheckService = updateCheckService;
@@ -121,14 +122,13 @@ public class SettingWindowViewModel : ViewModelBase
 
 		Series = SeriesController.AllSeries.Select(s => new SeriesViewModel(s, Config)).ToArray();
 
-		RegisteredSounds = SoundPlayerService.RegisteredSounds.Select(s => new SoundConfigViewModel(s.Key, s.Value)).ToArray();
 		OpenSoundFile = ReactiveCommand.CreateFromTask<KyoshinEewViewerConfiguration.SoundConfig>(async config =>
 		{
 			if (KyoshinEewViewerApp.TopLevelControl == null)
 				return;
 			var files = await KyoshinEewViewerApp.TopLevelControl.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
 			{
-				Title = "音声ファイルを開く",
+				Title = LocalizationService.Get(LocalizationKey.SoundOpenFileTitle),
 				FileTypeFilter = new List<FilePickerFileType>()
 				{
 					FilePickerFileTypes.All,
@@ -266,7 +266,7 @@ public class SettingWindowViewModel : ViewModelBase
 	public SeriesViewModel[] Series { get; }
 
 	public bool IsSoundActivated => SoundPlayerService.IsAvailable;
-	public SoundConfigViewModel[] RegisteredSounds { get; }
+	public SoundConfigViewModel[] RegisteredSounds => SoundPlayerService.RegisteredSounds.Select(s => new SoundConfigViewModel(s.Key, s.Value)).ToArray();
 
 	private Workflow? _selectedWorkflow;
 	public Workflow? SelectedWorkflow

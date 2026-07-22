@@ -1,5 +1,6 @@
 using KyoshinEewViewer.Core;
 using KyoshinEewViewer.Core.Models;
+using KyoshinEewViewer.Localization;
 using ManagedBass;
 using ReactiveUI;
 using Splat;
@@ -70,10 +71,10 @@ public class SoundPlayerService
 		}
 #if DEBUG
 		TestSound = RegisterSound(
-			new SoundCategory("Test", "テスト"),
+			new SoundCategory("Test", LocalizationKey.SoundCategoryTest),
 			"TestPlay",
-			"揺れ検出(震度1未満)",
-			"{test}: 奇数秒|偶数秒\n{!test}: testを反転したもの",
+			LocalizationKey.SoundKmWeakShake,
+			LocalizationKey.SoundTestPlayDesc,
 			new()
 			{
 				{ "test", "奇数秒" },
@@ -125,7 +126,7 @@ public class SoundPlayerService
 		return false;
 	}
 
-	public Sound RegisterSound(SoundCategory category, string name, string displayName, string? description = null, Dictionary<string, string>? exampleParameter = null)
+	public Sound RegisterSound(SoundCategory category, string name, LocalizationKey displayName, LocalizationKey? description = null, Dictionary<string, string>? exampleParameter = null)
 	{
 		if (Sounds.TryGetValue(category, out var sounds))
 		{
@@ -149,24 +150,38 @@ public class SoundPlayerService
 	}
 }
 
-public record struct SoundCategory(string Name, string DisplayName);
+public record struct SoundCategory(string Name, LocalizationKey DisplayNameKey)
+{
+	/// <summary>
+	/// 表示名。言語設定に応じて解決する。
+	/// </summary>
+	public readonly string DisplayName => Locator.Current.GetService<LocalizationService>()?.Get(DisplayNameKey) ?? DisplayNameKey.ToString();
+}
 public class Sound : IDisposable
 {
-	internal Sound(SoundPlayerService service, SoundCategory parentCategory, string name, string displayName, string? description, IDictionary<string, string>? exampleParameter)
+	internal Sound(SoundPlayerService service, SoundCategory parentCategory, string name, LocalizationKey displayNameKey, LocalizationKey? descriptionKey, IDictionary<string, string>? exampleParameter)
 	{
 		Service = service;
 		ParentCategory = parentCategory;
 		Name = name;
-		DisplayName = displayName;
-		Description = description;
+		DisplayNameKey = displayNameKey;
+		DescriptionKey = descriptionKey;
 		ExampleParameter = exampleParameter;
 	}
 
 	private SoundPlayerService Service { get; }
 	public SoundCategory ParentCategory { get; }
 	public string Name { get; }
-	public string DisplayName { get; }
-	public string? Description { get; }
+	private LocalizationKey DisplayNameKey { get; }
+	private LocalizationKey? DescriptionKey { get; }
+	/// <summary>
+	/// 表示名。言語設定に応じて解決する。
+	/// </summary>
+	public string DisplayName => Locator.Current.GetService<LocalizationService>()?.Get(DisplayNameKey) ?? DisplayNameKey.ToString();
+	/// <summary>
+	/// 説明文。言語設定に応じて解決する。
+	/// </summary>
+	public string? Description => DescriptionKey is { } key ? Locator.Current.GetService<LocalizationService>()?.Get(key) : null;
 	public IDictionary<string, string>? ExampleParameter { get; }
 
 	// 設定を取得する 存在しなければ項目を作成する
