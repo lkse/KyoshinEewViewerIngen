@@ -421,6 +421,8 @@
 	"ObservationPointsManualUpdateDescription": "Updates the observation point data manually.",
 	"ObservationPointsRestartRequired": "The application must be restarted to apply the update.",
 	"EarthquakeSwitchAtUpdate": "Switch tabs automatically when earthquake information is updated",
+	"EarthquakeShowIntensityLegend": "Show the seismic intensity legend",
+	"EarthquakeShowIntensityLegendDescription": "Shows a legend for the observed seismic intensities drawn on the map, in its upper left corner.",
 	"EarthquakeIntensityReport": "Seismic intensity information",
 	"EarthquakeFillArea": "Fill in areas",
 	"EarthquakeFillSokuhouDescription": "Fills in the areas covered by seismic intensity information.",

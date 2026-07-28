@@ -424,6 +424,8 @@ public enum LocalizationKey
 	ObservationPointsManualUpdateDescription,
 	ObservationPointsRestartRequired,
 	EarthquakeSwitchAtUpdate,
+	EarthquakeShowIntensityLegend,
+	EarthquakeShowIntensityLegendDescription,
 	EarthquakeIntensityReport,
 	EarthquakeFillArea,
 	EarthquakeFillSokuhouDescription,

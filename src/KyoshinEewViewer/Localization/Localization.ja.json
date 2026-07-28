@@ -421,6 +421,8 @@
 	"ObservationPointsManualUpdateDescription": "観測点情報を手動で更新します。",
 	"ObservationPointsRestartRequired": "更新を適用するにはアプリケーションの再起動が必要です。",
 	"EarthquakeSwitchAtUpdate": "地震情報更新時に自動でタブを切り替える",
+	"EarthquakeShowIntensityLegend": "震度の凡例を表示する",
+	"EarthquakeShowIntensityLegendDescription": "地図の左上に、地図上へ描画されている観測震度の凡例を表示します。",
 	"EarthquakeIntensityReport": "震度速報",
 	"EarthquakeFillArea": "地域を塗りつぶす",
 	"EarthquakeFillSokuhouDescription": "震度速報の発表地域を塗りつぶします。",
