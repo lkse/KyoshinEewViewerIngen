@@ -4,6 +4,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform;
 using Avalonia.VisualTree;
+using KyoshinEewViewer.Localization;
 using LiveMarkdown.Avalonia;
 using Splat;
 using System;
@@ -58,6 +59,27 @@ public class MarkdownViewer : ContentControl
 		AttachLinkClickWorkaround(_renderer);
 		Content = _renderer;
 	}
+
+	// LocalizationService はシングルトンのため、購読しっぱなしにするとコントロールが解放されなくなる。
+	// 表示中のみ購読する
+	protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+	{
+		base.OnAttachedToVisualTree(e);
+		if (LocalizationService.Instance is { } loc)
+			loc.LanguageChanged += OnLanguageChanged;
+		// 非表示の間に言語が切り替わっている場合があるため読み込み直す
+		UpdateContent();
+	}
+
+	protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+	{
+		base.OnDetachedFromVisualTree(e);
+		if (LocalizationService.Instance is { } loc)
+			loc.LanguageChanged -= OnLanguageChanged;
+	}
+
+	private void OnLanguageChanged(object? sender, EventArgs e)
+		=> UpdateContent();
 
 	private static readonly FieldInfo? PressingLinkField =
 		typeof(MarkdownTextBlock).GetField("pressingLink", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -118,6 +140,22 @@ public class MarkdownViewer : ContentControl
 
 	private static string? LoadFromSource(string source)
 	{
+		// 日本語以外では Assets/{言語コード}/ 配下の翻訳版を優先して読み込む
+		var lang = LocalizationService.Instance?.SelectedLanguage.Code;
+		if (!string.IsNullOrEmpty(lang) && lang != "ja")
+		{
+			var langSource = source.Insert(source.LastIndexOf('/') + 1, $"{lang}/");
+			try
+			{
+				using var stream = AssetLoader.Open(new Uri(langSource, UriKind.Absolute));
+				using var reader = new StreamReader(stream);
+				return reader.ReadToEnd();
+			}
+			catch
+			{
+				// 翻訳版が存在しない言語・ファイルは日本語版にフォールバックする
+			}
+		}
 		try
 		{
 			using var stream = AssetLoader.Open(new Uri(source, UriKind.Absolute));
