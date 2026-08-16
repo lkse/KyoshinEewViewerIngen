@@ -18,8 +18,6 @@ updates:
       cronjob: "0 6 * * *"
     cooldown:
       default-days: 7
-    groups:
-      nuget:
-        patterns:
-          - "*"
-        update-types: ["minor", "patch"]
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
