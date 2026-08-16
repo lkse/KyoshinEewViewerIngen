@@ -14,7 +14,8 @@ updates:
   - package-ecosystem: "nuget"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "cron"
+      cronjob: "0 6 * * *"
     cooldown:
       default-days: 7
     ignore:
